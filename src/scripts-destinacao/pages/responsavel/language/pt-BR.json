@@ -1,0 +1,24 @@
+{
+    "title-incluir-responsavel": "Incluir Responsável",
+    "label-cpf-cnpj-responsavel-destinatario": "CPF/CNPJ do Responsável/Destinatário",
+    "label-nome": "Nome",
+    "label-estado-civil": "Estado Civil",
+    "label-obito": "Óbito",
+    "label-responsavel-e-falecido": "O responsável é falecido?",
+    "label-data-obito": "Data do Óbito",
+    "label-falecido-sisobi": "Falecido no SISOBI?",
+    "label-falecido-receita": "Falecido na Receita",
+    "label-codigo-ug": "Código da UG",
+    "label-email": "E-mail",
+    "label-confirmacao-email": "Confirmação de E-mail",
+
+    "label-area-fracao-utilizacao": "Área/Fração Utilizada (m²)",
+    "label-observacoes": "Observações",
+    "label-informacoes-socioeconimicas": "Informações Socioeconômicas",
+    "label-rensa-rs": "Renda (R$)",
+    "label-rensa-familiar-rs": "Renda Familiar (R$)",
+    "label-renda-familiar-cadunico": "Renda Familiar CADÚnico (R$)",
+    "label-responsavel-possui-imovel-particular": "O responsável possui imóvel particular?",
+
+    "label-endereco-correspondencia": "Endereço de Correspondência"
+}

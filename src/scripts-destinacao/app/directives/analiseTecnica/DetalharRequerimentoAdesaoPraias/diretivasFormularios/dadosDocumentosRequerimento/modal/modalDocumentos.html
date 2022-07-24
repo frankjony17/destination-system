@@ -1,0 +1,63 @@
+<md-dialog flex="50" aria-label="{{'label-documentos' | translate}}"  ng-cloak>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{'label-documentos' | translate}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="fechar()">
+                    <md-icon aria-label="Close dialog">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div ng-if="detalhar">
+                    <h3>{{'label-arquivos-do-documento' | translate}}: {{documento.nome}}</h3>
+                </div>
+
+                <md-container style="margin-top: 1%;" class="infoSocioEconomica table-responsive-vertical">
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head>
+                                <tr md-row>
+                                    <th md-column>{{'label-nome-arquivo' | translate | uppercase}}</th>
+                                    <th md-column class="texto-centro">{{'label-acao' | translate | uppercase}}</th>
+                                </tr>
+                            </thead>
+                            <tbody md-body>
+                                <tr md-row ng-repeat="file in documento.files | orderBy: '-name':true" ng-show="documento.files.length > 0">
+                                    <td md-cell>
+                                        <div ng-if="!detalhar">
+                                            <a ng-href="{{baixar(file)}}">{{file.name}}</a>
+                                        </div>
+                                        <div ng-if="detalhar">
+                                            {{file.name}}
+                                        </div>
+
+                                    </td>
+                                    <td md-cell>
+                                        <a ng-href="{{baixar(file.idArquivo)}}" ng-if="detalhar">
+                                            <ng-md-icon icon="description" class="hand" style="fill:#788489" size="18"></ng-md-icon>
+                                        </a>
+                                        <ng-md-icon ng-show="!(naoRemoverAntigos && file.naoRemover)" ng-if="!detalhar" ng-click="removerArquivo($event, documento, file)" icon="delete" class="hand" style="fill:#788489" size="18"></ng-md-icon>
+                                    </td>
+                                </tr>
+                                <tr ng-show="!documento.files || documento.files.length == 0">
+                                    <td colspan="2">
+                                        {{'label-nenhum-arquivo-anexado' | translate}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-container>
+
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button ng-click="fechar()">
+                {{'btn-fechar' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

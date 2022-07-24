@@ -1,0 +1,25 @@
+<div layout="column" ng-show="imagens.length > 0" class="carousel" >
+	<div flex="100" layout="row" >
+		<div flex="15" class="item volta">
+			<md-button ng-disabled="selectedIndex==0" ng-click="retorna()" class="md-icon-button" >
+				<ng-md-icon icon="navigate_before" size="30"></ng-md-icon>
+			</md-button>
+		</div>
+		<div align="center" flex="70" class="imagem">
+			<img class="hand" ng-click="exibirVideo(imagens[selectedIndex])" ng-class="transition" ng-src="data:image/png;base64,{{imagens[selectedIndex].imagem}}" />
+		</div>
+
+		<div flex="15" class="item avanca" >
+			<md-button ng-disabled="selectedIndex==imagens.length-1" ng-click="avanca()" class="md-icon-button">
+				<ng-md-icon icon="navigate_next" size="30"></ng-md-icon>
+			</md-button>
+		</div>
+
+	</div>
+	<div layout="row" flex class="bolas" >
+		<div align="center" ng-repeat="i in imagens track by $index">
+			<ng-md-icon icon="{{$index==selectedIndex ? 'lens':'panorama_fisheye'}}" size="10">
+			</ng-md-icon>
+		</div>
+	</div>
+</div>

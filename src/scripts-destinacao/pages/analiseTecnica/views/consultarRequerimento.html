@@ -1,0 +1,200 @@
+<form name="consultarRequerimentoCtrl.form" >
+  <div class="texto-verde-header">
+    <span class="titulo-verde-header">{{'label-consulta-analise' | translate}}</span>
+    <div class="base-vermelho"></div>
+    <hr class="linha-divisoria">
+
+  </div>
+
+  <div flex>
+    <div layout="row">
+      <md-input-container flex="45">
+        <label >{{'label-requerimento' | translate}}</label>
+        <md-select ng-model="consultarRequerimentoCtrl.filtro.idServico" >
+          <md-option ng-repeat="requerimento in consultarRequerimentoCtrl.listaTitulosRequerimento" ng-value="requerimento.id" selected>
+            {{requerimento.titulo}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <md-input-container flex="25" flex-offset="5">
+        <label>{{'label-numero-atendimento' | translate}}</label>
+        <input ng-model="consultarRequerimentoCtrl.filtro.nuAtendimento"/>
+      </md-input-container>
+
+      <md-input-container flex="15" flex-offset="5">
+        <label>{{'label-uf' | translate}}</label>
+        <md-select ng-model="consultarRequerimentoCtrl.filtro.uf">
+          <md-option ng-repeat="uf in consultarRequerimentoCtrl.ufs" ng-value="uf">
+            {{uf}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+
+    <div layout="row">
+      <md-input-container flex="45">
+        <label>{{'label-nome-do-requerente' | translate}}</label>
+        <input ng-model="consultarRequerimentoCtrl.filtro.nomeRequerente"/>
+      </md-input-container>
+
+      <md-input-container flex="25" flex-offset="5">
+        <label>{{'label-cpf-cnpj' | translate}}</label>
+        <input ng-model="consultarRequerimentoCtrl.filtro.cpfCnpj" ui-br-cpfcnpj-mask/>
+      </md-input-container>
+    </div>
+
+    <div class="margin-bottom-label" layout="row">
+      <md-input-container flex="45">
+        <label>{{'label-situacao' | translate}}</label>
+        <md-select ng-model="consultarRequerimentoCtrl.filtro.situacao" >
+          <md-option ng-repeat="(k,v) in consultarRequerimentoCtrl.situacao" ng-value="k">
+            {{v}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <md-input-container flex="45" flex-offset="5" ng-show="consultarRequerimentoCtrl.exibirCampoNomeResponsavel()">
+        <label>{{'label-nome-responsavel' | translate}}</label>
+        <input ng-model="consultarRequerimentoCtrl.filtro.nomeResponsavel"/>
+      </md-input-container>
+    </div>
+
+    <div layout="row" flex="100" class="margin-bottom-label">
+      <div flex="50">
+        <div class="label-date-picker">{{'label-data-solicitacao' | translate}}: </div>
+        <md-datepicker ng-model="consultarRequerimentoCtrl.filtro.dataSolicitacaoInicio"
+                              md-placeholder="dd/mm/aaaa"
+                              name="{{'label-data-solicitacao' | translate}}"
+                              md-custom-mask="39/19/9999"
+                              md-custom-clean-mask="false"
+                              required>
+        </md-datepicker>
+         <span class="divisor-periodo-data"> á</span>
+        <md-datepicker ng-model="consultarRequerimentoCtrl.filtro.dataSolicitacaoFinal"
+                              md-placeholder="dd/mm/aaaa"
+                              name="{{'label-data-solicitacao' | translate}}"
+                              md-custom-mask="39/19/9999"
+                              md-custom-clean-mask="false"
+                              required>
+        </md-datepicker>
+      </div>
+
+
+      <div flex="50">
+        <div class="label-date-picker">{{"label-data-analise-tecnica" | translate}}: </div>
+        <md-datepicker ng-model="consultarRequerimentoCtrl.filtro.dataEnvioAnaliseInicio"
+                              md-placeholder="dd/mm/aaaa"
+                              name="{{'label-data-solicitacao' | translate}}"
+                              md-custom-mask="39/19/9999"
+                              md-custom-clean-mask="false"
+                              required>
+        </md-datepicker>
+        <span class="divisor-periodo-data"> á</span>
+        <md-datepicker ng-model="consultarRequerimentoCtrl.filtro.dataEnvioAnaliseFinal"
+                              md-placeholder="dd/mm/aaaa"
+                              name="{{'label-data-solicitacao' | translate}}"
+                              md-custom-mask="39/19/9999"
+                              md-custom-clean-mask="false"
+                              required>
+        </md-datepicker>
+      </div>
+    </div>
+
+    <!--- Inicio dos botoes -->
+    <hr class="linha-divisoria-footer">
+    <div layout="row" layout-align="end right">
+      <div layout="row" layout-sm="column" layout-align="end" layout-wrap>
+        <md-button class="md-raised" ng-click="consultarRequerimentoCtrl.limparPesquisa()">
+          <md-tooltip md-direction="bottom">
+            {{'tooltip-limpar-campos' | translate}}
+          </md-tooltip>
+          {{'btn-limpar' | translate }}
+        </md-button>
+
+        <md-button class="md-raised" ng-click="consultarRequerimentoCtrl.filterFindAll()">
+          <md-tooltip md-direction="bottom">
+            {{'tooltip-pesquisar-analise-tecnica' | translate}}
+          </md-tooltip>
+          {{'btn-pesquisar' | translate }}
+        </md-button>
+
+      </div>
+    </div>
+    <!--- fim dos botoes -->
+
+  </div>
+</form>
+
+
+<div flex style="margin-top: 3%"  ng-show="consultarRequerimentoCtrl.requerimentos.length > 0">
+  <div layout="column">
+    <md-conent flex>
+      <md-table-container>
+        <table md-table>
+          <thead md-head>
+          <tr md-row style="color: #fff; font-size: 12pt">
+            <th md-column class="texto-centro">Nome do Serviço</th>
+            <th md-column class="texto-centro">Requerente</th>
+            <th md-column class="texto-centro">Nº do Atendimento</th>
+            <th md-column class="texto-centro">Situa&ccedil;&atilde;o</th>
+            <th md-column class="texto-centro">Data da Solicitação</th>
+            <th md-column class="texto-centro">Data de Envio p/ Análise Técnica</th>
+            <th md-column class="texto-centro">A&ccedil;&otilde;es</th>
+          </tr>
+          </thead>
+
+          <tbody md-body>
+          <tr md-row ng-repeat="requerimento in consultarRequerimentoCtrl.requerimentos">
+            <td md-cell class="texto-centro-corpo">
+              <span ng-bind="requerimento.nomeRequerimento"></span>
+            </td>
+            <td md-cell class="texto-centro-corpo">
+              <span ng-bind="requerimento.nomeRequerente"></span>
+            </td>
+            <td md-cell class="texto-centro-corpo">
+              <span ng-bind="requerimento.numeroAtendimento"></span>
+            </td>
+            <td md-cell class="texto-centro-corpo">
+              <span ng-bind="requerimento.statusAnaliseTecnica"></span>
+            </td>
+            <td md-cell class="texto-centro-corpo">
+              <span ng-bind="requerimento.dataEnvio | date: 'dd/MM/yyyy'"></span>
+            </td>
+            <td md-cell class="texto-centro-corpo">
+              <span ng-bind="requerimento.dataEnvio | date: 'dd/MM/yyyy' "></span>
+            </td>
+
+            <td md-cell class="texto-centro-corpo">
+              <span layout="row" layout-align="left center">
+                  <a style="text-decoration: none;" ng-click="consultarRequerimentoCtrl.realizarAnaliseTecnica(requerimento.id)">
+                    <ng-md-icon class="hand" icon="search" style="fill:#788489" size="22" alt="">
+                      <md-tooltip>{{'tooltip-analise-tecnica' | translate}}</md-tooltip>
+                    </ng-md-icon>
+                  </a>
+                  <ng-md-icon class="hand" icon="rate_review" style="fill:#788489" size="22"
+                              alt="{{'tooltip-add-anotacao' | translate}}"
+                              ng-click="consultarRequerimentoCtrl.abrirModalAnotacoes(requerimento)">
+                    <md-tooltip>{{'tooltip-add-anotacao' | translate}}</md-tooltip>
+                  </ng-md-icon>
+              </span>
+            </td>
+
+          </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+
+      <md-table-pagination style="margin: auto; background-color: #D8F8E1;"
+                           ng-show="consultarRequerimentoCtrl.requerimentos.length > 0"
+                           md-limit="consultarRequerimentoCtrl.filtro.limit"
+                           md-limit-options="consultarRequerimentoCtrl.filtro.limitsPage"
+                           md-page="consultarRequerimentoCtrl.filtro.page"
+                           md-total="{{consultarRequerimentoCtrl.filtro.total}}"
+                           md-on-paginate="consultarRequerimentoCtrl.filterFindAll"
+                           md-page-select>
+      </md-table-pagination>
+
+    </md-conent>
+  </div>
+</div>

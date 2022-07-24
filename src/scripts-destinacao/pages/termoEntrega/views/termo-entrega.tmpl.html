@@ -1,0 +1,163 @@
+<div ng-if="!termoEntregaCtrl.permissaoConcedida">
+    <acesso-negado></acesso-negado>
+</div>
+<exibir-elemento-por-permissao-destinacao permissoes="termoEntregaCtrl.PERMISSOES"
+                               permissao-concedida="termoEntregaCtrl.permissaoConcedida"
+                               detalhar="termoEntregaCtrl.termo.detalhar">
+    <div class="margin-header-conteudo">
+        <titulo-servico class="titulo-verde titulo-verde-header"></titulo-servico>
+        <div class="base-vermelho"></div>
+        <hr class="linha-divisoria">
+    </div>
+
+    <div layout="row" layout-xs="column" class="margin-mapa">
+      <div layout="column" flex="35" flex-xs="100">
+        <informacoes-imovel destinacao-imoveis="termoEntregaCtrl.termo.destinacaoImoveis"></informacoes-imovel>
+        <div style="margin-top: 30px;" ng-show="termoEntregaCtrl.existeFotoVideo(termoEntregaCtrl.termo.destinacaoImoveis)">
+          <span class="negrito">{{'label-album-fotos-utilizacao'| translate}}</span>
+          <div class="borda-carrossel"></div>
+          <carousel-destinacao imagens="termoEntregaCtrl.imagens"></carousel-destinacao>
+        </div>
+      </div>
+        <md-content class="md-padding" flex="65" flex-xs="100">
+            <md-tabs md-dynamic-height md-no-ink md-selected="termoEntregaCtrl.indiceTabs">
+                <md-tab id="tabUtilizacao" ng-disabled="termoEntregaCtrl.bloqueiaDadosUtilizacao">
+                    <md-tab-label>{{'label-dados-utilizacao' | translate | uppercase}}</md-tab-label>
+                    <md-tab-body>
+                        <form name="termoEntregaCtrl.formUtilizacao">
+                            <div ng-cloak flex="100" flex-xs="100" class="margin-conteudo" offset="5">
+                                <v-accordion ng-if="termoEntregaCtrl.termo.statusDestinacao.id === 2" id="accordion" multiple class="vAccordion--default cancelamento">
+                                    <v-pane>
+                                        <v-pane-header id="id_acordion_cancelamento">{{'label-dados-cancelamento-destinacao' | translate | uppercase}}</v-pane-header>
+                                        <v-pane-content>
+                                            <apresentar-dados-cancelamento cancelamento-destinacao="termoEntregaCtrl.termo">
+
+                                            </apresentar-dados-cancelamento>
+                                        </v-pane-content>
+                                    </v-pane>
+                                </v-accordion>
+                                <v-accordion  ng-if="termoEntregaCtrl.termo.statusDestinacao.id === 5" id="accordion" multiple class="vAccordion--default cancelamento">
+                                    <v-pane>
+                                        <v-pane-header id="id_acordion_encerramento">{{'label-dados-encerramento-destinacao' | translate | uppercase}}</v-pane-header>
+                                        <v-pane-content>
+                                            <apresentar-dados-encerramento encerramento="termoEntregaCtrl.termo">
+
+                                            </apresentar-dados-encerramento>
+                                        </v-pane-content>
+                                    </v-pane>
+                                </v-accordion>
+                                <dados-atendimento atendimento="termoEntregaCtrl.atendimento"
+                                                   tipo-destinacao="termoEntregaCtrl.termo.tipoDestinacaoEnum"
+                                                   bloquear="termoEntregaCtrl.termo.detalhar"
+                                                   destinacao-transito="termoEntregaCtrl.termo"
+                                                   editar="termoEntregaCtrl.termo.editar"></dados-atendimento>
+                                <div class="margin-top">
+                                <v-accordion multiple class="vAccordion--default" ng-show="termoEntregaCtrl.termo.codFundamentoLegal">
+                                    <v-pane>
+                                        <v-pane-header  id="accordion-dados-imovel-entrega" class="titulo-verde negrito">{{'label-dados-imovel-parcela' | translate | uppercase}}</v-pane-header>
+                                        <v-pane-content>
+                                            <inserir-dados-parcela-imovel-page
+                                                destinacao="termoEntregaCtrl.termo"
+                                                edicao="termoEntregaCtrl.termo.editar"
+                                                bloquear="termoEntregaCtrl.termo.detalhar"
+                                                rota-destinacao="'destinacao.termoEntrega'">
+                                            </inserir-dados-parcela-imovel-page>
+                                        </v-pane-content>
+                                    </v-pane>
+                                    <v-pane>
+                                        <v-pane-header id="accordion-dados-responsavel"  class="titulo-verde negrito">{{'label-dados-responsavel-destinatario' | translate | uppercase}}</v-pane-header>
+                                        <v-pane-content>
+                                            <dados-responsavel-destinatario
+                                                dados-responsavel="termoEntregaCtrl.termo.dadosResponsavel"
+                                                atendimento="termoEntregaCtrl.atendimento"
+                                                tipo-destinacao="termoEntregaCtrl.termo.tipoDestinacaoEnum"
+                                                destinacoes-imoveis="termoEntregaCtrl.termo.destinacaoImoveis"
+                                                tipo-modalidade="termoEntregaCtrl.atendimento.tipoModalidade"
+                                                modo-editar="termoEntregaCtrl.termo.editar"
+                                                bloquear="termoEntregaCtrl.termo.detalhar"
+                                                destinacao="termoEntregaCtrl.termo"
+                                                nome-state="termoEntregaCtrl.nomeState"
+                                                fundamento="termoEntregaCtrl.termo.codFundamentoLegal">
+                                            </dados-responsavel-destinatario>
+                                        </v-pane-content>
+                                    </v-pane>
+                                    <v-pane>
+                                        <v-pane-header id="accordion-dados-utilizacao" class="titulo-verde negrito">{{'label-dados-uso' | translate | uppercase}}</v-pane-header>
+                                        <v-pane-content>
+
+                                            <dados-utilizacao ng-if="termoEntregaCtrl.carregarDadosUtilizacao === true"
+                                                              utilizacao="termoEntregaCtrl.termo.utilizacao"
+                                                              atendimento="termoEntregaCtrl.atendimento"
+                                                              bloquear="termoEntregaCtrl.termo.detalhar"
+                                                              editar="termoEntregaCtrl.termo.editar"
+                                                              imoveis="termoEntregaCtrl.termo.imoveis"
+                                                              responsaveis="termoEntregaCtrl.termo.responsaveis"></dados-utilizacao>
+                                        </v-pane-content>
+                                    </v-pane>
+                                    <v-pane>
+                                        <v-pane-header id="accordion-dados-instrumento" class="titulo-verde negrito">{{'label-dados-instrumento-ato' | translate | uppercase}}</v-pane-header>
+                                            <v-pane-content>
+
+                                              <instrumento-ato ng-if="termoEntregaCtrl.carregarDadosUtilizacao === true"
+                                                               destinacao-transito="termoEntregaCtrl.termo"
+                                                               bloquear="termoEntregaCtrl.termo.detalhar"
+                                                               rota-destinacao="'destinacao.termoEntrega'">
+                                              </instrumento-ato>
+
+                                            </v-pane-content>
+                                    </v-pane>
+
+                                </v-accordion>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="minuta margem-elementos-pagina" ng-if="termoEntregaCtrl.exibirMinuta">
+                          <b>{{'label-minuta' | translate}}</b>
+                          <p style="margin-left: 2%;">Gerada em: {{termoEntregaCtrl.dataMinuta}}</p>
+                          <p style="margin-left: 2%;">Responsavel: {{termoEntregaCtrl.responsavelMinuta}}</p>
+                          <p>Arquivo: <label class="hand link">[nome do arquivo].pdf</label></p>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab id="tabContrato" ng-disabled="!termoEntregaCtrl.bloqueiaDadosUtilizacao">
+                    <md-tab-label>{{'label-dados-contrato-termo' | translate | uppercase}}</md-tab-label>
+                    <md-tab-body>
+                        <form name="termoEntregaCtrl.formContrato">
+                            <div class="margin-top">
+                            <contrato bloquear="termoEntregaCtrl.termo.detalhar"
+                                      dados-contrato="termoEntregaCtrl.termo.contrato"
+                                      tipo-destinacao="termoEntregaCtrl.termo.tipoDestinacaoEnum"
+                                      status-destinacao="termoEntregaCtrl.termo.statusDestinacao"></contrato>
+                            </div>
+                            <div class="margin-conteudo">
+                            <v-accordion id="accordion" multiple class="vAccordion--default">
+                                <v-pane>
+                                <v-pane-header id="accordion-documento-entrega" class="titulo-verde negrito">{{'label-documentos' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                    <incluir-documento bloquear="termoEntregaCtrl.termo.detalhar"
+                                                       destinacao="termoEntregaCtrl.termo"
+                                                       rota-retorno="'destinacao.termoEntrega'" >
+
+                                    </incluir-documento>
+                                </v-pane-content>
+                                </v-pane>
+                            </v-accordion>
+                            </div>
+                        </form>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
+        </md-content>
+    </div>
+    <botoes-rodape bloquear="termoEntregaCtrl.termo.detalhar"
+                   salvar-rascunho="termoEntregaCtrl.salvarRascunho()"
+                   gravar="termoEntregaCtrl.gravar()"
+                   avancar="termoEntregaCtrl.avancar()"
+                   fechar="termoEntregaCtrl.fechar()"
+                   voltar="termoEntregaCtrl.voltar()"
+                   botao-editar="termoEntregaCtrl.botaoEditar()"
+                   cancelar="termoEntregaCtrl.cancelar()"
+                   gerar-minuta="termoEntregaCtrl.bloqueiaDadosUtilizacao"
+                   cancelamento-encerramento="termoEntregaCtrl.termo.cancelamentoEncerramento">
+    </botoes-rodape>
+</exibir-elemento-por-permissao-destinacao>

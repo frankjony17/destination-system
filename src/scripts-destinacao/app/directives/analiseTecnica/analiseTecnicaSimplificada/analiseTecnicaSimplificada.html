@@ -1,0 +1,208 @@
+<fieldset>
+  <div layout="row" flex="100" layout-align="center center">
+    <h2>{{'triagem' | translate | uppercase}}</h2>
+  </div>
+
+  <div layout="column"
+       style="margin-bottom: 10px;"
+       ng-if="historicos.length > 0">
+
+    <v-accordion id="accordion" class="vAccordion--default" flex="100">
+      <v-pane expanded id="historico">
+        <v-pane-header class="texto-verde">
+          <h3>{{'label-historico' | translate | uppercase}}</h3>
+        </v-pane-header>
+        <v-pane-content>
+
+          <div layout="row" layout-xs="column">
+            <div layout="column" flex="100">
+              <md-content flex="100">
+                <md-table-container>
+
+                  <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                      <th md-column class="texto-centro coluna-um">
+                        {{'label-situacao' | translate}}
+                      </th>
+                      <th md-column class="texto-centro coluna-dois">
+                        {{'label-data' | translate}}
+                      </th>
+                      <th md-column class="texto-centro coluna-tres">
+                        {{'label-responsavel' | translate}}
+                      </th>
+                      <th md-column class="texto-centro coluna-quatro">
+                        {{'label-justificativa-anotacao' | translate}}
+                      </th>
+                    </tr>
+                    </thead>
+
+                    <tbody md-body>
+                    <tr md-row ng-repeat="historico in historicos">
+                      <td md-cell class="texto-centro-corpo coluna-um">
+                        {{historico.situacaoAtual}}
+                      </td>
+                      <td md-cell class="texto-centro-corpo coluna-dois">
+                        {{historico.dataAlteracao | date: 'dd/MM/yyyy'}}
+                      </td>
+                      <td md-cell class="texto-centro-corpo coluna-tres">
+                        {{historico.nomeResponsavel}}
+                      </td>
+                      <td md-cell class="texto-centro-corpo coluna-quatro">
+                        <div read-more limit="240" texto="historico.justificativa">
+                        </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </md-table-container>
+                <md-table-pagination style="margin: auto; background-color: #D8F8E1;"
+                                     ng-show="historicos.length > 0" md-limit="tamanhoLimite"
+                                     md-limit-options="[5, 10, 15]"
+                                     md-page="registroInicial" md-total="{{totalItems}}"
+                                     md-on-paginate="buscarHistorico"
+                                     md-page-select>
+                </md-table-pagination>
+              </md-content>
+            </div>
+          </div>
+
+        </v-pane-content>
+      </v-pane>
+    </v-accordion>
+  </div>
+  <p layout="column" layout-xs="column">
+  <h3>{{'label-status-requerimento' | translate | uppercase}}</h3>
+  <fieldset>
+    <legend><h3>{{'label-status' | translate}}</h3></legend>
+    <p ng-bind="requerimento.statusRequerimentoDescricao"></p>
+  </fieldset>
+
+  <h3>{{'label-analise-previa-check-list' | translate | uppercase}}</h3>
+  <fieldset>
+    <legend><h3>{{'label-atesto-devidos-fins' | translate}}</h3></legend>
+    <md-list>
+      <md-list-item ng-repeat="analiseTec in analisesTecnicas.analiseChecklist"
+                    class="noright">
+        <p ng-bind-html="analiseTec.analiseTecnica.item"></p>
+
+        <md-radio-group class="md-primary"
+                        ng-model="analiseTec.resposta"
+                        flex-offset="5"
+                        flex-offset-xs="5"
+                        layout="row"
+                        name="{{'label-analise-tecnica' | translate}}: {{analiseTec.analiseTecnica.text}}">
+          <md-radio-button ng-value="true"
+                           ng-disabled="true">
+            {{'btn-sim' | translate}}
+          </md-radio-button>
+          <md-radio-button ng-value="false"
+                           ng-disabled="true">
+            {{'btn-nao' | translate}}
+          </md-radio-button>
+        </md-radio-group>
+        <md-icon class="hand" flex-offset-xs="5" flex-offset="5"
+                 ng-click="abrirModalJustificativa(analiseTec)"
+                 ng-if="!verificarRespostaButton(analiseTec)">
+          edit
+        </md-icon>
+      </md-list-item>
+    </md-list>
+  </fieldset>
+
+  <h3>{{'label-documento-adicionados-requerimento' | translate}}</h3>
+  <fieldset>
+    <div>
+      <legend>
+        <h3>{{'label-obrigatorios' | translate | uppercase}}</h3>
+      </legend>
+      <md-list>
+        <md-list-item ng-repeat="doc in analisesTecnicas.analiseDocumentoChecklist"
+                      class="noright">
+          <p>{{doc.documento.nome}}</p>
+
+          <md-icon class="hand" flex-offset-xs="5" flex-offset="5"
+                   ng-click="downloadDocumento(doc)">
+            description
+          </md-icon>
+          <md-radio-group class="md-primary" ng-model="doc.resposta" flex-offset-xs="5"
+                          flex-offset="5"
+                          layout="row"
+                          layout-align="center center"
+                          name="{{'Documento: ' + doc.documento.nome}}">
+            <md-radio-button ng-value="true"
+                             disabled>
+              {{'btn-sim' | translate}}
+            </md-radio-button>
+            <md-radio-button ng-value="false"
+                             disabled>
+              {{'btn-nao' | translate}}
+            </md-radio-button>
+          </md-radio-group>
+          <md-icon class="hand" flex-offset-xs="5" flex-offset="5"
+                   ng-click="abrirModalJustificativa(doc)"
+                   ng-if="!verificarRespostaButton(doc)">
+            edit
+          </md-icon>
+        </md-list-item>
+      </md-list>
+
+      <legend ng-if="analisesTecnicas.analiseDocumentoChecklist.documento.tipo == 'COMPLEMENTAR'">
+        <h3>{{'label-complementares' | translate |uppercase}}</h3>
+      </legend>
+
+      <md-list>
+        <md-list-item ng-repeat="docComp in analisesTecnicas.analiseDocumentoChecklist"
+                      class="noright"
+                      ng-if="docComp.documento.tipo == 'COMPLEMENTAR'">
+          <p>{{docComp.documento.nome}}</p>
+          <md-icon class="hand" flex-offset-xs="5" flex-offset="5"
+                   ng-click="downloadDocumento( docComp)">
+            description
+          </md-icon>
+          <md-radio-group class="md-primary" ng-model="docComp.resposta"
+                          flex-offset-xs="5"
+                          flex-offset="5"
+                          layout="row"
+                          layout-align="center center"
+                          name="{{'Documento: ' + docComp.documento.nome}}">
+            <md-radio-button ng-value="true"
+                             disabled>
+              {{'btn-sim' | translate}}
+            </md-radio-button>
+            <md-radio-button ng-value="false"
+                             disabled>
+              {{'btn-nao' | translate}}
+            </md-radio-button>
+          </md-radio-group>
+          <md-icon class="hand" flex-offset-xs="5" flex-offset="5"
+                   ng-click="abrirModalJustificativa(docComp)"
+                   ng-if="!verificarRespostaButton(docComp)">
+            edit
+          </md-icon>
+        </md-list-item>
+      </md-list>
+    </div>
+  </fieldset>
+
+  <div layout="row">
+    <md-input-container class="margin-top" flex>
+      <label>{{'label-anotacoes-complementares' | translate}}</label>
+      <textarea rows="5"
+                disabled
+                ng-model="analisesTecnicas.justificativa"
+                maxlength="500"
+                md-maxlength="500"
+                name="{{'label-name-anotacoes-complementares' | translate}}">
+        </textarea>
+    </md-input-container>
+  </div>
+
+  <div layout="row">
+    <documentos-concluir-atendimento flex="100"
+                                     doc-concluir-atendimento="docConcluirAtendimento">
+    </documentos-concluir-atendimento>
+  </div>
+
+  </div>
+</fieldset>

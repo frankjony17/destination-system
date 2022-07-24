@@ -1,0 +1,118 @@
+<div>
+  <md-input-container class="md-block" flex="100">
+    <label>{{'label-tipo-modalidade' | translate}}:</label>
+    <md-select required ng-model="licitacao.tipoLicitacao"
+               ng-model-options="{trackBy: '$value.id'}"
+               name="{{'label-tipo-modalidade' | translate}}"
+               ng-disabled="bloquear">
+      <md-option ng-repeat="item in tiposLicitacao" ng-value="item">
+        {{item.descricao}}
+      </md-option>
+    </md-select>
+  </md-input-container>
+
+  <md-input-container class="md-block margin-top" flex="100">
+    <label>{{'label-numero-processo' | translate}}:</label>
+    <input ng-model="licitacao.numeroProcesso"
+           ng-blur="buscarPorNumeroProcesso()"
+           required name="{{'label-numero-processo' | translate}}"
+           ng-disabled="bloquear">
+  </md-input-container>
+  <a class="hand link" ng-show="mostrarLinkSei" ng-href="{{montarLinkSei()}}" target="_blank">{{'label-ver-sei' | translate}}</a>
+
+  <fieldset style="border-radius: 5px;" class="margem-elementos-pagina margin-top">
+    <span class="titulo-verde negrito">{{'label-documentos' | translate}}</span>
+    <hr class="linha-divisoria">
+    <div layout="column" class="margin-bottom-label margem-elementos-pagina " style="margin-top: 30px">
+      <div layout="row" flex="100" ng-show="!bloquear">
+
+        <div layout="column" flex="50" class="margin-top margin-lateral-label">
+          <md-input-container>
+            <label>{{'label-descricao' | translate}}:</label>
+            <input ng-model="arquivo.descricao"
+                   maxlength="100"
+                   ng-required="licitacao.arquivos.length === 0" name="{{'label-descricao' | translate}}">
+          </md-input-container>
+        </div>
+
+
+        <div layout="column" flex="50" class="md-block">
+          <label class="label-data-picker">{{"label-data-documento" | translate}}:</label>
+          <md-datepicker ng-model="arquivo.data"
+                         md-placeholder="dd/mm/aaaa"
+                         md-custom-mask="39/19/9999"
+                         md-custom-clean-mask="false"
+                         name="{{'label-data-documento' | translate}}"
+                         class="special"
+                         ng-required="licitacao.arquivos.length === 0">
+          </md-datepicker>
+        </div>
+      </div>
+      <div class="margin-top" ng-show="!bloquear">
+        <div layout="row" flex="100">
+          <div layout="row" flex="70">
+            <div layout="column">
+              <md-button class="md-raised" ngf-select="addArquivo($files)"
+                         ngf-multiple="false"
+                         required
+                         name="{{'label-documento' | translate}}">{{"btn-escolher-arquivo" | translate}}
+              </md-button>
+            </div>
+            <div layout="column" flex="40" class="margin-left espacamento-arquivos-adicionados">
+              <md-container>
+                <label ng-show="arquivo.documento">{{arquivo.documento.name}}</label>
+              </md-container>
+            </div>
+          </div>
+        </div>
+        <div layout="row" layout-align="end center" flex="100">
+          <md-button id="btn-adicionar-arquivo-documento" class="md-primary md-raised md-button" ng-click="incluirArquivo()">{{"btn-adicionar" | translate}}
+          </md-button>
+        </div>
+      </div>
+      <div ng-show="licitacao.arquivos.length >0" class="margin-top">
+        <md-table-container>
+          <table md-table style="border: 1px solid #cccccc;">
+            <thead md-head>
+            <tr md-row class="upload-head">
+              <th md-column>{{'label-descricao' | translate}}</th>
+              <th md-column>{{'label-data' | translate}}</th>
+              <th md-column>{{'label-documento' | translate}}</th>
+              <th md-column ng-show="!bloquear">{{'label-acao' | translate}}</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row ng-repeat="arq in licitacao.arquivos
+                      | limitTo: tabela.limit:
+                      (tabela.page - 1) * tabela.limit">
+              <td md-cell>
+                <span>{{arq.descricao}}</span>
+              </td>
+              <td md-cell>
+                <span>{{arq.data | date:'dd/MM/yyyy'}}</span>
+              </td>
+              <td md-cell>
+                <label class="hand link" ng-click="gerarPreview(arq.documento)">{{arq.documento.nomeReal}}</label>
+              </td>
+              <td md-cell ng-show="!bloquear">
+                <ng-md-icon icon="delete"
+                            ng-click="removerArquivo(arq)">
+                  <md-tooltip>{{'btn-excluir' | translate}}</md-tooltip>
+                </ng-md-icon>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </md-table-container>
+        <md-table-pagination md-limit="tabela.limit"
+                             md-limit-options="tabela.limitsPage"
+                             md-page="tabela.page"
+                             md-total="{{arquivos.length}}"
+                             md-on-paginate="true"
+                             md-page-select
+                             style="border: 1px solid #cccccc; margin:0 5px 0 5px;">
+        </md-table-pagination>
+      </div>
+    </div>
+  </fieldset>
+</div>

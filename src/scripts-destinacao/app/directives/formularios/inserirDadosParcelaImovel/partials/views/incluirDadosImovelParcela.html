@@ -1,0 +1,450 @@
+<md-dialog flex='{{incluirDadosImovelParcelaCtrl.tamanhoModal}}' flex-xs="100">
+  <div ng-show="incluirDadosImovelParcelaCtrl.exibirModalArquivo">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{'label-upload-arquivos' | translate}}</h2>
+        <span flex></span>
+        <ng-md-icon icon="close" class="hand cor-botao-remover-modal" ng-click="incluirDadosImovelParcelaCtrl.mostrarModalParcela()"></ng-md-icon>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <form name="incluirDadosImovelParcelaCtrl.formUploadArquivos">
+        <div layout="column" class="margem-interna-modal">
+          <md-input-container>
+            <label>{{'label-descricao' | translate}}:</label>
+            <textarea md-maxlength="2000"
+                      required
+                      name="{{'label-descricao' | translate}}"
+                      ng-model="incluirDadosImovelParcelaCtrl.arquivoFotoVideo.descricaoArquivo">
+                      </textarea>
+          </md-input-container>
+          <div>
+            <label>{{"label-data-documento" | translate}}:</label>
+            <md-datepicker ng-model="incluirDadosImovelParcelaCtrl.arquivoFotoVideo.dataArquivo"
+                                  md-placeholder="dd/mm/aaaa"
+                                  md-custom-mask="39/19/9999"
+                                  md-custom-clean-mask="false"
+                                  name="{{'label-data-documento' | translate}}"
+                                  class="special"
+                                  required>
+            </md-datepicker>
+          </div>
+          <div class="margin-top">
+            <label>{{'label-documento' | translate}}:</label>
+            <div layout="row" flex="100">
+              <div layout="row" flex="70">
+                <div layout="column">
+                  <md-button class="md-raised" ngf-select="incluirDadosImovelParcelaCtrl.addArquivoFotoVideo($files)"
+                             ngf-multiple="false"
+                             required
+                             name="{{'label-documento' | translate}}">{{"btn-escolher-arquivo" | translate}}
+                  </md-button>
+                </div>
+                <div layout="column" flex="40" class="margin-left espacamento-arquivos-adicionados">
+                  <md-container>
+                    <label ng-show="!incluirDadosImovelParcelaCtrl.arquivoFotoVideo.arquivo">Nenhum arquivo selecionado</label>
+                    <label ng-show="incluirDadosImovelParcelaCtrl.arquivoFotoVideo.arquivo">{{incluirDadosImovelParcelaCtrl.arquivoFotoVideo.arquivo.name}}</label>
+                  </md-container>
+                </div>
+              </div>
+              <div layout="row" layout-align="end center" flex="30">
+                <md-button class="md-primary md-raised" ng-click="incluirDadosImovelParcelaCtrl.adicionarArquivoLista()">{{"btn-incluir" | translate}}
+                </md-button>
+              </div>
+            </div>
+          </div>
+          <div ng-show="incluirDadosImovelParcelaCtrl.destinacaoImovel.fotoVideo.length >0" class="margin-top">
+            <md-table-container>
+              <table md-table>
+                <thead md-head>
+                <tr md-row>
+                  <th md-column>{{'label-nome' | translate}}</th>
+                  <th md-column>{{'label-acao' | translate}}</th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="fotosVideos in incluirDadosImovelParcelaCtrl.destinacaoImovel.fotoVideo
+                    | limitTo: incluirDadosImovelParcelaCtrl.tabelaArquivos.limit:
+                    (incluirDadosImovelParcelaCtrl.tabelaArquivos.page - 1) * incluirDadosImovelParcelaCtrl.tabelaArquivos.limit">
+                  <td md-cell>
+                    <span>{{fotosVideos.nome ? fotosVideos.nome : fotosVideos.name}}</span>
+                  </td>
+                  <td md-cell>
+                    <ng-md-icon icon="delete"
+                                ng-click="incluirDadosImovelParcelaCtrl.removerArquivo($index, incluirDadosImovelParcelaCtrl.destinacaoImovel.fotoVideo)">
+                      <md-tooltip>{{'btn-excluir' | translate}}</md-tooltip>
+                    </ng-md-icon>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </md-table-container>
+            <md-table-pagination md-limit="incluirDadosImovelParcelaCtrl.tabelaArquivos.limit"
+                                 md-limit-options="incluirDadosImovelParcelaCtrl.tabelaArquivos.limitsPage"
+                                 md-page="incluirDadosImovelParcelaCtrl.tabelaArquivos.page"
+                                 md-total="{{incluirDadosImovelParcelaCtrl.destinacaoImovel.fotoVideo.length}}"
+                                 md-on-paginate="true"
+                                 md-page-select>
+            </md-table-pagination>
+          </div>
+          <div layout="row" layout-align="end center" flex="30" ng-show="incluirDadosImovelParcelaCtrl.destinacaoImovel.fotoVideo.length > 0">
+            <md-button class="md-primary md-raised" ng-click="incluirDadosImovelParcelaCtrl.mostrarModalParcela()">{{"btn-concluir" | translate}}
+            </md-button>
+          </div>
+        </div>
+      </form>
+    </md-dialog-content>
+  </div>
+  <div ng-show="incluirDadosImovelParcelaCtrl.exibirModalParcela">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{'label-incluir-dados-imovel-parcela' | translate}}</h2>
+            <span flex></span>
+            <ng-md-icon icon="close" class="hand cor-botao-remover-modal" ng-click="incluirDadosImovelParcelaCtrl.fechar()"></ng-md-icon>
+        </div>
+    </md-toolbar>
+    <div class="margem-interna-modal">
+      <md-dialog-content>
+        <form name="incluirDadosImovelParcelaCtrl.formIncluirDadosImovel">
+          <div layout="row" layout-xs="column" ng-show="incluirDadosImovelParcelaCtrl.permiteEditar !== true">
+            <md-input-container class="margin-lateral-label retira-margem-top" flex="40" flex-xs="100">
+              <label>{{'label-codigo-utilizacao-area-disponivel' | translate}}:</label>
+              <input ng-disabled="incluirDadosImovelParcelaCtrl.bloquear" mask="99999999/9999P9999" ng-model="incluirDadosImovelParcelaCtrl.dadosUtilizacao">
+            </md-input-container>
+            <div layout-xs="column" layout-align-xs="end end">
+              <md-button ng-show="!incluirDadosImovelParcelaCtrl.bloquear" class="md-raised margin-lateral-label" ng-click="incluirDadosImovelParcelaCtrl.buscar()">
+                {{'btn-selecionar' | translate}}
+              </md-button>
+            </div>
+            <div>
+              <p>
+                <span ng-show="!incluirDadosImovelParcelaCtrl.bloquear" class="hand link" ng-click="incluirDadosImovelParcelaCtrl.consultarRip();">
+                    {{'label-nao-sei-codigo-utilizacao' | translate}}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <div ng-show="incluirDadosImovelParcelaCtrl.exibirDadosImovel">
+            <div layout="row" layout-xs="column">
+                    <span class="hand link" ng-click="incluirDadosImovelParcelaCtrl.abrirDetalharParcela()">
+                        {{'label-ver-dado-imovel' | translate}}
+                    </span>
+            </div>
+            <div layout="row" layout-xs="column" class="margin-top"
+                 ng-show="incluirDadosImovelParcelaCtrl.destinacaoImovel.imovel.utilizacoes.length > 0">
+                    <span class="hand link" ng-click="incluirDadosImovelParcelaCtrl.exibirOutrasUtilizacoes()">
+                        {{'label-ver-outras-utilizacoes' | translate}}
+                    </span>
+            </div>
+
+            <div class="margem-elementos-modal"
+                 ng-show="incluirDadosImovelParcelaCtrl.isExibirOutrasUtilizacoes"
+                 style="padding: 24px;">
+              <md-table-container>
+                <table md-table>
+                  <thead md-head>
+                  <tr md-row>
+                    <th md-column>{{'label-codigo-utilizacao' | translate}}</th>
+                    <th md-column>{{'label-instrumento' | translate}}</th>
+                    <th md-column>{{'label-responsavel-destinatario' | translate }}</th>
+                  </tr>
+                  </thead>
+                  <tbody md-body>
+                  <tr md-row ng-repeat="utilizacao in incluirDadosImovelParcelaCtrl.destinacaoImovel.imovel.utilizacoes
+                      | limitTo: incluirDadosImovelParcelaCtrl.tabelaUtilizacoes.limit: (incluirDadosImovelParcelaCtrl.tabelaUtilizacoes.page - 1) * incluirDadosImovelParcelaCtrl.tabelaUtilizacoes.limit">
+                    <td md-cell>
+                      <span>{{utilizacao.codigoUtilizacao}}</span>
+                    </td>
+                    <td md-cell>
+                      <span>{{utilizacao.instrumento}}</span>
+                    </td>
+                    <td md-cell>
+                      <span>{{utilizacao.responsavelDestinatario}}</span>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </md-table-container>
+              <md-table-pagination md-limit="incluirDadosImovelParcelaCtrl.tabelaUtilizacoes.limit"
+                                   md-limit-options="incluirDadosImovelParcelaCtrl.tabelaUtilizacoes.limitsPage"
+                                   md-page="incluirDadosImovelParcelaCtrl.tabelaUtilizacoes.page"
+                                   md-total="{{incluirDadosImovelParcelaCtrl.destinacaoImovel.imovel.utilizacoes.length}}"
+                                   md-on-paginate="true"
+                                   md-page-select>
+              </md-table-pagination>
+            </div>
+
+            <div layout="row" layout-xs="column" class="margin-top">
+                  <span class="negrito">
+                      {{'label-dados-parcela' | translate}}: {{incluirDadosImovelParcelaCtrl.formatarCodigoUtilizacao(incluirDadosImovelParcelaCtrl.destinacaoImovel)}}
+                  </span>
+            </div>
+            <div layout="row" layout-xs="column" class="margin-top margem-elementos-modal">
+              <span>{{'label-area-parcela-terreno' | translate}}:&nbsp;</span>
+              <span class="negrito">{{incluirDadosImovelParcelaCtrl.destinacaoImovel.imovel.parcela.areaTerreno | number: 2}} m²</span>
+            </div>
+
+            <label ng-show="incluirDadosImovelParcelaCtrl.destinacaoImovel.imovel.memorialDescritivo">{{'label-memorial-descritivo-parcela-terreno' | translate}}:</label>
+            <div ng-show="incluirDadosImovelParcelaCtrl.destinacaoImovel.imovel.memorialDescritivo"
+                 layout="column"
+                 layout-xs="column"
+                 class="margem-elementos-modal"
+                 style="border-style: solid; border-width: 1px; padding-right: 24px; padding-left: 24px;">
+              <read-more limit="240" texto="incluirDadosImovelParcelaCtrl.destinacaoImovel.imovel.memorialDescritivo"></read-more>
+            </div>t
+          </div>
+
+          <div layout="row" layout-xs="column" flex="100" class="alerta margem-elementos-modal" ng-show="incluirDadosImovelParcelaCtrl.exibirAlertaAreaRemanescente">
+            <div layout="column">
+              <ng-md-icon icon="info_outline" class="my-icon alerta-negrito"></ng-md-icon>
+            </div>
+            <div layout="column" class="margem-esquerda">
+              <div layout="row" layout-xs="column">
+                <label class="alerta-negrito">{{'label-atencao' | translate}}</label>
+              </div>
+              <div layout="row" layout-xs="column">
+                <label>{{'msg-area-remanescente' | translate}}</label>
+              </div>
+            </div>
+
+          </div>
+
+          <div  class="margin-top margem-elementos-modal" ng-show="incluirDadosImovelParcelaCtrl.exibirDadosImovel && incluirDadosImovelParcelaCtrl.destinacaoImovel.imovel.benfeitorias.length > 0">
+            <md-table-container>
+              <table md-table>
+                <thead md-head>
+                <tr md-row>
+                  <th md-column>{{'label-id' | translate | uppercase}}</th>
+                  <th md-column>{{'label-tipo' | translate}}</th>
+                  <th md-column>{{'label-area-construida-total' | translate }}</th>
+                  <th md-column>{{'label-area-construida-disponivel' | translate}}</th>
+                  <th md-column>{{'label-area-construida-utilizar'| translate}}l</th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="benfeitoria in incluirDadosImovelParcelaCtrl.destinacaoImovel.imovel.benfeitorias">
+                  <td md-cell>
+                    <span ng-bind="benfeitoria.codigo"></span>
+                  </td>
+                  <td md-cell>
+                    <span ng-bind="benfeitoria.especializacao"></span>
+                  </td>
+                  <td md-cell style="text-align: center !important">
+                    <span ng-bind="benfeitoria.areaConstruida | number: 2"></span>
+                  </td>
+                  <td md-cell style="text-align: center !important">
+                    <span ng-bind="benfeitoria.areaDisponivel | number: 2"></span>
+                  </td>
+                  <td md-cell style="text-align: center !important">
+                    <md-input-container class="margin-top" ng-show="benfeitoria.areaDisponivel > 0">
+                      <input ng-disabled="incluirDadosImovelParcelaCtrl.bloquear"
+                             ng-model="benfeitoria.areaUtilizar"
+                             ui-number-mask
+                             required
+                             style="text-align: center !important;"
+                             ng-blur="incluirDadosImovelParcelaCtrl.calcularPorcentagemPermitidaEditar(benfeitoria);
+                                      incluirDadosImovelParcelaCtrl.verificarAreaUtilizarMaiorAreaDisponivel(benfeitoria);
+                                      incluirDadosImovelParcelaCtrl.somarAreaDisponivel();
+                                      incluirDadosImovelParcelaCtrl.verificarPodeExibirUploadFotosDescricaoArea();
+                                      incluirDadosImovelParcelaCtrl.calcularFracaoIdeal();
+                                      incluirDadosImovelParcelaCtrl.verificaAreaRemanescente(benfeitoria.areaDisponivel, benfeitoria.areaUtilizar);"/>
+                    </md-input-container>
+                    <span ng-show="benfeitoria.areaDisponivel === 0">0</span>
+                  </td>
+                </tr>
+                <tr md-row>
+                  <td md-cell colspan="2" style="text-align: center !important">
+                    <label class="negrito">{{'label-total' | translate}}</label>
+                  </td>
+                  <td md-cell style="text-align: center !important">
+                    <label>{{incluirDadosImovelParcelaCtrl.totalAreaConstruida | number: 2}}</label>
+                  </td>
+                  <td md-cell style="text-align: center !important">
+                    <label>{{incluirDadosImovelParcelaCtrl.totalAreaDisponivel | number: 2}}</label>
+                  </td>
+                  <td md-cell style="text-align: center !important">
+                    <label>{{incluirDadosImovelParcelaCtrl.totalAreaUtilizar | number: 2}}------</label>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </md-table-container>
+          </div>
+          <div ng-show="incluirDadosImovelParcelaCtrl.exibirDadosImovel">
+            <div layout="row" layout-xs="column" ng-show="incluirDadosImovelParcelaCtrl.destinacaoImovel.imovel.benfeitorias.length > 0">
+              <md-input-container flex="30">
+                <label>{{'label-fracao-ideal' | translate}}:</label>
+                <input ng-model="incluirDadosImovelParcelaCtrl.destinacaoImovel.fracaoIdeal"
+                       ng-required="incluirDadosImovelParcelaCtrl.destinacaoImovel.imovel.benfeitorias.length > 0"
+                       ng-disabled="!incluirDadosImovelParcelaCtrl.destinacaoImovel.fracaoIdeal || incluirDadosImovelParcelaCtrl.bloquear"
+                       ui-number-mask
+                       ng-blur="incluirDadosImovelParcelaCtrl.verificarArredondamento()"
+                       name="{{'label-fracao-ideal' | translate}}">
+              </md-input-container>
+            </div>
+            <div layout="row" layout-xs="column" ng-if="incluirDadosImovelParcelaCtrl.exibirUploadFotosDescricaoArea &&
+                                                    incluirDadosImovelParcelaCtrl.totalAreaUtilizar !== 0">
+              <md-input-container flex="100" flex-xs="100" class="margem-elementos-modal">
+                <label>
+                  {{'label-memorial-desc-area-terreno-destinado' | translate}}:
+                </label>
+                <textarea required
+                          name="{{'label-memorial-desc-area-terreno-destinado' | translate}}"
+                          ng-disabled="incluirDadosImovelParcelaCtrl.desabilitarMemorialDescritivo || incluirDadosImovelParcelaCtrl.bloquear"
+                          ng-model="incluirDadosImovelParcelaCtrl.destinacaoImovel.memorialDescAreaConstruida">
+                            <md-tooltip md-direction="center">Refresh</md-tooltip>
+                        </textarea>
+              </md-input-container>
+            </div>
+            <div layout="row" layout-xs="100">
+              <div ng-if="!incluirDadosImovelParcelaCtrl.bloquear" layout="column" flex="50">
+                <md-container flex="55" flex-xs="100">
+                  <label>{{'label-planta-memorial-area-destinada' | translate}}:</label>
+                  <div layout="row" flex="80">
+                    <div style="margin-top: 6px; margin-bottom: 30px;">
+                      <md-button class="md-primary md-raised"
+                                 ngf-multiple="false"
+                                 ngf-select="incluirDadosImovelParcelaCtrl.addArquivo($files)">{{"btn-escolher-arquivo" | translate}}
+                      </md-button>
+                    </div>
+                    <div layout="column" class="margin-left espacamento-arquivos-adicionados">
+                      <md-container>
+                        <div ng-repeat="documento in incluirDadosImovelParcelaCtrl.listaArquivosPreview">
+                          <div layout="row" layout-column="center">
+                            <a ng-click="incluirDadosImovelParcelaCtrl.gerarPreview(documento)">
+                              <label class="hand link">{{documento.name || documento.nome}}</label>
+                            </a>
+                            <ng-md-icon icon="close"
+                                        class="hand cor-remover"
+                                        size="18"
+                                        ng-click="incluirDadosImovelParcelaCtrl.removerArquivo($index, incluirDadosImovelParcelaCtrl.destinacaoImovel.documentos)"></ng-md-icon>
+                          </div>
+                        </div>
+                      </md-container>
+                    </div>
+                  </div>
+                </md-container>
+              </div>
+
+
+              <div layout="column" flex="50"
+                   ng-show="!incluirDadosImovelParcelaCtrl.bloquear">
+                <md-container flex="55" flex-xs="100">
+                  <label>{{'label-foto-vido-area-construida-destinada' | translate}}:</label>
+                  <div layout="row" flex="80">
+                    <div style="margin-top: 6px; margin-bottom: 30px;">
+                      <md-button class="md-primary md-raised"
+                                 ng-click="incluirDadosImovelParcelaCtrl.mostrarModalArquivos()">
+                        {{"btn-escolher-arquivo" | translate}}
+                      </md-button>
+                    </div>
+                    <div layout="column" class="margin-left espacamento-arquivos-adicionados">
+                      <md-container>
+                        <div ng-repeat="arquivo in incluirDadosImovelParcelaCtrl.destinacaoImovel.fotoVideo">
+                          <div layout="row" layout-column="center">
+                            <a ng-href="{{incluirDadosImovelParcelaCtrl.baixarArquivo(arquivo)}}" target="_blank">
+                              <label class="hand link">{{arquivo.nome}}</label>
+                            </a>
+                            <ng-md-icon icon="close"
+                                        class="hand cor-remover"
+                                        size="18"
+                                        ng-click="incluirDadosImovelParcelaCtrl.removerArquivo($index, incluirDadosImovelParcelaCtrl.destinacaoImovel.fotoVideo)"></ng-md-icon>
+                          </div>
+                        </div>
+                      </md-container>
+                    </div>
+                  </div>
+                </md-container>
+              </div>
+            </div>
+
+            <div layout="row" layout-align="end center" ng-show="incluirDadosImovelParcelaCtrl.destinacaoImovel">
+              <md-button class="md-raised margem-botoes-modal" ng-click="incluirDadosImovelParcelaCtrl.cancelar()">
+                {{'btn-fechar'| translate | uppercase}}
+              </md-button>
+              <md-button  ng-if="!incluirDadosImovelParcelaCtrl.bloquear" class="md-raised margem-botoes-modal" ng-click="incluirDadosImovelParcelaCtrl.incluir()">
+                {{ incluirDadosImovelParcelaCtrl.permiteEditar !== true ? 'btn-incluir' : 'btn-salvar'| translate | uppercase}}
+              </md-button>
+            </div>
+          </div>
+
+          <div ng-show="incluirDadosImovelParcelaCtrl.destinacaoImoveis.length > 0 && incluirDadosImovelParcelaCtrl.esconderTabela !== true">
+            <md-table-container>
+              <table md-table style="border: 1px solid #cccccc;">
+                <thead md-head>
+                <tr md-row class="upload-head">
+                  <th md-column flex="15">{{'label-RIP' | translate}}</th>
+                  <th md-column flex="15">{{'label-codigo-utilizacao' | translate}}</th>
+                  <th md-column flex="10">{{'label-utilizacao' | translate}}</th>
+                  <th md-column flex="15">{{'label-terreno-utilizada' | translate }}</th>
+                  <th md-column flex="15">{{'label-area-construida-utilizar' | translate}} (m²)</th>
+                  <th md-column flex="15">{{'label-acao'| translate}}</th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="destinacaoImovel in incluirDadosImovelParcelaCtrl.destinacaoImoveis | limitTo: incluirDadosImovelParcelaCtrl.tabela.limit: (incluirDadosImovelParcelaCtrl.tabela.page - 1) * incluirDadosImovelParcelaCtrl.tabela.limit">
+                  <td md-cell>
+                    {{destinacaoImovel.imovel.rip}}
+                  </td>
+                  <td md-cell>
+                    {{destinacaoImovel.id ? incluirDadosImovelParcelaCtrl.formatarCodigoUtilizacao(destinacaoImovel) : '-'}}
+                  </td>
+                  <td md-cell>
+                    {{incluirDadosImovelParcelaCtrl.getTipoUtilizacao(destinacaoImovel)}}
+                  </td>
+                  <td md-cell>
+                    {{destinacaoImovel.fracaoIdeal | number: 2}}
+                  </td>
+                  <td md-cell>
+                    {{incluirDadosImovelParcelaCtrl.somarAreaConstruidaUtilizada(destinacaoImovel) | number: 2}}
+                  </td>
+                  <td md-cell>
+                    <md-fab-speed-dial md-direction="left" class="hand md-scale">
+
+                      <md-fab-trigger>
+                        <ng-md-icon class="icon-acao" icon="more_vert">
+                        </ng-md-icon>
+                      </md-fab-trigger>
+
+                      <md-fab-actions>
+                        <ng-md-icon class="icon-subacao" icon="close" alt="Limpar"
+                                    ng-if="destinacaoImovel.id === undefined"
+                                    ng-click="incluirDadosImovelParcelaCtrl.removerDestinacaoImovel(destinacaoImovel)">
+                          <md-tooltip>{{'btn-excluir' | translate}}</md-tooltip>
+                        </ng-md-icon>
+
+                        <ng-md-icon icon="edit" class="icon-subacao" alt="Editar" ng-click="incluirDadosImovelParcelaCtrl.editarDestinacaoImovel(destinacaoImovel)">
+                          <md-tooltip>{{'btn-editar' | translate}}</md-tooltip>
+                        </ng-md-icon>
+                      </md-fab-actions>
+                    </md-fab-speed-dial>
+
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </md-table-container>
+            <md-table-pagination
+              md-limit="incluirDadosImovelParcelaCtrl.tabela.limit"
+              md-limit-options="incluirDadosImovelParcelaCtrl.tabela.limitsPage"
+              md-page="incluirDadosImovelParcelaCtrl.tabela.page"
+              md-total="{{incluirDadosImovelParcelaCtrl.destinacaoImoveis.length}}"
+              md-on-paginate="true"
+              md-page-select
+              style="border: 1px solid #cccccc;">
+            </md-table-pagination>
+          </div>
+
+          <div layout="row"
+               layout-align="end center"
+               ng-show="incluirDadosImovelParcelaCtrl.destinacaoImoveis.length > 0 && incluirDadosImovelParcelaCtrl.permiteEditar !== true">
+            <md-button ng-if="!incluirDadosImovelParcelaCtrl.bloquear" class="md-raised margem-botoes-modal" ng-click="incluirDadosImovelParcelaCtrl.confirmar();">
+              {{'btn-confirmar' | translate | uppercase}}
+            </md-button>
+          </div>
+        </form>
+      </md-dialog-content>
+    </div>
+  </div>
+</md-dialog>

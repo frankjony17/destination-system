@@ -1,0 +1,21 @@
+{
+    "label-destinacao-imoveis": "Destinação de Imóveis",
+    "label-dados-destinatario": "Dados do Destinatário",
+    "label-numero-processo": "Número do Processo",
+    "label-tipo-transferencia": "Tipo de Transferência",
+    "label-base-legal": "Base Legal",
+    "label-ato-complementar":"Ato Complementar",
+    "label-tipo-destinatario": "Tipo de Destinatário",
+    "label-destinatario-cnpj": "CNPJ",
+    "label-destinatario-razao-social": "Razão Social",
+    "label-email": "E-mail",
+    "label-confirmacao-email": "Confirmação de E-mail",
+    "label-endereco-correspondencia": "Endereço de Correspondência",
+    "label-dados-uso": "Dados do Uso",
+    "label-data-inicio-fundamento": "Data início Fund. Legal",
+
+    "btn-fechar": "Fechar",
+    "btn-gravar": "Gravar",
+    "btn-selecionar-arquivo": "Selecionar Arquivo"
+
+}

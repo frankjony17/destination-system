@@ -1,0 +1,8 @@
+<md-dialog>
+  <md-button class="md-icon-button" ng-click="modalVideoCtrl.fechar()">
+    <md-icon md-svg-src="assets/img/icons/ic_close_24px.svg" aria-label="Fechar"></md-icon>
+  </md-button>
+  <video muted controls width="640" height="360">
+    <source src="{{modalVideoCtrl.exibirVideo()}}" type="video/mp4">
+  </video>
+</md-dialog>

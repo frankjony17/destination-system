@@ -1,0 +1,17 @@
+{
+    "label-dados-afetacao": "Dados de Afetação/Restrição de Uso",
+    "label-tipo-uso": "Tipo de Uso",
+    "label-tipo-ato": "Tipo de Ato",
+    "label-tipo-de-acao": "Tipo de Ação",
+    "label-numero-ato": "Nº do Ato",
+    "label-prazo-da-reserva": "Prazo da Reserva",
+    "label-data-do-ato": "Data do Ato",
+    "label-publicacao-dou": "Publicação DOU",
+    "label-n-publicado": "Não Publicado",
+    "label-numero-do-processo": "Nº do Processo",
+    "label-numero-do-processo-judicial": "Nº do Processo Judicial/Órgão de Controle",
+    "label-selecionar-imovel": "Selecionar Imóvel/Parcela",
+    "label-selecionar-poligonal": "Informar Poligonal da Área",
+    "btn-incluir-imovel-parcela": "Incluir Imóvel/Parcela",
+    "label-especificacao" : "Especificação"
+}

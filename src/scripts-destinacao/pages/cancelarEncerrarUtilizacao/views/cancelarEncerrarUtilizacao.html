@@ -1,0 +1,105 @@
+<ng-form name="formularioCancelarEncerrar" novalidate>
+    <md-content flex>
+        <div id="formData" layout="column">
+            <toaster-container></toaster-container>
+            <div layout="row" flex>
+                <h2>{{'label-cancelar-encerrar-utilizacao' | translate}}</h2>
+            </div>
+
+            <div ng-if="!isSuperintendente && cancelamentoEncerramento.id && cancelamentoEncerramento.observacaoDespacho" class="cancelamento" style="padding: 1%; margin: 0 0 1% 0">
+                <md-input flex="100" layout="row" style="margin-bottom: 1%">
+                    <b><label style="margin-bottom: 2%">{{'label-superintendente' | translate}}: </label></b>
+                    <b><label>{{cancelamentoEncerramento.cpfSuperIntendente | cpfcnpj}} - {{cancelamentoEncerramento.nomeSuperintendente}}</label></b>
+                </md-input>
+                <md-input flex="100" layout="row">
+                    <b><label>{{'label-observacao' | translate}}: </label></b>
+                </md-input>
+                <div class="cancelamento-observação" >
+                    <label style="font-weight: normal">{{cancelamentoEncerramento.observacaoDespacho}}</label>
+                </div>
+            </div>
+
+            <div layout="row" layout-xs="column" layout-sm="column" flex="100">
+                <md-input flex="100" layout="row">
+                    <label>{{'label-responsavel-tecnico'| translate}}: </label>
+                    <label>{{cancelamentoEncerramento.cpfResponsavelTecnico | cpfcnpj}} - </label>
+                    <label>{{cancelamentoEncerramento.nomeResponsavelTecnico}}</label>
+                </md-input>
+            </div>
+
+            <br/>
+
+            <div layout="row" layout-xs="column" layout-sm="column">
+                <md-input flex="50" layout="column" layout-xs="column" layout-sm="column">
+                    <label>{{'label-data-cancelamento-encerramento' | translate}} *</label>
+                        <md-datepicker flex-xs="100" flex="100" flex-sm flex-md ng-model="cancelamentoEncerramento.dataCancelamentoEncerramento"
+                                required ng-disabled="isSuperintendente" ng-change="validarDataCancelamentoEncerramento()"
+                        name="{{'label-data-cancelamento-encerramento' | translate}}">
+                        </md-datepicker>
+                </md-input>
+
+                <md-input-container class="md-block" flex="50">
+                    <label>{{'label-motivo' | translate}}:</label>
+                    <md-select ng-model="cancelamentoEncerramento.motivo" ng-disabled="isSuperintendente"
+                               name="{{'label-motivo' | translate}}" required>
+                        <md-option ng-repeat="item in listaMotivos | orderBy: 'codigo'" ng-value="item.nome" ng-if="item.exibir==isPosse || item.descricao == 'Cancelamento por erro'">
+                            {{item.descricao}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+
+            <div layout="row" layout-xs="column" layout-sm="column">
+                <md-input-container layout-xs="row" flex="100" flex-xs flex-sm class="md-block">
+                    <label>{{'label-observacao' | translate}}:</label>
+                    <textarea ng-model="cancelamentoEncerramento.observacaoMotivo" ng-disabled="isSuperintendente" ui-mask-placeholder-char="space"
+                              name="{{'label-observacao' | translate}}" required></textarea>
+                </md-input-container>
+            </div>
+
+            <br/>
+
+            <fieldset>
+                <dados-documentos lista-documentos="cancelamentoEncerramento.arquivos" is-superintendente="isSuperintendente"></dados-documentos>
+            </fieldset>
+
+            <div layout="column" ng-if="isSuperintendente">
+                <div layout="row" flex>
+                    <h3>{{'label-despacho' | translate}}</h3>
+                </div>
+
+                <md-input class="md-block" flex="50" flex-xs flex-sm layout="column">
+                    <div layout="row" layout-xs="column" layout-sm="column" flex="100">
+                        <md-input flex="100" layout="row">
+                            <label style="margin-bottom: 2%">{{'label-superintendente' | translate}}</label>
+                            <label>{{cancelamentoEncerramento.cpfSuperIntendente | cpfcnpj}} - </label>
+                            <label>{{cancelamentoEncerramento.nomeSuperintendente}}</label>
+                        </md-input>
+                    </div>
+                    <md-radio-group flex class="md-block" style="margin-left: 3%" required ng-model="cancelamentoEncerramento.despacho"
+                                    name="{{'label-despacho' | translate}}" layout="column">
+                        <md-radio-button ng-repeat="item in listaDespachos | orderBy: 'codigo'" flex="30" class="md-primary"
+                                         ng-value="item.nome"><label>{{item.descricao}}</label></md-radio-button>
+                    </md-radio-group>
+                </md-input>
+
+                <div layout="row" layout-xs="column" layout-sm="column">
+                    <md-input-container layout-xs="row" flex="100" flex-xs flex-sm class="md-block">
+                        <label>{{'label-observacao' | translate}}:</label>
+                        <textarea ng-model="cancelamentoEncerramento.observacaoDespacho" ui-mask-placeholder-char="space"
+                                  name="{{'label-observacao' | translate}}"
+                                  ng-required="cancelamentoEncerramento.despacho === INDEFERO_CANCELAMENTO_ENCERRAMENTO || cancelamentoEncerramento.despacho === RETORNAR_PARA_COMPLEMENTACAO"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+
+        <div class="button-botton" layout="row" layout-align="end center">
+            <md-button class="md-raised margin-botao-footer" ng-click="fecharCancelamentoEncerramentoUtilizacao()">{{'label-fechar' | translate | uppercase}}</md-button>
+            <md-button class="md-raised" ng-if="!isSuperintendente" ng-click="submeterSuperintendente(formularioCancelarEncerrar)">{{'label-submeter-ao-superintendente'| translate | uppercase}}</md-button>
+            <md-button class="md-raised" ng-if="isSuperintendente" ng-click="confirmar(formularioCancelarEncerrar)">{{'btn-confirmar'| translate | uppercase}}</md-button>
+        </div>
+    </md-content>
+</ng-form>

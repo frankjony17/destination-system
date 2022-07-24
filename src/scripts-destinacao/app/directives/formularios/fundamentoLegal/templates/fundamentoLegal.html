@@ -1,0 +1,34 @@
+<div layout="row" class="margin-top">
+    <div layout="column" class="margin-lateral-label margem-elementos-pagina" flex="50">
+        <label class="label-date-picker">{{"label-data-inicio-fundamento" | translate}}:</label>
+
+        <md-datepicker ng-model="destinacao.dataInicioFundamento"
+                       md-placeholder="dd/mm/aaaa"
+                       name="{{'label-data-inicio-fundamento' | translate}}"
+                       ng-disabled="bloquear"
+                       ng-change="validarDataFundamento()">
+        </md-datepicker>
+    </div>
+
+    <div layout="column" class="margin-lateral-label margem-elementos-pagina" flex="50">
+        <label class="label-date-picker">{{"label-data-final-fundamento" | translate}}:</label>
+        <md-datepicker ng-model="destinacao.dataFinalFundamento"
+                       md-placeholder="dd/mm/aaaa"
+                       name="{{'label-data-final-fundamento' | translate}}"
+                       ng-disabled="bloquear"
+                       ng-change="validarDataFundamento()">
+        </md-datepicker>
+    </div>
+</div>
+<div layout="row" layout-xs="column">
+    <md-input-container  flex>
+        <label>{{'label-fundamento-legal' | translate}}:</label>
+        <md-select ng-disabled="bloquear || (editar && tipoTransferencia() === true)"
+                   ng-required="!bloquear" ng-model="fundamento"
+                   name="{{'label-fundamento-legal' | translate}}" ng-model-options="{trackBy:'$value.id'}">
+            <md-option ng-repeat="fundamentoLegal in fundamentosLegais" ng-value="fundamentoLegal">
+             <ng-bind-html ng-bind-html="fundamentoLegal.descricao.removerHTML()"></ng-bind-html>
+            </md-option>
+        </md-select>
+    </md-input-container>
+</div>

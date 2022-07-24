@@ -1,0 +1,60 @@
+{
+  "name": "su-destinacao",
+  "version": "0.3.102",
+  "dependencies": {
+    "su-componentes": "latest"
+  },
+  "main": [
+    "./release/scripts-destinacao/su-destinacao.js",
+    "./release/scripts-destinacao/su-destinacao.css"
+  ],
+  "overrides": {
+    "angular-i18n": {
+      "main": [
+        "angular-locale_pt-br.js"
+      ]
+    },
+    "angular-br-filters": {
+      "main": [
+        "./release/angular-br-filters.min.js"
+      ]
+    },
+    "angular-material-icons": {
+      "main": [
+        "angular-material-icons.min.js"
+      ]
+    },
+    "openlayers": {
+      "main": [
+        "ol.css",
+        "ol.js"
+      ]
+    },
+    "highcharts": {
+      "main": [
+        "highcharts.src.js"
+      ]
+    }
+  },
+  "resolutions": {
+    "angular": "1.6.3"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "package.json",
+    "gulpfile.js",
+    "src",
+    "gulp",
+    "e2e",
+    "templates-desen",
+    "karma.conf.js",
+    "protractor.conf.js",
+    "banco-dados",
+    "codigo-fonte",
+    "docker",
+    "documentos",
+    "dist"
+  ]
+}

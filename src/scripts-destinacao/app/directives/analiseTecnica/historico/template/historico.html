@@ -1,0 +1,66 @@
+<v-accordion id="accordion" multiple class="vAccordion--default" flex="100">
+    <v-pane expanded id="historico" ng-show="historicos.length > 0">
+        <v-pane-header class="titulo-verde negrito">
+            {{'label-historico' | translate | uppercase}}
+        </v-pane-header>
+        <v-pane-content>
+
+            <div layout="row" layout-xs="column">
+                <div layout="column" flex="100">
+                    <md-content flex="100">
+                        <md-table-container>
+
+                            <table md-table>
+                                <thead md-head>
+                                    <tr md-row>
+                                        <th md-column class="texto-centro coluna-um">
+                                            {{'label-situacao' | translate}}
+                                        </th>
+                                        <th md-column class="texto-centro coluna-dois">
+                                            {{'label-data' | translate}}
+                                        </th>
+                                        <th md-column class="texto-centro coluna-tres">
+                                            {{'label-responsavel' | translate}}
+                                        </th>
+                                        <th md-column class="texto-centro coluna-quatro">
+                                            {{'label-justificativa-anotacao' | translate}}
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody md-body >
+                                    <tr md-row ng-repeat="historico in historicos">
+                                        <td md-cell class="texto-centro-corpo coluna-um">
+                                            {{historico.statusAnaliseTecnicaAtual.descricao}}
+                                        </td>
+                                        <td md-cell class="texto-centro-corpo coluna-dois">
+                                            {{historico.dataAlteracao | date: 'dd/MM/yyyy'}}
+                                        </td>
+                                        <td md-cell class="texto-centro-corpo coluna-tres">
+                                            {{historico.nomeUsuario}}
+                                        </td>
+                                        <td md-cell class="texto-centro-corpo coluna-quatro">
+                                            <read-more limit="240" texto="historico.justificativa"></read-more>    
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </md-table-container>
+                        <md-table-pagination style="margin: auto; background-color: #D8F8E1;"
+                                                md-limit="tabelaHistoricos.limit"
+                                                md-limit-options="tabelaHistoricos.limitsPage"
+                                                md-page="tabelaHistoricos.page"
+                                                md-total="{{tabelaHistoricos.total}}"
+                                                md-on-paginate="listarHistoricos"
+                                                md-page-select>
+                        </md-table-pagination>
+                    </md-content>
+                </div>                
+            </div>
+            <div layout="row" layout-xs="column" layout-align="end center" style="margin-left: 1%; margin-right: 1%;">
+                <a class="link hand" ng-click="">{{'label-ver-historico-completo' | translate}}</a>
+            </div>
+
+        </v-pane-content>
+    </v-pane>
+</v-accordion>

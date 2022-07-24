@@ -1,0 +1,226 @@
+<form class="margem-esquerda layout-margin" name="incluirDocumentoCtrl.formDocumento"  >
+    <div class="margin-header-conteudo">
+      <span class="titulo-verde-header">{{'label-documentos' | translate | uppercase}}</span>
+      <div class="base-vermelho"></div>
+      <hr class="linha-divisoria">
+    </div>
+      <div layout="row" layout-xs="column" class="margin-bottom-label">
+        <md-input-container class="md-block" flex-gt-xs flex="100">
+          <label>{{'label-tipo-documento' | translate}}:</label>
+          <md-select ng-model="incluirDocumentoCtrl.documento.tipoDocumento"
+                     ng-model-options="{trackBy: '$value.id'}"
+                     ng-change="incluirDocumentoCtrl.buscarCamposSubTipo()"
+                     ng-required="true"
+                     name="Tipo Documento"
+                     ng-disabled="incluirDocumentoCtrl.bloquear">
+            <md-option ng-repeat="tipo in incluirDocumentoCtrl.tipoDocumentos"
+                       ng-value="tipo">
+              {{tipo.descricao}}
+            </md-option>
+          </md-select>
+         </md-input-container>
+
+          <md-input-container ng-show="incluirDocumentoCtrl.documento.tipoDocumento.id < 3" class="md-block" flex-gt-xs flex="50" style="margin-left: 20px;">
+          <label>{{'label-subTipo-documento' | translate}}:</label>
+          <md-select ng-model="incluirDocumentoCtrl.documento.subTipoDocumento"
+                     ng-model-options="{trackBy: '$value.id'}"
+                     ng-disabled="incluirDocumentoCtrl.bloquear"
+                     name="Sub Tipo Documento">
+            <md-option ng-repeat="subTipo in incluirDocumentoCtrl.subTipoDocumento"
+                       ng-value="subTipo">
+              {{subTipo.descricao}}
+            </md-option>
+          </md-select>
+         </md-input-container>
+
+        <md-input-container ng-show="incluirDocumentoCtrl.documento.tipoDocumento.id === 4 && incluirDocumentoCtrl.documento.tipoDocumento.id  !== 6" class="md-block" flngex-gt-xs flex="50" style="margin-left: 20px;">
+          <label>{{'label-especificar' | translate}}:</label>
+          <input ng-model="incluirDocumentoCtrl.documento.especificar" name="{{'label-especificar' | translate}}"
+                 ng-disabled="incluirDocumentoCtrl.bloquear"
+                 ng-change="incluirDocumentoCtrl.especificar()"
+                 ng-required="incluirDocumentoCtrl.documento.tipoDocumento.id === 4"/>
+        </md-input-container>
+        </div>
+
+      <div class="margin-top">
+        <md-checkbox ng-if="incluirDocumentoCtrl.documento.tipoDocumento.id === 3"
+                     ng-disabled="incluirDocumentoCtrl.bloquear"
+                     ng-model="incluirDocumentoCtrl.documento.dispensado"
+                     class="md-primary" > Aditivo do Contrato/Termo dispensado
+        </md-checkbox>
+      </div>
+
+      <div class="margin-top" ng-if="incluirDocumentoCtrl.documento.dispensado === true && incluirDocumentoCtrl.documento.tipoDocumento.id  !== 6">
+        <md-input-container class="md-block" flex="95">
+          <label>Justificativa</label>
+          <textarea ng-disabled="incluirDocumentoCtrl.bloquear"
+                    ng-model="incluirDocumentoCtrl.documento.justificativa" name="Justificativa"
+                    rows="3"
+                    style="height: 50%;"
+                    maxlength="2000"
+                    md-maxlength="2000"
+                    ng-required="incluirDocumentoCtrl.documento.dispensado === true"
+                    md-select-on-focus></textarea>
+        </md-input-container>
+
+      </div>
+
+      <!--PUBLICACAO-->
+      <div ng-if="incluirDocumentoCtrl.documento.dispensado === false  || incluirDocumentoCtrl.documento.tipoDocumento.id === 6">
+        <div layout="column" flex="100" flex-xs="100">
+          {{'label-publicacao' | translate}}
+          <div layout="row" layout-xs="column" class="margin-bottom-label">
+            <div class="margin-top-alinhar-data" layout="row" flex="40" flex-xs="100" layout-margin-xs="5">
+              <md-radio-group ng-disabled="incluirDocumentoCtrl.bloquear"
+                              layout-align="center center"
+                              ng-model="incluirDocumentoCtrl.documento.publicacao"
+                              name="{{'label-publicacao' | translate}}"
+                              required layout="row"
+                              ng-change="incluirDocumentoCtrl.limparCamposPublicacao()" >
+                <!--PUBLICADO DOU-->
+                <md-radio-button ng-value="true">{{"label-publicado-dou" | translate}}</md-radio-button>
+                <!--NAO PUBLICADO-->
+                <md-radio-button ng-value="false">{{"label-nao-publicado" | translate}}</md-radio-button>
+              </md-radio-group>
+            </div>
+          </div>
+
+
+          <div layout="row" layout-xs="column" ng-if="incluirDocumentoCtrl.documento.publicacao === true">
+            <!--PUBLICADO DOU-->
+            <md-input-container class="md-block margin-lateral-label margin-top-alinhar-data margem-elementos-pagina"
+                                flex="33">
+              <label>{{"label-pagina" | translate}}:</label>
+              <input ui-number-mask="0"
+                     type="text"
+                     ng-disabled="incluirDocumentoCtrl.bloquear"
+                     ng-model="incluirDocumentoCtrl.documento.pagina"
+                     ng-change="incluirDocumentoCtrl.documento.publicacao"
+                     name="Página"
+                     ng-required="incluirDocumentoCtrl.documento.publicacao === true"/>
+            </md-input-container>
+
+            <md-input-container class="md-block margin-lateral-label margin-top-alinhar-data margem-elementos-pagina"
+                                flex="33">
+              <label>{{"label-secao" | translate }}:</label>
+              <input ui-number-mask="0"
+                     type="text"
+                     ng-disabled="incluirDocumentoCtrl.bloquear"
+                     ng-model="incluirDocumentoCtrl.documento.secao"
+                     ng-change="incluirDocumentoCtrl.documento.publicacao"
+                     name="Seção"
+                     ng-required="incluirDocumentoCtrl.documento.publicacao === true"/>
+            </md-input-container>
+
+            <div layout="column" flex="33" class="md-block flex-item">
+              <label class="label-date-picker">{{"label-data-publicacao" | translate}}:</label>
+              <md-datepicker id="dataPublicacao" ng-model="incluirDocumentoCtrl.documento.dataPublicacao"
+                                    name="{{'label-data-publicacao' | translate}}"
+                                    md-placeholder="dd/mm/aaaa"
+                                    md-custom-mask="39/19/9999"
+                                    md-custom-clean-mask="false"
+                                    ng-disabled="incluirDocumentoCtrl.bloquear"
+                                    name="Data de Publicação"
+                                    ng-change="incluirDocumentoCtrl.documento.publicacao"
+                                    ng-required="incluirDocumentoCtrl.documento.publicacao === true"  flex-gt-xs flex="33" >
+              </md-datepicker>
+            </div>
+
+            <div ng-show="incluirDocumentoCtrl.verificarPodeExibirLink()" style="margin-top: 30px;">
+              <div ng-model="incluirDocumentoCtrl.documento.link">
+                <a style="text-decoration: none;" ng-href="{{incluirDocumentoCtrl.montarLinkAto()}}" target="_blank">{{'label-ver-publicacao' | translate}}</a>
+              </div>
+            </div>
+          </div>
+
+          <!--NAO PUBLICADO-->
+          <div layout="row" ng-show="incluirDocumentoCtrl.documento.publicacao === false" class="margem-elementos-pagina">
+            <div layout="column" >
+              <!--UPLOAD ARQUIVO-->
+              <md-button ng-show="!incluirDocumentoCtrl.bloquear"
+                         id="escolherArquivo" class="md-primary md-raised"
+                         ngf-select="incluirDocumentoCtrl.addArquivo($files)"
+                         ngf-multiple="false">{{"btn-escolher-arquivo" | translate}}
+              </md-button>
+            </div>
+            <div layout="column" layout-align="center">
+              <p ng-show="incluirDocumentoCtrl.documento.arquivo.id">
+                <label class="hand link" ng-click="incluirDocumentoCtrl.gerarPreview()">{{incluirDocumentoCtrl.documento.arquivo.nomeReal}}</label>
+                <input type="hidden" ng-model="incluirDocumentoCtrl.documento.arquivo"
+                       name="Arquivo"
+                       ng-change="!incluirDocumentoCtrl.documento.publicacao"
+                       ng-required="incluirDocumentoCtrl.documento.publicacao === false"/>
+              </p>
+            </div>
+            <div layout="column" ng-show="incluirDocumentoCtrl.documento.arquivo.id" layout-align="center" style="margin-top: 0.3%; margin-left: 3px">
+              <ng-md-icon icon="close"class="hand cor-remover"
+                          size="18" ng-click="incluirDocumentoCtrl.remover()"></ng-md-icon>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div layout="row" layout-xs="column" flex="100">
+          <div layout="column" class="md-block flex-item">
+            <label>{{'label-data-inicio-vigencia' | translate}}{{incluirDocumentoCtrl.documento.tipoDocumento.id === 3 ? '*': '' }}:</label>
+            <md-datepicker id="dataInicialVigencia" ng-model="incluirDocumentoCtrl.documento.dataInicialVigencia"
+                                  ng-disabled="incluirDocumentoCtrl.bloquear"
+                                  md-placeholder="dd/mm/aaaa"
+                                  md-custom-mask="39/19/9999"
+                                  md-custom-clean-mask="false"
+                                  name="Data Início Vigência"
+                                  ng-required="incluirDocumentoCtrl.documento.tipoDocumento.id === 3 && incluirDocumentoCtrl.documento.dispensado === false"
+                                  class="md-block DataDocumento" style="margin-left:-08px; ">
+            </md-datepicker>
+
+          </div>
+
+          <div layout="column"class="md-block flex-item">
+            <label>{{'label-data-final-vigencia' | translate}}{{incluirDocumentoCtrl.documento.tipoDocumento.id === 3 ? '*': '' }}:</label>
+            <md-datepicker id="dataFinalVigencia" ng-model="incluirDocumentoCtrl.documento.dataFinalVigencia"
+                                  md-placeholder="dd/mm/aaaa"
+                                  md-custom-mask="39/19/9999"
+                                  md-custom-clean-mask="false"
+                                  ng-disabled="incluirDocumentoCtrl.bloquear"
+                                  name="Data Final Vigência"
+                                  ng-required="incluirDocumentoCtrl.documento.tipoDocumento.id === 3 && incluirDocumentoCtrl.documento.dispensado === false"
+                                  class="md-block DataDocumento" style="margin-left:-08px;">
+            </md-datepicker>
+          </div>
+        </div>
+        <div layout="row" flex="100" flex-xs="100" style="margin-top: 3%;">
+            <md-input-container ng-class="" class="md-block" flex-gt-xs flex="33">
+              <label>{{'label-numero-termo' | translate}}</label>
+              <input ui-number-mask="0"
+                     type="text"
+                     ng-disabled="incluirDocumentoCtrl.bloquear"
+                     ng-model="incluirDocumentoCtrl.documento.numeroTermo" name="Termo"/>
+            </md-input-container>
+            <md-input-container ng-class="" class="md-block" flex-gt-xs flex="33">
+              <label>{{'label-livro' | translate}}</label>
+              <input ui-number-mask="0"
+                     type="text"
+                     ng-disabled="incluirDocumentoCtrl.bloquear"
+                     ng-model="incluirDocumentoCtrl.documento.livro" name="Livro" />
+            </md-input-container>
+            <md-input-container ng-class="" class="md-block" flex-gt-xs flex="33">
+              <label>{{'label-folha' | translate}}</label>
+              <input ui-number-mask="0"
+                     type="text"
+                     ng-disabled="incluirDocumentoCtrl.bloquear"
+                     ng-model="incluirDocumentoCtrl.documento.folha" name="Folha"/>
+            </md-input-container>
+          </div>
+        </div>
+      </div>
+      <div layout="row" layout-align="end center" layout-align-xs="end end">
+        <md-button class="md-raised" ng-click="incluirDocumentoCtrl.fechar(documento)">
+          {{incluirDocumentoCtrl.modoEdicao ? 'btn-fechar' : 'btn-fechar' | translate | uppercase}}
+        </md-button>
+        <md-button ng-show="!incluirDocumentoCtrl.bloquear" class="md-raised" ng-click="incluirDocumentoCtrl.incluir(documento)">
+          {{incluirDocumentoCtrl.modoEdicao ? 'btn-salvar-edicao' : 'btn-incluir' | translate | uppercase}}
+        </md-button>
+      </div>
+  </form>

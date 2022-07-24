@@ -1,0 +1,128 @@
+<div>
+      <div layout-wrap layout-gt-sm="row" layout="row">
+          <md-input-container class="margin-top" flex="100" flex-xs="100">
+              <label>{{'label-tipo-posse-ocupacao' | translate}}</label>
+              <md-select id="input-unidade-usuario" ng-model="dadosResponsavel.tipoPosseOcupacao"
+                         name="{{'label-tipo-posse-ocupacao' | translate}}" ng-disabled="bloquear || modoEditar" required>
+                  <md-option ng-repeat="item in listaTiposPosseOcupacao | orderBy: 'codigo'" ng-value="item.nome"
+                            ng-selected="item.nome==dadosResponsavel.tipoPosseOcupacao">
+                      {{item.descricao}}
+                  </md-option>
+              </md-select>
+          </md-input-container>
+      </div>
+
+    <br/>
+
+    <div ng-if="dadosResponsavel.tipoPosseOcupacao && dadosResponsavel.tipoPosseOcupacao!=INDIVIDUAL && dadosResponsavel.tipoPosseOcupacao!=OCUPANTE_NAO_IDENTIFICADO">
+        <div layout="row" flex>
+            <h3>{{'title-informacoes-entidade' | translate}}</h3>
+        </div>
+
+        <div layout="row" style="margin-top:3%" ng-if="dadosResponsavel.tipoPosseOcupacao==COLETIVO">
+            <div layout="row" flex>
+                <md-input class="md-block" flex layout="column">
+                    <label>{{'label-tipo-representacao' | translate}}:</label>
+                    <md-radio-group style="margin: 2% 0 0 2%"  class="md-block" required ng-model="dadosResponsavel.tipoRepresentacao"  layout="row"
+                                    name="{{'label-tipo-representacao' | translate}}">
+                        <md-radio-button ng-repeat="item in listaTiposRepresentacao | orderBy: 'codigo'" ng-disabled="bloquear || modoEditar" class="md-primary"
+                                         ng-value="item.nome"><label>{{item.descricao}}</label></md-radio-button>
+                    </md-radio-group>
+                </md-input>
+            </div>
+        </div>
+
+        <br/>
+
+        <div layout="row" layout-xs="column" layout-sm="column" ng-if="dadosResponsavel.tipoRepresentacao && (dadosResponsavel.tipoRepresentacao==FORMAL || dadosResponsavel.tipoRepresentacao==INFORMAL)">
+            <div flex="50" layout="column">
+                <md-input-container layout-xs="row" flex-xs flex-sm class="md-block"  layout-xs="column" layout-sm="column">
+                    <label class>{{'label-cnpj' | translate}}:</label>
+                    <input ng-model="dadosResponsavel.cnpj" ui-br-cnpj-mask ng-disabled="bloquear || modoEditar"
+                           name="{{'label-cnpj' | translate}}" ng-required="dadosResponsavel.tipoRepresentacao && dadosResponsavel.tipoRepresentacao==FORMAL" />
+                    <a href="" ng-click="detalharPessoa(dadosResponsavel)">{{'label-ver-dados-pessoa-juridica' | translate}}</a>
+                </md-input-container>
+            </div>
+
+            <md-input-container flex="50" layout-xs="row" flex-xs flex-sm class="md-block"  layout-xs="column" layout-sm="column">
+                <label class>{{'label-codigo-da-ug' | translate}}:</label>
+                <input ng-model="dadosResponsavel.codigoUg" ng-disabled="bloquear || modoEditar"
+                       name="{{'label-codigo-da-ug' | translate}}" required />
+            </md-input-container>
+        </div>
+
+        <div layout="row" layout-xs="column" layout-sm="column" ng-if="dadosResponsavel.tipoPosseOcupacao==COLETIVO && dadosResponsavel.tipoRepresentacao && dadosResponsavel.tipoRepresentacao==INFORMAL">
+            <md-input-container flex="100" layout-xs="row" flex-xs flex-sm class="md-block"  layout-xs="column" layout-sm="column">
+                <label class>{{'label-nome-entidade' | translate}}:</label>
+                <input ng-model="dadosResponsavel.nomeEntiade" ng-disabled="bloquear || modoEditar"
+                       name="{{'label-nome-entidade' | translate}}" />
+            </md-input-container>
+        </div>
+
+        <br/>
+
+        <div ng-if="dadosResponsavel.tipoPosseOcupacao && dadosResponsavel.tipoRepresentacao && dadosResponsavel.tipoRepresentacao!=SEM_REPRESENTACAO">
+            <div layout="row" flex>
+                <h3>{{'label-inserir-dados-endereco-correspondencia' | translate}}</h3>
+            </div>
+            <div class="button-botton" layout="row">
+                <md-input flex="70" layout="row" ng-show="dadosResponsavel.enderecoCorrespondencia">
+                    <label ng-show="dadosResponsavel.enderecoCorrespondencia.endereco.pais.toUpperCase() == BRASIL"
+                        ng-bind="dadosResponsavel.enderecoCorrespondencia.endereco.logradouro
+                                + ', ' + ('label-numero' | translate) + ' ' + dadosResponsavel.enderecoCorrespondencia.endereco.numero
+                                + ', ' + dadosResponsavel.enderecoCorrespondencia.endereco.bairro
+                                + ', ' + dadosResponsavel.enderecoCorrespondencia.endereco.municipio + '/' + dadosResponsavel.enderecoCorrespondencia.endereco.uf
+                                + ' - ' + dadosResponsavel.enderecoCorrespondencia.endereco.pais
+                                + '. ' + ('label-cep' | translate) + ': ' + (dadosResponsavel.enderecoCorrespondencia.endereco.cep | cep)"></label>
+                    <label ng-show="dadosResponsavel.enderecoCorrespondencia.endereco.pais && dadosResponsavel.enderecoCorrespondencia.endereco.pais.toUpperCase() != BRASIL"
+                           ng-bind="dadosResponsavel.enderecoCorrespondencia.endereco.enderecoExterior
+                                + ', ' + dadosResponsavel.enderecoCorrespondencia.endereco.nomeCidadeExterior
+                                + ' - ' + dadosResponsavel.enderecoCorrespondencia.endereco.pais
+                                + '. ' + ('label-codigo-postal' | translate) + ': ' + dadosResponsavel.enderecoCorrespondencia.endereco.codigoPostal"></label>
+                </md-input>
+                <md-button class="md-raised" flex="30" ng-click="incluirEnderecoCorrespondencia()" layout-align="end center">
+                    <label ng-if="!dadosResponsavel.enderecoCorrespondencia">{{'label-adicionar-endereco'| translate | uppercase}}</label>
+                    <label ng-if="dadosResponsavel.enderecoCorrespondencia">{{'label-editar-endereco'| translate | uppercase}}</label>
+                </md-button>
+            </div>
+            <br/>
+        </div>
+
+        <div flex-xs flex-sm layout="row" flex="100" ng-if="dadosResponsavel.tipoRepresentacao && (dadosResponsavel.tipoRepresentacao==FORMAL || dadosResponsavel.tipoRepresentacao==INFORMAL || dadosResponsavel.tipoRepresentacao==SEM_REPRESENTACAO)">
+            <md-input-container class="md-block" flex="100">
+                <label>{{'label-qtd-responsaveis' | translate}}:</label>
+                <input ng-model="dadosResponsavel.qtdResponsaveis" type="number" ng-disabled="bloquear || modoEditar"
+                       name="{{'label-qtd-responsaveis' | translate}}" ng-required="dadosResponsavel.tipoRepresentacao && dadosResponsavel.tipoRepresentacao==FORMAL"/>
+            </md-input-container>
+        </div>
+
+        <br/>
+    </div>
+
+
+    <div ng-if="dadosResponsavel.tipoPosseOcupacao && (dadosResponsavel.tipoPosseOcupacao==INDIVIDUAL || (dadosResponsavel.tipoPosseOcupacao==COLETIVO && dadosResponsavel.tipoRepresentacao && (dadosResponsavel.tipoRepresentacao==FORMAL || dadosResponsavel.tipoRepresentacao==SEM_REPRESENTACAO)))">
+        <div ng-include="'scripts-destinacao/app/directives/formularios/dadosResponsavel/templates/tabelaResponsavel.html'"></div>
+    </div>
+
+
+
+
+
+    <!--<div ng-show="responsaveis.length > 0 && pessoaJuridica === true">
+      <div ng-show="!responsavel.regimeColetivoCnpj">
+          <div ng-include="'scripts-destinacao/app/directives/formularios/dadosResponsavel/templates/dadosPessoaJuridica.html'"></div>
+      </div>
+       <div ng-show="verificarTipoDestinacaoCuem() && !responsavel.regimeColetivoCnpj && !bloquear && !modoEditar">
+          <div ng-include="'scripts-destinacao/app/directives/formularios/dadosResponsavel/templates/incluirBeneficiario.html'"></div>
+       </div>
+    </div>
+
+    <div ng-show="verificarTipoDestinacaoCuem() && coletivo && responsavel.regimeColetivoCnpj && !bloquear && !modoEditar">
+        <div ng-include="'scripts-destinacao/app/directives/formularios/dadosResponsavel/templates/incluirBeneficiario.html'"></div>
+    </div>
+
+    <div ng-show="responsaveis[0].familiasBeneficiadas.length > 0">
+      <div ng-include="'scripts-destinacao/app/directives/formularios/dadosResponsavel/templates/tabelaBeneficiarios.html'"></div>
+    </div>-->
+
+</div>

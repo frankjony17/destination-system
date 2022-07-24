@@ -1,0 +1,64 @@
+<div>
+
+    <div layout="row" flex>
+        <h3>{{'label-telefone' | translate}}</h3>
+    </div>
+
+    <div flex-xs flex-sm layout="row" flex="100">
+        <md-input-container class="md-block" flex="30">
+            <label>{{'label-numero' | translate}}:</label>
+            <input ng-model="telefone.numero" ui-br-phone-number ng-disabled="editar || detalhar"
+                   name="{{'label-numero' | translate}}"/>
+        </md-input-container>
+    </div>
+
+
+    <md-dialog-actions flex layout="row" layout-align="end end" ng-if="editar !== true && detalhar !== true">
+        <md-button class="md-raised" ng-click="incluirTelefoneLista();">
+            <label>{{'btn-incluir' | translate}}</label>
+        </md-button>
+    </md-dialog-actions>
+
+    <br/>
+
+    <md-radio-group class="md-block" ng-model="telefonePrincipal" ng-click="selecionarTelefonePrincipal()">
+    <md-table-container flex="100" ng-show="listaTelefone.length > 0">
+        <table md-table style="border: 1px solid #cccccc;">
+            <thead md-head>
+            <tr md-row class="upload-head">
+                <th md-column><div ng-show="!isInterveniente" ng-if="!isInterveniente">{{'label-principal' | translate}}</div></th>
+                <th md-column>{{'label-telefone' | translate}}</th>
+                <th md-column>{{'label-numero' | translate}}</th>
+                <th md-column ng-if="editar !== true && detalhar !== true">{{'label-opcoes' | translate}}</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row ng-repeat="dados in paginacaoTelefones | orderBy: 'contador'">
+                <td md-cell>
+                    <md-radio-button class="md-primary" ng-if="!isInterveniente" ng-show="!isInterveniente" ng-disabled="editar || detalhar" ng-value="dados.numero"></md-radio-button>
+                </td>
+                <td md-cell>
+                    {{dados.tel}}
+                </td>
+                <td md-cell>
+                    {{dados.ddd + dados.numero | telefonebr}}
+                </td>
+                <td md-cell ng-if="editar !== true && detalhar !== true">
+                    <a href="" ng-click="removerTelefone(dados.contador)">
+                        <ng-md-icon class="icon-subacao" icon="delete">
+                            <md-tooltip>{{'label-excluir' | translate}}</md-tooltip>
+                        </ng-md-icon>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <md-table-pagination md-limit="tamanhoLimite" md-limit-options="[5, 10, 15]"
+                             md-page="registroInicial" md-total="{{totalItems}}"
+                             md-on-paginate="paginarListaTelefones" md-page-select
+                             style="border: 1px solid #cccccc;">
+        </md-table-pagination>
+    </md-table-container>
+    </md-radio-group>
+
+</div>

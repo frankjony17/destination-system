@@ -1,0 +1,100 @@
+<div>
+
+    <div layout="row" class="margin-top" style="margin-bottom: 1%;">
+        <label class="titulo-verde negrito">{{ editar === true ? 'label-parcela-ser-editada' : 'label-parcela-ser-criada' | translate | uppercase}}: {{parcelaNova.sequencial}}</label>
+    </div>
+
+    <md-input-container ng-show="!editar" class="margin-top md-block" flex="50" flex-xs="100">
+        <label>{{'label-parcela-area' | translate}}:</label>
+        <input ng-model="parcelaNova.areaTerreno"
+            ng-blur="validarAreaInserida()"
+            ng-change="setarDadoParcelaRemanescente();"
+            ng-required="true"
+            ui-number-mask
+            name="{{'label-parcela-area' | translate}}"
+            id="in-area-parcela">
+    </md-input-container>
+
+    <div layout="row" ng-show="editar" style="margin-bottom: 1%;">
+        <span>{{'label-parcela-area' | translate}}:&nbsp;</span>
+        <span>{{parcelaNova.areaTerreno | number: 2}}</span>
+    </div>
+
+    <div layout="row" ng-show="parcelaNova.benfeitorias.length > 0">
+        <label>{{'label-selecione-acessoes-benfeitoria' | translate}}</label>
+    </div>
+
+    <div>
+        <md-table-container class="margin-top" ng-show="parcelaNova.benfeitorias.length > 0">
+            <table md-table>
+
+                <thead md-head>
+                    <tr md-row>
+                        <th md-column ng-show="!editar">
+                            <md-checkbox class="md-primary"
+                                         id="cbx-checkall-benfeitorias-nova-parcela"
+                                         ng-model="parcelaNova.checkboxAll"
+                                         ng-change="selecionarTodosCheckboxs()">
+                            </md-checkbox>
+                        </th>
+                        <th md-column style="padding-left: 1%">{{"label-acessao-benfeitoria" | translate}}</th>
+                        <th md-column>{{"label-area-construida" | translate}}</th>
+                    </tr>
+                </thead>
+
+            <tbody md-body>
+                <tr md-row ng-repeat="benfeitoria in parcelaNova.benfeitorias">
+                    <td md-cell ng-show="!editar">
+                    <md-checkbox class="md-primary"
+                                ng-change="verificarTodosSelecionados(); marcarDesmarcarBenfeitoriasParcelaRemanescente(benfeitoria)"
+                                ng-model="benfeitoria.selecionado">
+                    </md-checkbox>
+                    </td>
+                    <td md-cell style="padding-left: 1%">
+                        {{benfeitoria.codigo}} - {{benfeitoria.especializacao}}
+                    </td>
+                    <td md-cell>
+                        {{benfeitoria.areaConstruida | number:2}}
+                    </td>
+                </tr>
+            </tbody>
+
+            </table>
+        </md-table-container>
+
+        <md-input-container class="margin-top md-block" flex>
+            <label>{{'label-memorial-descritivo' | translate}}:</label>
+            <textarea rows="5"
+                    ng-disabled="desabilitarMemorialDescritivo"
+                    ng-model="parcelaNova.memorialDescritivo"
+                    required
+                    id="memorial-nova-parcela"
+                    name="{{'label-memorial-descritivo' | translate}}">
+            </textarea>
+        </md-input-container>
+
+        <label>{{'label-planta-memorial' | translate}}</label>
+        <div layout="row" flex="80">
+            <div style="margin-top: 7px">
+            <md-button class="md-primary md-raised"
+                        ngf-select="adicionarArquivos($files)"
+                        ngf-multiple="true">
+                {{"btn-escolher-arquivo" | translate}}
+            </md-button>
+            </div>
+            <div layout="column" flex="40" class="margin-left espacamento-arquivos-adicionados">
+            <md-container>
+            <div ng-repeat="arquivo in parcelaNova.arquivos">
+                <div layout="row" layout-column="center">
+                <a>
+                    <label class="hand link">{{arquivo.name || arquivo.nome}}</label>
+                </a>
+                <ng-md-icon icon="close" class="hand cor-remover" size="18" ng-click="removerArquivo($index)"></ng-md-icon>
+                </div>
+            </div>
+            </md-container>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,293 @@
+<div>
+    <h1 class="titulo-verde titulo-verde-header" >Cadastrar Reserva/Restrição de Uso</h1>
+    <div class="base-vermelho"></div>
+    <hr class="linha-divisoria">
+</div>
+
+
+<form name="AfetacaoCtrl.formAfetacao">
+    <div layout="column" flex="100" flex-xs="100" layout-xs="column" class="margin-conteudo">
+        <div ng-cloak flex="100" flex-xs="100" offset="5">
+            <div class="margin-top">
+                <v-accordion id="accordion" multiple class="vAccordion--default">
+                    <v-pane expanded>
+                        <v-pane-header id="id_acordion_dadosAfetacao" class="titulo-verde negrito">{{'label-dados-afetacao' | translate | uppercase}}</v-pane-header>
+                        <v-pane-content>
+                            <div layout="row">
+                                <md-input-container flex>
+                                    <label>{{'label-tipo' | translate}}:</label>
+                                    <md-select required ng-model="AfetacaoCtrl.afetacao.tipo"
+                                               name="{{'label-tipo' | translate}}" ng-model-options="{trackBy:'$value.id'}">
+                                        <md-option ng-repeat="tipo in AfetacaoCtrl.listaTipoDeAfetacao" ng-value="tipo">
+                                            {{tipo.descricao}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex ng-if="AfetacaoCtrl.afetacao.tipo.descricao === 'Decisão/Determinação Judicial'">
+                                    <label>{{'label-tipo-de-acao' | translate}}:</label>
+                                    <md-select required ng-model="AfetacaoCtrl.afetacao.tipoDeAcao"
+                                               name="{{'label-tipo-de-acao' | translate}}" ng-model-options="{trackBy:'$value.id'}">
+                                        <md-option ng-repeat="tipoAcao in AfetacaoCtrl.listaTipoAcao" ng-value="tipoAcao">
+                                            {{tipoAcao.descricao}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex ng-if="AfetacaoCtrl.afetacao.tipo.descricao === 'Outros' || AfetacaoCtrl.afetacao.tipoDeAcao.descricao === 'Outra'">
+                                    <label>{{'label-especificar' | translate}}:</label>
+                                    <input md-maxlength="150" required maxlength="150" ng-model="AfetacaoCtrl.afetacao.especificar">
+                                </md-input-container>
+
+                            </div>
+                            <div layout="row">
+                                <md-input-container flex ng-if="AfetacaoCtrl.afetacao.tipo.descricao === 'Reservado/Condicionado para uso específico'">
+                                    <label>{{'label-tipo-uso' | translate}}:</label>
+                                    <md-select multiple required ng-model="AfetacaoCtrl.afetacao.tipoDeUso"
+                                               name="{{'label-tipo-uso' | translate}}"  ng-change="AfetacaoCtrl.buscarEspecificacoes()" ng-model-options="{trackBy:'$value.id'}">
+                                        <md-option ng-repeat="tipoUso in AfetacaoCtrl.tiposUso" ng-value="tipoUso">
+                                            {{tipoUso.descricao}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container flex ng-if="AfetacaoCtrl.afetacao.tipo.descricao === 'Reservado/Condicionado para uso específico'">
+                                    <label>{{'label-especificacao' | translate}}:</label>
+                                    <md-select multiple required ng-model="AfetacaoCtrl.afetacao.especificacao"
+                                               name="{{'label-especificacao' | translate}}" ng-model-options="{trackBy:'$value.id'}">
+                                        <md-option ng-repeat="especificacoes in AfetacaoCtrl.listaEspecificacoes" ng-value="especificacoes">
+                                            {{especificacoes.descricao}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <div flex>
+                                    <div layout="column" ng-if="AfetacaoCtrl.afetacao.tipo.descricao === 'Reservado/Condicionado para uso específico'
+                                        || AfetacaoCtrl.afetacao.tipo.descricao === 'Declaração de Interesse do serviço público'">
+                                        <label class="label-date-picker">{{"label-prazo-da-reserva" | translate}} *</label>
+                                        <md-datepicker id="prazoDaReserva" ng-model="AfetacaoCtrl.afetacao.prazoDaReserva"
+                                                       md-placeholder="dd/mm/aaaa"
+                                                       md-custom-mask="39/19/9999"
+                                                       md-custom-clean-mask="false"
+                                                       name="{{'label-prazo-da-reserva' | translate}}"
+                                                       class="dataEncargo md-datepicker-input-container"
+                                                       required>
+                                        </md-datepicker>
+                                    </div>
+                                </div>
+                            </div>
+                            <div layout="row">
+                                <md-input-container flex="33">
+                                    <label>{{'label-tipo-ato' | translate}}:</label>
+                                    <md-select required
+                                               ng-model="AfetacaoCtrl.afetacao.tipoDeAto"
+                                               name="{{'label-tipo-ato' | translate}}" ng-model-options="{trackBy:'$value.id'}">
+                                        <md-option ng-repeat="tipoAto in AfetacaoCtrl.listaTipoAto" ng-value="tipoAto" >
+                                            {{tipoAto.descricao}}
+                                        </md-option>
+                                    </md-select>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container flex="33">
+                                    <label>{{'label-numero-ato' | translate}}:</label>
+                                    <input type="number" ng-model="AfetacaoCtrl.afetacao.numeroAto">
+                                </md-input-container>
+
+
+                                <div flex="35">
+                                    <div layout="column">
+                                        <label class="label-date-picker">{{"label-data-do-ato" | translate}} *</label>
+                                        <md-datepicker id="DataDoAto" ng-model="AfetacaoCtrl.afetacao.dataDoAto"
+                                                       md-placeholder="dd/mm/aaaa"
+                                                       md-custom-mask="39/19/9999"
+                                                       md-custom-clean-mask="false"
+                                                       name="{{'label-data-do-ato' | translate}}"
+                                                       class="dataEncargo md-datepicker-input-container"
+                                                       required>
+                                        </md-datepicker>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div layout="row">
+                                <md-input class="md-block" flex layout="column">
+                                    <label>{{'label-publicacao' | translate}}:</label>
+                                    <md-radio-group style="margin: 1% 0 0 2%"  class="md-block" required ng-model="AfetacaoCtrl.afetacao.publicado" layout="row"
+                                                    name="{{'label-publicacao' | translate}}">
+                                        <md-radio-button class="md-primary"
+                                                         ng-value="true"><label>{{'label-publicacao-dou' | translate}}</label></md-radio-button>
+                                        <md-radio-button class="md-primary"
+                                                         ng-value="false"><label>{{'label-n-publicado' | translate}}</label></md-radio-button>
+                                    </md-radio-group>
+                                </md-input>
+                            </div>
+                            <div layout="row" ng-if="AfetacaoCtrl.afetacao.publicado === true">
+                                <div style="margin-top: 20px; margin-right:2%" flex-xs="100" flex="33" layout="column">
+                                    <md-input-container>
+                                        <label>{{'label-pagina' | translate}}:</label>
+                                        <input required ng-model="AfetacaoCtrl.afetacao.pagina">
+                                    </md-input-container>
+                                </div>
+                                <div style="margin-top: 20px; margin-right:2%" flex-xs="100" flex="33" layout="column">
+                                    <md-input-container>
+                                        <label>{{'label-secao' | translate}}:</label>
+                                        <input required ng-model="AfetacaoCtrl.afetacao.secao">
+                                    </md-input-container>
+                                </div>
+                                <div style="margin-top: 20px; margin-right:2%" flex-xs="100" flex="33" layout="column">
+                                    <div layout="row" >
+                                        <div layout="column" style="margin-top: -12px" flex="50">
+                                            <label class="label-date-picker">{{'label-data-publicacao' | translate}} *</label>
+                                            <md-datepicker id="dataPublicacao" ng-model="AfetacaoCtrl.afetacao.dataPublicacao"
+                                                           md-placeholder="dd/mm/aaaa"
+                                                           md-custom-mask="39/19/9999"
+                                                           md-custom-clean-mask="false"
+                                                           name="{{'label-data-publicacao' | translate}}"
+                                                           class="dataEncargo md-datepicker-input-container"
+                                                           required>
+                                            </md-datepicker>
+                                        </div>
+                                        <div layout="column" flex="50">
+                                    <a ng-if="AfetacaoCtrl.afetacao.dataPublicacao && AfetacaoCtrl.afetacao.pagina && AfetacaoCtrl.afetacao.secao" class="hand link" style="text-decoration: none; text-align: center; margin-top: 8%" href="" ng-click="AfetacaoCtrl.verPublicacao()" target="_blank"> {{'label-ver-publicacao' | translate}} </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset style="margin-top: 1%; border-radius: 5px;" ng-if="AfetacaoCtrl.afetacao.publicado === false">
+                                <div layout="row">
+                                    <md-input-container flex>
+                                        <label>{{'label-descricao' | translate}}</label>
+                                        <input md-maxlength="200" maxlength="200" ng-model="AfetacaoCtrl.afetacao.documento.descricao">
+                                    </md-input-container>
+                                </div>
+                                <div layout="row">
+                                    <div layout="column" style="margin-top: -12px; margin-right: 5%" flex="33">
+                                        <label class="label-date-picker">{{'label-data-publicacao' | translate}} *</label>
+                                        <md-datepicker id="dataDoDocumento" ng-model="AfetacaoCtrl.afetacao.documento.dataDoDocumento"
+                                                       md-placeholder="dd/mm/aaaa"
+                                                       md-custom-mask="39/19/9999"
+                                                       md-custom-clean-mask="false"
+                                                       name="{{'label-data-documento' | translate}}"
+                                                       class="dataEncargo md-datepicker-input-container">
+                                        </md-datepicker>
+                                    </div>
+                                    <div layout="column" flex="33">
+                                        <md-button class="md-raised"
+                                                   ngf-select="AfetacaoCtrl.addArquivo($files)"
+                                                   ngf-multiple="false">{{'btn-selecionar-documento' | translate | uppercase}}</md-button>
+                                    </div>
+                                    <div layout="column" flex="33">
+                                        <span>
+                                          <label class="hand link" style="word-break: break-all;" ng-click="AfetacaoCtrl.gerarPreview(AfetacaoCtrl.afetacao.documento.arquivo)">{{AfetacaoCtrl.afetacao.documento.arquivo.name}}</label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="button-botton" layout="row" layout-align="end center">
+                                    <md-button class="md-raised" ng-click="AfetacaoCtrl.incluirArquivo()">{{'btn-adicionar' | translate | uppercase}}</md-button>
+                                </div>
+                                <md-table-container ng-if="AfetacaoCtrl.afetacao.documentos.length > 0">
+                                    <table md-table class="upload-table">
+                                        <thead md-head >
+                                            <tr md-row class="upload-head">
+                                                <th md-column flex="40">{{'label-descricao' | translate}}</th>
+                                                <th md-column flex="20">{{'label-data' | translate}}</th>
+                                                <th md-column flex="20">{{'label-documento' | translate}}</th>
+                                                <th md-column flex="20">{{'label-acoes' | translate}}</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody md-body>
+                                        <tr md-row ng-repeat="item in AfetacaoCtrl.afetacao.documentos">
+                                            <td md-cell>
+                                                <span ng-bind="item.descricao"></span>
+                                            </td>
+                                            <td md-cell>
+                                                {{item.data | date: 'dd/MM/yyyy'}}
+                                            </td>
+                                            <td md-cell>
+                                                <label class="hand link" ng-click="AfetacaoCtrl.gerarPreview(item)">
+                                                    {{item.nomeReal}}
+                                                </label>
+                                            </td>
+
+                                            <td md-cell >
+                                                <ng-md-icon icon="delete" class="hand"
+                                                            ng-click="AfetacaoCtrl.removerArquivo(item);">
+                                                    <md-tooltip>{{"btn-excluir" | translate}}</md-tooltip>
+                                                </ng-md-icon>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <md-table-pagination class="upload" style="margin: auto; background-color: #D8F8E1;"
+                                                         md-limit="AfetacaoCtrl.tabelaDocumentos.limit"
+                                                         md-limit-options="AfetacaoCtrl.tabelaDocumentos.limitsPage"
+                                                         md-page="AfetacaoCtrl.tabelaDocumentos.page"
+                                                         md-total="{{AfetacaoCtrl.transferencia.atosComplementares.length}}"
+                                                         md-on-paginate="true"
+                                                         md-page-select>
+                                    </md-table-pagination>
+                                </md-table-container>
+                            </fieldset>
+                            <div layout="row" style="margin-top: 1%">
+                                <div layout="column" style="margin-right: 2%;" flex="50">
+                                    <md-input-container flex>
+                                        <label>{{'label-numero-do-processo' | translate}}</label>
+                                        <input required ng-model="AfetacaoCtrl.afetacao.numeroDoProcesso">
+                                    </md-input-container>
+                                </div>
+                                <div layout="column" flex="50">
+                                    <md-input-container flex>
+                                        <label>{{'label-numero-do-processo-judicial' | translate}}</label>
+                                        <input ng-required="AfetacaoCtrl.afetacao.tipo.descricao === 'Decisão/Determinação Judicial'
+                                        || AfetacaoCtrl.afetacao.tipo.descricao === 'Decisão/Determinação de Órgão de Controle'" ng-model="AfetacaoCtrl.afetacao.numeroProcessoJudicial">
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <div layout="row">
+                                <md-input-container class="md-block margin-top" flex="100">
+                                    <label>{{'label-observacao'|translate}}</label>
+                                    <textarea name="{{'label-observacao'|translate}}"
+                                              ng-model="AfetacaoCtrl.afetacao.observacao"
+                                              md-maxlength="2000" maxlength="2000"
+                                              class="descricaoFinalidade"></textarea>
+                                </md-input-container>
+                            </div>
+
+
+                        </v-pane-content>
+                    </v-pane>
+                    <v-pane expanded>
+                        <v-pane-header id="id_acordion_imovel_parcela" class="titulo-verde negrito">{{'label-dados-imovel-parcela' | translate | uppercase}}</v-pane-header>
+                        <v-pane-content>
+                            <div layout="row">
+                                <md-input class="md-block" flex layout="column">
+                                    <md-radio-group style="margin: 1% 0 0 2%"  class="md-block" disabled required ng-model="AfetacaoCtrl.afetacao.isImovel" layout="row"
+                                                    name="{{'label-publicacao' | translate}}">
+                                        <md-radio-button class="md-primary"
+                                                         ng-value="true"><label>{{'label-selecionar-imovel' | translate}}</label></md-radio-button>
+                                        <md-radio-button class="md-primary"
+                                                         ng-value="false"><label>{{'label-selecionar-poligonal' | translate}}</label></md-radio-button>
+                                    </md-radio-group>
+                                </md-input>
+                            </div>
+                            <div  style="margin-top: 2%">
+                                <inserir-imovel-afetacao afetacao="AfetacaoCtrl.afetacao"></inserir-imovel-afetacao>
+                            </div>
+
+                        </v-pane-content>
+                    </v-pane>
+                </v-accordion>
+            </div>
+        </div>
+    </div>
+
+    <hr class="linha-divisoria-footer">
+    <div class="button-botton" layout="row" layout-align="end center">
+        <md-button class="md-raised margin-botao-footer" ng-click="AfetacaoCtrl.fechar()">{{'btn-fechar' | translate | uppercase}}</md-button>
+        <md-button class="md-raised margin-botao-footer" ng-click="AfetacaoCtrl.salvar()">{{'btn-gravar' | translate | uppercase}}</md-button>
+    </div>
+
+</form>
+
+
+

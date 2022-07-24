@@ -1,0 +1,103 @@
+<md-dialog aria-label="EXCLUIR PARCELA" flex="85" ng-cloak>
+  <form name="excluirParcela">
+    <md-toolbar>
+      <div class="md-toolbar-tools text-center">
+        <h2>{{'label-titulo-excluir-parcela' | translate}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="excluirParcelaCtrl.fechar()">
+          <md-icon md-svg-src="assets/img/icons/ic_close_white_24px.svg" aria-label="Fechar"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content" layout="column">
+        <div layout="column" flex="100" >
+
+          <label>{{'label-parcela-excluir' | translate}}: {{excluirParcelaCtrl.rip}}/{{excluirParcelaCtrl.codigoUtilizacao}} {{excluirParcelaCtrl.parcelaModal.sequencial}}</label>
+          <label class="margin-top">{{'label-area-terreno-parcela' | translate}}: {{excluirParcelaCtrl.parcelaModal.areaTerreno | number:2}} </label>
+
+
+            <md-table-container ng-if="excluirParcelaCtrl.benfeitorias.length > 0" class="margin-top">
+              <table md-table>
+
+                <thead md-head>
+                <tr md-row>
+                  <th md-column>{{"label-benfeitorias-parcela" | translate}}</th>
+                  <th md-column>{{"label-area-construida" | translate}}</th>
+                </tr>
+                </thead>
+
+                <tbody md-body>
+
+                <tr md-row ng-repeat="benfeitoria in excluirParcelaCtrl.benfeitorias">
+                  <td md-cell>
+                    {{benfeitoria.codigo}}
+                  </td>
+                  <td md-cell >
+                    {{benfeitoria.areaConstruida}}
+                  </td>
+                </tr>
+                </tbody>
+
+              </table>
+            </md-table-container>
+
+            <label ng-show="excluirParcelaCtrl.parcelas.length > 0" class="margin-top">{{'label-selecionar-parcela' | translate}}:</label>
+
+            <md-table-container layout-fill class="margin-top" ng-show="excluirParcelaCtrl.parcelas.length > 0">
+              <table md-table>
+
+                <thead md-head>
+                <tr md-row>
+                  <th md-column></th>
+                  <th md-column>{{"label-parcela" | translate}}</th>
+                  <th md-column>{{"label-area-terreno-parcela" | translate}}</th>
+                  <th md-column>{{"label-benfeitorias" | translate}}</th>
+                  <th md-column>{{"label-area-construida-total" | translate}}</th>
+                </tr>
+                </thead>
+
+                <tbody md-body>
+
+                <tr md-row ng-repeat="parcela in excluirParcelaCtrl.parcelas">
+                  <td md-cell>
+                    <md-radio-group ng-model="excluirParcelaCtrl.parcelaSelecionada"
+                                    ng-change="excluirParcelaCtrl.popularParcela(parcela)">
+                      <md-radio-button ng-value="parcela"
+                      ></md-radio-button>
+                    </md-radio-group>
+                  </td>
+                  <td md-cell>
+                    {{parcela.sequencial}}
+                  </td>
+                  <td md-cell>
+                    {{parcela.areaTerreno | number: 2}}
+                  </td>
+                  <td md-cell>
+                    {{parcela.codigo ? parcela.codigo : '-'}}
+                  </td>
+                  <td md-cell>
+                    {{excluirParcelaCtrl.formatarAreaBenfeitoria(parcela.areConstruidaBenfeitoria)}}
+                  </td>
+                </tr>
+                </tbody>
+
+              </table>
+            </md-table-container>
+
+
+
+        </div>
+        <div layout="row" flex="100" layout-align="end center">
+          <md-button ng-click="excluirParcelaCtrl.fechar()" class="md-raised">
+            Cancelar
+          </md-button>
+          <md-button ng-click="excluirParcelaCtrl.confirmar()" class="md-raised" ng-show="excluirParcelaCtrl.parcelas.length > 0">
+            Confirmar
+          </md-button>
+        </div>
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>
+

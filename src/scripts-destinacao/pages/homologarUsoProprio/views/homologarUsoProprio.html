@@ -1,0 +1,85 @@
+<form name="homologarUsoProprioCtrl.form">
+  <div class="margin-header-conteudo">
+    <span class="titulo-verde-header">{{'label-destinacao-imoveis' | translate | uppercase}}</span>
+    <div class="base-vermelho"></div>
+    <hr class="linha-divisoria">
+  </div>
+  <div layout="row" layout-xs="column" class="margin-mapa">
+    <div layout="column" flex="35" flex-xs="100">
+      <informacoes-imovel destinacao-imoveis="homologarUsoProprioCtrl.homologarUsoProprio.destinacaoImoveis"></informacoes-imovel>
+      <div style="margin-top: 30px;" ng-show="homologarUsoProprioCtrl.homologarUsoProprio.destinacaoImoveis[0].fotoVideo.length > 0">
+        <span class="negrito">{{'label-album-fotos-utilizacao'| translate}}</span>
+        <div class="borda-carrossel"></div>
+        <carousel-destinacao imagens="homologarUsoProprioCtrl.homologarUsoProprio.destinacaoImoveis[0].fotoVideo"></carousel-destinacao>
+      </div>
+    </div>
+    <div layout="column" flex="65" flex-xs="100" layout-xs="column" class="margin-conteudo">
+      <div ng-cloak flex="100" flex-xs="100" offset="5">
+        <dados-atendimento atendimento="homologarUsoProprioCtrl.homologarUsoProprio.atendimento" tipo-destinacao="homologarUsoProprioCtrl.homologarUsoProprio.tipoDestinacaoEnum"></dados-atendimento>
+        <div class="margin-top">
+          <v-accordion id="accordion" multiple class="vAccordion--default">
+
+            <v-pane>
+              <v-pane-header class="titulo-verde negrito">{{'label-dados-imovel-parcela' | translate | uppercase}}</v-pane-header>
+              <v-pane-content>
+                <inserir-dados-parcela-imovel destinacao-imoveis="homologarUsoProprioCtrl.homologarUsoProprio.destinacaoImoveis"
+                                              tipo-destinacao="homologarUsoProprioCtrl.homologarUsoProprio.tipoDestinacaoEnum"
+                ></inserir-dados-parcela-imovel>
+              </v-pane-content>
+            </v-pane>
+
+            <v-pane>
+              <v-pane-header class="titulo-verde negrito">{{'label-dados-responsavel-destinatario' | translate | uppercase}}</v-pane-header>
+              <v-pane-content>
+                <dados-responsavel-uso-proprio destinacao-imoveis="homologarUsoProprioCtrl.homologarUsoProprio.destinacaoImoveis"
+                                               uso-proprio="homologarUsoProprioCtrl.homologarUsoProprio"></dados-responsavel-uso-proprio>
+
+              </v-pane-content>
+            </v-pane>
+
+            <v-pane>
+              <v-pane-header class="titulo-verde negrito">{{'label-dados-utilizacao' | translate | uppercase}}</v-pane-header>
+              <v-pane-content>
+                <dados-utilizacao ng-if="homologarUsoProprioCtrl.homologarUsoProprio.tipoDestinacaoEnum"
+                                  utilizacao="homologarUsoProprioCtrl.homologarUsoProprio.utilizacao"
+                                  atendimento="homologarUsoProprioCtrl.atendimento"
+                                  imoveis="homologarUsoProprioCtrl.homologarUsoProprio.destinacaoImoveis"
+                                  tipo-destinacao="homologarUsoProprioCtrl.homologarUsoProprio.tipoDestinacaoEnum"
+                                  responsaveis="homologarUsoProprioCtrl.homologarUsoProprio.responsaveis"></dados-utilizacao>
+
+              </v-pane-content>
+            </v-pane>
+
+            <v-pane>
+              <v-pane-header class="titulo-verde negrito">{{'label-fotos' | translate | uppercase}}</v-pane-header>
+              <v-pane-content>
+                <fotos destinacao="homologarUsoProprioCtrl.homologarUsoProprio"></fotos>
+              </v-pane-content>
+            </v-pane>
+
+            <v-pane>
+              <v-pane-header class="titulo-verde negrito">{{'label-homologacao' | translate | uppercase}}</v-pane-header>
+              <v-pane-content>
+                <md-input-container class="md-block margin-top" >
+                  <label>{{'label-anotacoes'|translate}}:</label>
+                  <textarea name="{{'label-label-anotacoes'|translate}}"
+                            ng-model="homologarUsoProprioCtrl.homologarUsoProprio.observacao"
+                            md-maxlength="2000" maxlength="2000"
+                            class="descricaoFinalidade"></textarea>
+                </md-input-container>
+              </v-pane-content>
+            </v-pane>
+
+          </v-accordion>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="linha-divisoria-footer">
+  <div class="button-botton" layout="row" layout-align="end center">
+    <md-button class="md-raised margin-botao-footer" ng-click="homologarUsoProprioCtrl.fechar();">{{'btn-fechar' | translate | uppercase}}</md-button>
+    <md-button class="md-raised margin-botao-footer" ng-click="homologarUsoProprioCtrl.recusar()">{{'btn-recusar'| translate | uppercase}}</md-button>
+    <md-button class="md-raised"                     ng-click="homologarUsoProprioCtrl.gravar()">{{'btn-homologar'| translate | uppercase}}</md-button>
+  </div>
+
+</form>

@@ -1,0 +1,21 @@
+{
+    "label-historico": "Histórico",
+    "label-situacao": "Situação",
+    "label-data": "Data",
+    "label-responsavel": "Responsável",
+    "label-justificativa-anotacao": "Justicativa/Anotação",
+    "label-nome-responsavel": "Nome do Responsável",
+    "label-nome-do-requerente": "Nome do Requerente",
+    "label-data-analise-tecnica": "Data de Envio para Análise Técnica",
+    "label-data-solicitacao": "Data da Solicitação",
+    "label-anotacoes": "Anotações",
+
+    "btn-limpar": "Limpar",
+    "btn-pesquisar": "Pesquisar",
+
+    "tooltip-pesquisar-analise-tecnica": "Pesquisar",
+    "tooltip-limpar-campos": "Limpar Campos",
+    "tooltip-add-anotacao": "Adicionar Anotação",
+    "tooltip-analise-tecnica": "Análise Técnica"
+
+}

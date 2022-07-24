@@ -1,0 +1,189 @@
+<div>
+  <div layout="row" layout-xs="column" flex="100" class="alerta margem-elementos-modal" ng-show="exibirTextAreaOutro">
+    <div layout="column">
+      <ng-md-icon icon="info_outline" class="my-icon alerta-negrito"></ng-md-icon>
+    </div>
+    <div layout="column" class="margem-esquerda">
+      <div layout="row" layout-xs="column">
+        <label class="alerta-negrito">{{'label-atencao' | translate}}</label>
+      </div>
+      <div layout="row" layout-xs="column">
+        <label>Você está em {{utilizacao.tipoUtilizacao.descricao}}. Confira se alguma das categorias disponibilizadas atende a utilização a ser cadastrada.</label>
+      </div>
+    </div>
+  </div>
+
+    <div flex="100" flex-xs="100" >
+      <md-input-container class="md-block margin-top">
+        <label>{{'label-tipo-utilizacao'|translate}}</label>
+        <md-select ng-disabled="(bloquear || (editar && tipoDestinacao !== 'POSSE_INFORMAL')) || tipoDestinacao === 'PERMISSAO_USO_IMOVEL_FUNCIONAL'"
+                   ng-model="utilizacao.tipoUtilizacao"
+                   ng-change="filtraSubTipos()"
+                   ng-click="atualizaTiposUtilizacao()"
+                   name="{{'label-tipo-utilizacao'|translate}}"
+                   ng-model-options="{ trackBy: '$value.id' }"
+                   required>
+          <md-select-header>
+            <input ng-model="textoBuscaTipo"
+                   type="search"
+                   placeholder="{{'label-buscar-tipo' | translate}}" style="width: calc(100% - 6px); height: 25px;">
+          </md-select-header>
+          <md-option
+                     ng-value="tipoUtilizacao"
+                     ng-repeat="tipoUtilizacao in todosTiposUtilizacao | filter: {'descricao' : textoBuscaTipo}"
+                     style="background-color: white !important">
+            {{tipoUtilizacao.descricao}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <md-input-container class="md-block margin-top" ng-show="listaFiltradaSubTipoUtilizacao.length > 0">
+        <label>{{'label-sub-tipo-utilizacao'|translate}}</label>
+        <md-select ng-disabled="(bloquear || (editar && tipoDestinacao !== 'POSSE_INFORMAL')) || tipoDestinacao === 'PERMISSAO_USO_IMOVEL_FUNCIONAL'"
+                   ng-model="utilizacao.subTipoUtilizacao"
+                   ng-change="filtraTipo()"
+                   ng-click="atualizaSubTiposUtilizacao()"
+                   name="{{'label-sub-tipo-utilizacao'|translate}}"
+                   ng-required="listaFiltradaSubTipoUtilizacao.length > 0"
+                   ng-model-options="{ trackBy: '$value.id' }">
+          <md-select-header>
+            <input ng-model="textoBuscaSubTipo"
+                   type="search"
+                   placeholder="{{'label-buscar-subtipo' | translate}}" style="width: calc(100% - 6px); height: 25px;"/>
+          </md-select-header>
+          <md-option ng-disabled="bloquear"
+                     ng-value="subTipoUtilizacao"
+                     ng-repeat="subTipoUtilizacao in todosSubTipoUtilizacaoInicial | filter: {'descricao':textoBuscaSubTipo}"
+                     style="background-color: white !important">
+            {{subTipoUtilizacao.descricao}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <div ng-show="exibirTextAreaOutro">
+        <md-input-container class="md-block margin-top">
+          <label>{{'label-especificacao'|translate}}</label>
+          <md-select ng-model="utilizacao.especificacao"
+                    md-on-close="novaEspecificacao()"
+                    ng-required="exibirTextAreaOutro"
+                    ng-disabled="bloquear || editar">
+            <md-select-header>
+              <input ng-model="$parent.textoBuscaEspecificacao"
+                    type="search"
+                    placeholder="{{'label-buscar-especificacao' | translate}}"
+                    style="width: calc(100% - 6px); height: 25px;"/>
+            </md-select-header>
+            <md-option ng-value="especificacao"
+                      ng-repeat="especificacao in especificacoes | filter: textoBuscaEspecificacao"
+                      style="background-color: white !important">
+              {{especificacao}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+    </div>
+
+  <div layout="row">
+    <md-input-container class="md-block margin-top" flex="100">
+      <label>{{'label-descricao-finalidade'|translate}}:</label>
+      <textarea ng-disabled="bloquear"
+                name="{{'label-descricao-finalidade'|translate}}"
+                ng-model="utilizacao.finalidade"
+                md-maxlength="2000" maxlength="2000"
+                class="descricaoFinalidade"></textarea>
+    </md-input-container>
+  </div>
+
+  <div layout="row" layout-xs="column" ng-if="tipoDestinacao !== 'PERMISSAO_USO_IMOVEL_FUNCIONAL'">
+    <md-input-container class="md-block margin-lateral-label" flex="33" flex-xs="100">
+      <label>{{'label-familias-beneficiadas'|translate}}:</label>
+      <input ng-disabled="bloquear"
+             type="number"
+             ng-model="utilizacao.numeroFamiliasBeneficiadas"
+             ng-required="true"
+             min="0"
+             name="{{'label-familias-beneficiadas'|translate}}"/>
+    </md-input-container>
+    <md-input-container class="md-block margin-lateral-label" flex="33" flex-xs="100">
+      <label>{{'label-numeoro-servidores' | translate}}:</label>
+      <input ng-disabled="bloquear"
+             type="number"
+             ng-model="utilizacao.numeroServidores"
+             ng-change="calcularAreaPorServidor()"
+             ng-required="true"
+             min="0"
+             name="{{'label-numeoro-servidores' | translate}}"/>
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="33" flex-xs="100">
+      <label>{{'label-area-construida-por-servidor'|translate}}</label>
+      <input ng-model="utilizacao.areaServidor" ui-number-mask disabled/>
+    </md-input-container>
+  </div>
+
+  <div ng-if="tipoDestinacao === 'POSSE_INFORMAL'">
+    <div layout="row" layout-xs="column" class="margin-top" >
+      <div flex="50">
+          <div layout="column" flex="30" >
+              <label>{{"label-data-efetica-utilizacao" | translate}}:*</label>
+              <md-datepicker ng-model="utilizacao.dataEfetivacaoUtilizacao"
+                             md-placeholder="dd/mm/aaaa"
+                             name="{{'label-data-publicacao' | translate}}"
+                             ng-disabled="bloquear"
+                             required>
+              </md-datepicker>
+          </div>
+        <md-input-container class="md-block">
+          <md-checkbox ng-disabled="bloquear" class="md-primary margin-top-alinhar-data" ng-model="utilizacao.processoPosse">
+            {{'label-processo-reintegracao-posse' | translate}}
+          </md-checkbox>
+        </md-input-container>
+      </div>
+
+      <div flex="50">
+        <md-input-container class="md-block margin-top">
+          <label>{{'label-numero-processo' | translate}}:</label>
+          <input ng-disabled="bloquear" ng-model="utilizacao.numeroProcesso" ng-blur="buscarPorNumeroProcesso()"
+                 name="{{'label-numero-processo' | translate}}" required/>
+        </md-input-container>
+      </div>
+    </div>
+
+    <div flex="100">
+      <md-input-container class="md-block margin-top" >
+        <label>{{'label-anotacoes'|translate}}:</label>
+        <textarea ng-disabled="bloquear"
+                  name="{{'label-label-anotacoes'|translate}}"
+                  ng-model="utilizacao.anotacoes"
+                  md-maxlength="2000" maxlength="2000"
+                  class="descricaoFinalidade"></textarea>
+      </md-input-container>
+    </div>
+  </div>
+  <div ng-if ="tipoDestinacao === 'USO_PROPRIO'">
+    <div layout="column" flex="30" >
+      <label>{{"label-data-inicio-utilizacao" | translate}}:*</label>
+
+      <md-datepicker ng-model="utilizacao.dataUtilizacao"
+                     ng-disabled="bloquear"
+                     ng-required="true"
+                     md-placeholder="dd/mm/aaaa"
+                     md-custom-mask="39/19/9999"
+                     md-custom-clean-mask="false"
+                     name="{{'label-data' | translate}}"
+                     class="special">
+      </md-datepicker>
+    </div>
+
+    <div layout="row">
+      <md-input-container class="md-block margin-top" flex="100">
+        <label>{{'label-anotacao-observacao'|translate}}:</label>
+        <textarea ng-disabled="bloquear"
+                  name="{{'label-anotacao-observacao'|translate}}"
+                  ng-model="utilizacao.anotacoes"
+                  md-maxlength="2000" maxlength="2000"
+                  class="descricaoFinalidade"></textarea>
+      </md-input-container>
+    </div>
+  </div>
+</div>

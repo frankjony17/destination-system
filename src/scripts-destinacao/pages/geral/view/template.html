@@ -1,0 +1,43 @@
+<div flex layout="column" ng-controller="MenuDestinacaoController as ul">
+  <div class="tirarndo-padding" style="overflow: auto">
+
+      <cabecalho></cabecalho>
+
+    <!-- MENU -->
+    <div>
+    <menu></menu>
+    </div>
+    <!-- Conteúdo Principal -->
+    <md-content style="padding: 0 !important;" flex layout="column" ng-controller="GeralController as geralCtrl">
+      <!-- TODO: usar o GlobalController no view state -->
+      <div class="principal" ui-view></div>
+    </md-content>
+
+  </div>
+</div>
+
+<!--script type="text/ng-template" id="toast-template-error.html">
+  <md-toast md-theme="error-toast">
+    <div class="toast-padding" layout="column" ng-show="isArray">
+      <h3 flex ng-show="titulo">{{titulo}}</h3>
+
+      <div flex ng-repeat="msg in msgs">
+        <span flex>{{msg}}</span>
+      </div>
+    </div>
+
+    <span flex ng-show="!isArray">{{msgs}}</br></span>
+  </md-toast>
+</script>
+
+<script type="text/ng-template" id="toast-template-warning.html">
+  <md-toast md-theme="warning-toast">
+    <span flex>{{msgs}}</span>
+  </md-toast>
+</script>
+
+<script type="text/ng-template" id="toast-template-success.html">
+  <md-toast md-theme="success-toast">
+    <span flex>{{msgs}}</span>
+  </md-toast>
+</script -->

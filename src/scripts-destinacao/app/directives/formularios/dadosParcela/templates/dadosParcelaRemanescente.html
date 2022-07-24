@@ -1,0 +1,89 @@
+<div>
+
+    <div layout="row" class="margin-top" style="margin-bottom: 1%;">
+        <label class="titulo-verde negrito">{{'label-parcela-remanescente-criada' | translate | uppercase}}: {{parcelaRemanescente.sequencial}}</label>
+    </div>
+
+    <div layout="row" style="margin-bottom: 1%;">
+        <span>{{'label-parcela-area' | translate}}:&nbsp;</span>
+        <span id="sp-valor-area-parcela-remanescente">{{parcelaRemanescente.areaTerreno | number: 2}}</span>
+    </div>
+
+    <div layout="row" ng-show="parcelaRemanescente.benfeitorias.length > 0">
+        <label>{{'label-selecione-acessoes-benfeitoria' | translate}}</label>
+    </div>
+     
+    <div>
+        <md-table-container class="margin-top" ng-show="parcelaRemanescente.benfeitorias.length > 0">
+            <table md-table>
+
+            <thead md-head>
+            <tr md-row>
+                <th md-column>
+                    <md-checkbox class="md-primary" 
+                                 ng-model="parcelaRemanescente.checkboxAll"
+                                 disabled>
+                    </md-checkbox>
+                </th>
+                <th md-column>{{"label-acessao-benfeitoria" | translate}}</th>
+                <th md-column>{{"label-area-construida" | translate}}</th>
+            </tr>
+            </thead>
+
+            <tbody md-body>
+                <tr md-row ng-repeat="benfeitoria in parcelaRemanescente.benfeitorias">
+                    <td md-cell>
+                    <md-checkbox class="md-primary"
+                                disabled
+                                id="cbx-benfeitoria-parcela-remanescente"
+                                ng-model="benfeitoria.selecionado">
+                    </md-checkbox>
+                    </td>
+                    <td md-cell>
+                        {{benfeitoria.codigo}} - {{benfeitoria.especializacao}}
+                    </td>
+                    <td md-cell>
+                        {{benfeitoria.areaConstruida | number:2}}
+                    </td>
+                </tr>
+            </tbody>
+
+            </table>
+        </md-table-container>
+
+        <md-input-container class="margin-top md-block" flex>
+            <label>{{'label-memorial-descritivo' | translate}}:*</label>
+            <textarea rows="5"
+                    ng-disabled="desabilitarMemorialDescritivo"
+                    ng-model="parcelaRemanescente.memorialDescritivo"
+                    required
+                    id="memorial-parcela-remanescente"
+                    name="{{'label-memorial-descritivo' | translate}}">
+            </textarea>
+        </md-input-container>
+
+        <label>{{'label-planta-memorial' | translate}}</label>
+        <div layout="row" flex="80">
+            <div style="margin-top: 7px">
+            <md-button class="md-primary md-raised"
+                        ngf-select="adicionarArquivos($files)"
+                        ngf-multiple="true">
+                {{"btn-escolher-arquivo" | translate}}
+            </md-button>
+            </div>
+            <div layout="column" flex="40" class="margin-left espacamento-arquivos-adicionados">
+            <md-container>
+            <div ng-repeat="arquivo in parcelaRemanescente.arquivos">
+                <div layout="row" layout-column="center">
+                <a ng-click="criarParcelaCtrl.gerarPreview(arquivo)">
+                    <label class="hand link">{{arquivo.name || arquivo.nome}}</label>
+                </a>
+                <ng-md-icon icon="close" class="hand cor-remover" size="18" ng-click="removerArquivo($index)"></ng-md-icon>
+                </div>
+            </div>
+            </md-container>
+            </div>
+        </div>
+    </div>
+    
+</div>

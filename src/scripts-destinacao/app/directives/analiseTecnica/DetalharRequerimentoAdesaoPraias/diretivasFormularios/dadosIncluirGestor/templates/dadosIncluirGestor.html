@@ -1,0 +1,60 @@
+<div layout="column" layout-margin="5">
+
+          <div layout="row" layout-xs="column">
+            <md-input-container flex="30" flex-xs="100">
+              <label>{{'label-cpf' | translate}}*</label>
+              <input ui-br-cpf-mask
+                     ng-disabled="bloquearCampos"
+                     ng-required="true"
+                     name="{{nomeCampo}} - {{'label-cpf' | translate}}"
+                     ng-model="gestor.cpf">
+            </md-input-container>
+
+            <md-input-container flex="65" flex-offset="5" flex-xs="100" flex-offset-xs="0">
+              <label>{{'label-nome' | translate}}*</label>
+              <input ng-model="gestor.nome"
+                     ng-disabled="bloquearCampos"
+                     name="{{nomeCampo}} - Nome"
+                     ng-required="true">
+            </md-input-container>
+          </div>
+
+          <div layout="row" layout-xs="column">
+            <md-input-container flex="40" flex-xs="100">
+              <label>{{'label-cargo' | translate}}*</label>
+              <input ng-required="true"
+                     name="{{nomeCampo}} - {{'label-cargo' | translate}}"
+                     ng-disabled="bloquearCampos"
+                     ng-model="gestor.cargo">
+            </md-input-container>
+
+            <md-input-container flex="60" flex-offset="5" flex-xs="100" flex-offset-xs="0">
+              <label>{{'label-orgao-entidade' | translate}}*</label>
+              <input ng-model="gestor.nomeOrgaoEntidade" 
+                     name="{{nomeCampo}} - {{'label-orgao-orgaoEntidade' | translate}}"
+                     ng-disabled="bloquearCampos"
+                     ng-required="true">
+            </md-input-container>
+          </div>
+
+          <email-confirmacao ng-model="gestor" campo="nomeCampo" 
+                             desabilitar="bloquearCampos" 
+                            obrigatorio="true"></email-confirmacao>
+
+          <dados-telefones entidade="gestor" bloquear-campos="bloquearCampos" 
+                           tipo-requerimento="'ADESAO_GESTAO_PRAIAS'">
+          </dados-telefones>
+
+          <h3>{{'label-endereco-unidade-atuacao' | translate}}</h3>
+          <div layout="row">
+              <label flex-xs="35" class="negrito">{{'label-endereco-mesmo-sede-municipal' | translate}}</label>
+              <md-radio-group layout="row"
+                              ng-model="gestor.unidadeAtuacao"
+                              layout-align="center center" flex-offset="10"
+                              ng-change="selecionarEnderecoAtuacao(gestor);">
+                  <md-radio-button class="md-primary" ng-disabled="bloquearCampos" ng-value="true">{{'sim' | translate }}</md-radio-button>
+                  <md-radio-button class="md-primary" ng-disabled="bloquearCampos" ng-value="false">{{'não' | translate}}</md-radio-button>
+              </md-radio-group>
+          </div>
+
+</div>

@@ -1,0 +1,212 @@
+<div>
+  <div layout="row" layout-xs="column" style="margin-top: 1em" class="margin-bottom">
+    <md-input-container class="md-block" flex="33" flex-xs="100">
+      <label>{{'label-forma-pagamento' | translate}}:</label>
+      <md-select ng-model="financeiro.tipoPagamento"
+                 required name="{{'label-forma-pagamento' | translate}}"
+                 ng-change="resetarValoresOriginais();"
+                 ng-model-options="{trackBy: '$value.id'}">
+        <md-option ng-repeat="item in tipoPagamento" ng-value="item">
+          {{item.descricao}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="33" flex-xs="100" ng-if="!verificaFormaPagamentoAvista()">
+      <label>{{'label-numero-parcelas' | translate}}:</label>
+      <input type="number" ng-model="financeiro.numeroParcelas" max="999" >
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="33" flex-xs="100" ng-if="!verificaFormaPagamentoAvista()">
+      <label>{{'label-periodicidade' | translate}}:</label>
+      <md-select ng-model="financeiro.tipoPeriocidade">
+        <md-option ng-repeat="item in tipoPeriocidade" ng-value="item">
+          {{item.descricao}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+
+  </div>
+
+  <div class="md-block" flex="100" flex-xs="100" ng-if="verificaFormaPagamentoAvista()">
+    <div layout="row" class="margin-bottom">
+      <label>{{'label-fonte-recurso' | translate}}</label>
+    </div>
+    <md-radio-group layout="row" ng-model="financeiro.fonteRecursos" required>
+      <md-radio-button ng-value="false" >{{'label-exclusivamente-recurso-proprio' | translate}}</md-radio-button>
+      <md-radio-button class="margin-right" ng-value="true">{{'label-financiamento-imobiliario' | translate}}</md-radio-button>
+    </md-radio-group>
+  </div>
+
+  <div layout="row" layout-xs="column" style="margin-top: 1em"  ng-if="financeiro.fonteRecursos === true">
+    <md-input-container  class="md-block"  flex="50" flex-xs="100" >
+      <label>{{'label-valor-financiado' | translate}}:</label>
+      <input ng-model="financeiro.valorFinancidado"  ui-number-mask required name="{{'label-valor-financiado' | translate}}">
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="50" flex-xs="100" ng-if="verificaFormaPagamentoAvista()">
+      <label>{{'label-instituicao-financeira' | translate}}:</label>
+      <md-select ng-model="financeiro.instituicaoFinanceira" required name="{{'label-instituicao-financeira' | translate}}">
+        <md-option ng-repeat="item in instituicoesFinanceiras" ng-value="item">
+          {{item.descricao}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+
+
+
+
+  <md-input-container class="md-block" flex="100" flex-xs="100" ng-if="verificaFormaPagamentoAvista() && !verificarImovelBrasil();">
+    <label>{{'label-moeda' | translate}}:</label>
+    <md-select ng-model="financeiro.tipoMoeda" requered name="{{'label-moeda' | translate}}">
+      <md-option ng-repeat="item in tiposMoedas" ng-value="item">
+        {{item.descricao}}
+      </md-option>
+    </md-select>
+  </md-input-container>
+
+
+  <div layout="row" layout-xs="column" class="margin-top">
+
+    <div flex="100" ng-show="(verificaFormaPagamentoAvista() && laudos.length === 0) || (!verificaFormaPagamentoAvista() && laudos.length === 0)">
+      <md-table-container>
+        <table md-table>
+
+          <thead md-head>
+          <tr md-row>
+            <th md-column>{{'label-imovel' | translate}}</th>
+            <th md-column>{{'label-valor-laudo' | translate }}</th>
+            <th md-column>{{'label-assinatura-laudo' | translate }}</th>
+            <th md-column>{{'label-arquivo-laudo' | translate }}</th>
+            <th md-column>{{'label-valor-venda' | translate }}</th>
+          </tr>
+          </thead>
+          <tbody md-body>
+          <tr md-row ng-repeat="laudo in laudos | limitTo: 3">
+            <td md-cell>
+              <div layout="row" layout-align="none start">
+                <input-container>
+                  <span class="hand link" ng-bind="laudo.imovel.codigoUtilizacao"></span>
+                </input-container>
+                <input-container>
+                  <span class="hand link" ng-bind="laudo.imovel.valorLaudo"></span>
+                </input-container>
+              </div>
+            </td>
+            <td md-cell>
+              <div layout="row" style="margin-top: 1% !important">
+                <md-input-container class="md-block">
+                  <input ng-model="laudo.imovel.valor"
+                         ui-number-mask ng-change="somarValorTotal()"
+                         ng-disabled="verificaTipoModalidade();">
+                </md-input-container>
+              </div>
+
+            </td>
+          </tr>
+          </tbody>
+
+        </table>
+      </md-table-container>
+
+      <md-table-pagination md-limit="tabelaImovel.limit"
+                           md-limit-options="tabelaImovel.limitsPage"
+                           md-page="tabelaImovel.page"
+                           md-total="{{laudos.length}}"
+                           md-on-paginate="true">
+      </md-table-pagination>
+
+    </div>
+  </div>
+
+
+
+  <div layout="row" layout-xs="column" style="margin-top: 1em" ng-if="!verificaFormaPagamentoAvista()">
+    <md-input-container class="md-block" flex="50" flex-xs="100">
+      <label>{{'label-valor-entrada' | translate}}:</label>
+      <input ng-model="financeiro.valorEntrada" ui-number-mask name="{{'label-valor-entrada' | translate}}" required>
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="50" flex-xs="100">
+      <label>{{'label-valor-financiado' | translate}}:</label>
+      <input ng-model="financeiro.valorFinancidado" name="{{'label-valor-financiado' | translate}}" required ui-number-mask  ng-blur="validarValorTotalImovel()">
+    </md-input-container>
+  </div>
+
+  <div layout="row" layout-xs="column" flex-xs="100" ng-if="!verificaFormaPagamentoAvista()">
+
+    <md-input-container class="md-block" flex="100" flex-xs="100" ng-blur="validarDataInicioCobranca()" >
+      <label>{{'label-data-inicio-cobranca' | translate}}:</label>
+      <input ng-model="financeiro.dataInicioCobranca" mask="9999">
+    </md-input-container>
+
+    <md-input-container flex="50" flex-xs="100">
+      <label>{{'label-indice-reajuste-anual' | translate}}:</label>
+      <md-select ng-model="financeiro.tipoIndiceReajusteAnual">
+        <md-option ng-repeat="item in tipoReajusteAnual" ng-value="item">
+          {{item.descricao}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+
+  <div layout="row" layout-xs="column" style="margin-top: 1em" ng-if="!verificaFormaPagamentoAvista()">
+    <md-input-container class="md-block" flex="50" flex-xs="100">
+      <label>{{'label-prazo-carencia-meses' | translate}}:</label>
+      <input type="number" ng-model="financeiro.carenciaMeses" min="0" max="999">
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="50" flex-xs="100">
+      <label>{{'label-mes-ano-reajuste-contratual' | translate}}:</label>
+      <input ng-model="financeiro.mesAnoReajuste" ui-mask="99/9999" ng-blur="validaMesAno(financeiro)">
+    </md-input-container>
+  </div>
+
+  <div layout="row" layout-xs="column" ng-if="!verificaFormaPagamentoAvista()">
+    <md-input-container class="md-block" flex="50" flex-xs="100">
+      <label>{{'label-dia-vencimento-debito-mensal' | translate}}:</label>
+      <input type="number" ng-model="financeiro.diaVencimento"  min="1" max="31">
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="50" flex-xs="100">
+      <label>{{'label-juros-mensal' | translate}}:</label>
+      <md-select ng-model="financeiro.tipoJurosMensal">
+        <md-option ng-repeat="item in tipoJuro" ng-value="item">
+          {{item.descricao}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+  </div>
+   <div ng-if="!verificaFormaPagamentoAvista() && verificaJurosMensal() && financeiro.tipoJurosMensal" >
+    <md-input-container class="md-block" flex="100" flex-xs="100" >
+      <label>{{'label-juros-mensal' | translate}}(%):</label>
+      <input ng-model="financeiro.jurosMensal" ui-number-mask>
+    </md-input-container>
+
+   </div>
+
+   <div ng-if="!verificaFormaPagamentoAvista() && !verificaJurosMensal() && financeiro.tipoJurosMensal">
+    <md-input-container class="md-block margin-bottom" flex="100" flex-xs="100" >
+      <label>{{'label-indice-juros-mensal' | translate}}:</label>
+      <md-select ng-model="financeiro.tipoIndiceJurosMensal">
+        <md-option ng-repeat="item in tipoReajusteAnual" ng-value="item">
+          {{item.descricao}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+   </div>
+
+
+
+
+  <div layout="row" layout-xs="column" ng-if="!verificaFormaPagamentoAvista()">
+    <md-input-container class="md-block" flex="100" flex-xs="100">
+      <label>{{'label-multa-inadimplencia' | translate}}:</label>
+      <input ng-model="financeiro.multaInadimplacia" ui-number-mask>
+    </md-input-container>
+  </div>
+</div>

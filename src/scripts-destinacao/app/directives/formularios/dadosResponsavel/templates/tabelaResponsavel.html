@@ -1,0 +1,161 @@
+<div>
+    <p ng-if="!bloquear">
+        <md-button ng-show="!modoEditar" class="md-raised" style="width: 200px" ng-click="incluirResponsavelDestinatarioLista()">
+            {{'label-incluir-responsavel' | translate}}
+        </md-button>
+    </p>
+
+<md-content ng-show="dadosResponsavel.responsaveis.length > 0">
+    <md-radio-group required flex class="md-block"  name="{{'label-responsavel-principal'|translate}}"
+                    ng-model="dadosResponsavel.responsavelPrincipal" ng-change="responsavelPrincipal(dadosResponsavel.responsavelPrincipal)">
+
+        <md-table-container>
+            <table md-table style="border: 1px solid #cccccc;">
+
+                <thead md-head>
+                <tr md-row class="upload-head">
+                    <th md-column>{{'label-responsavel-principal'|translate}}</th>
+                    <th md-column>{{'label-cpf-cnpj' | translate}}</th>
+                    <th md-column>{{'label-nome-razao' | translate}}</th>
+                    <th md-column>{{'label-acao'|translate}}</th>
+                </tr>
+                </thead>
+
+                <tbody md-body>
+                <tr md-row ng-repeat="dados in paginacaoResponsaveis">
+                    <td md-cell>
+                        <md-radio-button class="md-primary" layout-align="center center"
+                                         ng-value="dados.cpfCnpj" ng-disabled="modoEditar || bloquear">
+                        </md-radio-button>
+                    </td>
+                    <td md-cell>
+                        <a href ng-click="detalharPessoa(dados)" ng-bind="dados.cpfCnpj | cpfcnpj"></a>
+                    </td>
+                    <td md-cell>
+                        <span ng-bind="dados.nome"></span>
+                    </td>
+                    <td md-cell>
+                        <md-fab-speed-dial md-direction="left" class="hand md-scale alinhar-fab-dados-imovel">
+
+                            <md-fab-trigger>
+                                <ng-md-icon class="icon-acao" icon="more_vert">
+                                </ng-md-icon>
+                            </md-fab-trigger>
+
+                            <md-fab-actions>
+
+                                <ng-md-icon class="icon-subacao" icon="delete" ng-if="modoEditar !== true && bloquear !== true"
+                                            ng-click="removerResponsavel(dados.cpfCnpj)">
+                                    <md-tooltip>{{"label-excluir" | translate}}</md-tooltip>
+                                </ng-md-icon>
+
+                                <ng-md-icon class="icon-subacao" icon="edit"
+                                            ng-click="editar(dados)">
+                                    <md-tooltip>{{"label-editar" | translate}}</md-tooltip>
+                                </ng-md-icon>
+
+                            </md-fab-actions>
+                        </md-fab-speed-dial>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+        </md-table-container>
+        <md-table-pagination md-limit="tamanhoLimite" md-limit-options="[5, 10, 15]"
+                             md-page="registroInicial" md-total="{{totalItems}}"
+                             md-on-paginate="paginarListaTelefones" md-page-select
+                             style="border: 1px solid #cccccc; margin:0 5px 0 5px; ">
+        </md-table-pagination>
+    </md-radio-group>
+</md-content>
+</div>
+
+<div>
+    <md-checkbox class="md-primary" style="margin-left: 1%" ng-model="dadosResponsavel.interveniente.isPossui" name="{{'possui-interveniente' | translate}}"
+                 flex="25" ng-disabled="destinacao.editar || destinacao.detalhar">
+        <label>{{'possui-interveniente' | translate}}</label>
+    </md-checkbox>
+
+    <div ng-if="dadosResponsavel.interveniente.isPossui" layout="column" layout-xs="column" layout-sm="column" >
+        <label class><h3>{{'dados-interveniente' | translate}}</h3></label>
+        <div layout="row">
+            <div flex="30" layout="column" ng-if="!interveniente.cpfCnpj || interveniente.cpfCnpj.length==11">
+                <md-input-container layout-xs="row" flex-xs flex-sm class="md-block"  layout-xs="column" layout-sm="column">
+                    <label class>{{'label-cpf-cnpj-interveniente' | translate}}:</label>
+                    <input ng-model="dadosResponsavel.interveniente.cpfCnpj" ui-br-cpfcnpj-mask ng-change="buscarDadosPessoaFisicaEJuridica()"
+                           name="{{'label-cpf-cnpj-interveniente' | translate}}" ng-disabled="destinacao.editar || destinacao.detalhar" required />
+                    <a href="" ng-show="dadosResponsavel.interveniente.cpfCnpj" ng-click="detalharPessoaa(dadosResponsavel.interveniente)">{{'label-ver-dados-pessoa-fisica' | translate}}</a>
+                </md-input-container>
+            </div>
+
+            <div flex="50" layout="column" ng-if="dadosResponsavel.interveniente.cpfCnpj && dadosResponsavel.interveniente.cpfCnpj.length==14">
+                <md-input-container layout-xs="row" flex-xs flex-sm class="md-block"  layout-xs="column" layout-sm="column">
+                    <label class>{{'label-cpf-cnpj-interveniente' | translate}}:</label>
+                    <input ng-model="dadosResponsavel.interveniente.cpfCnpj" ui-br-cpfcnpj-mask ng-change="buscarDadosPessoaFisicaEJuridica()"
+                           name="{{'label-cpf-cnpj-interveniente' | translate}}" ng-disabled="destinacao.editar || destinacao.detalhar" required />
+                    <a href="" ng-click="detalharPessoaa(dadosResponsavel.interveniente)">{{'label-ver-dados-pessoa-juridica' | translate}}</a>
+                </md-input-container>
+            </div>
+
+            <md-input flex="30" layout="column" flex-offset="5" ng-if="dadosResponsavel.interveniente.cpfCnpj || dadosResponsavel.interveniente.cpfCnpj.length==11">
+                <label>{{'label-nome'| translate}}</label>
+                <label>{{dadosResponsavel.interveniente.nome}}</label>
+            </md-input>
+
+            <md-input-container flex="50" layout-xs="row" flex-xs flex-sm class="md-block"  layout-xs="column" layout-sm="column"
+                                ng-if="dadosResponsavel.interveniente.cpfCnpj && dadosResponsavel.interveniente.cpfCnpj.length==14">
+                <label class>{{'label-codigo-ug' | translate}}:</label>
+                <input ng-model="dadosResponsavel.interveniente.codigoUg" ng-disabled="destinacao.editar || destinacao.detalhar"
+                       name="{{'label-codigo-ug' | translate}}" required />
+            </md-input-container>
+        </div>
+        <div layout="row" layout-xs="column" layout-sm="column">
+            <md-input-container layout-xs="row" flex="50" flex-xs flex-sm class="md-block" layout-xs="column" layout-sm="column">
+                <label class>{{'label-email' | translate}}:</label>
+                <input ng-model="dadosResponsavel.interveniente.email" ng-disabled="destinacao.editar || destinacao.detalhar"
+                       name="{{'label-email' | translate}}" required />
+            </md-input-container>
+
+            <md-input-container layout-xs="row" flex="50" flex-xs flex-sm class="md-block" layout-xs="column" ng-show="dadosResponsavel.interveniente.email" ng-if="destinacao.editar != true && destinacao.detalhar != true" layout-sm="column">
+                <label class>{{'label-confirmacao-email' | translate}}:</label>
+                <input ng-model="dadosResponsavel.interveniente.emailConfirmacao" ng-blur="verificarEmail()"
+                       name="{{'label-confirmacao-email' | translate}}" required />
+            </md-input-container>
+        </div>
+
+        <fieldset>
+            <dados-telefone is-interveniente="true" lista-telefone="dadosResponsavel.interveniente.telefones" contador-telefone="contTelefone" editar="destinacao.editar" detalhar="destinacao.detalhar"></dados-telefone>
+        </fieldset>
+        <br>
+
+        <fieldset>
+            <div layout="row" flex>
+                <h3>{{'label-endereco-correspondencia' | translate}}</h3>
+            </div>
+            <div class="button-botton" layout="row">
+                <md-input flex="70" layout="row" ng-show="dadosResponsavel.interveniente.enderecoCorrespondencia">
+                    <label ng-show="dadosResponsavel.interveniente.enderecoCorrespondencia.endereco.pais.toUpperCase() == BRASIL"
+                           ng-bind="dadosResponsavel.interveniente.enderecoCorrespondencia.endereco.logradouro
+                                                              + ', ' + ('label-numero' | translate) + ' ' + dadosResponsavel.interveniente.enderecoCorrespondencia.endereco.numero
+                                                              + ', ' + dadosResponsavel.interveniente.enderecoCorrespondencia.endereco.bairro
+                                                              + ', ' + dadosResponsavel.interveniente.enderecoCorrespondencia.endereco.municipio + '/' + interveniente.enderecoCorrespondencia.endereco.uf
+                                                              + ' - ' + dadosResponsavel.interveniente.enderecoCorrespondencia.endereco.pais
+                                                              + '. ' + ('label-cep' | translate) + ': ' + (dadosResponsavel.interveniente.enderecoCorrespondencia.endereco.cep | cep)"></label>
+                    <label ng-show="dadosResponsavel.interveniente.enderecoCorrespondencia.endereco.pais && dadosResponsavel.interveniente.enderecoCorrespondencia.endereco.pais.toUpperCase() != BRASIL"
+                           ng-bind="dadosResponsavel.interveniente.enderecoCorrespondencia.endereco.enderecoExterior
+                                                      + ', ' + dadosResponsavel.interveniente.enderecoCorrespondencia.endereco.nomeCidadeExterior
+                                                      + ' - ' + dadosResponsavel.interveniente.enderecoCorrespondencia.endereco.pais
+                                                      + '. ' + ('label-codigo-postal' | translate) + ': ' + dadosResponsavel.interveniente.enderecoCorrespondencia.endereco.codigoPostal"></label>
+                </md-input>
+                <md-button class="md-raised" flex="30" ng-click="incluirEnderecoCorrespondenciaa()" layout-align="end center">
+                    <label ng-if="!dadosResponsavel.interveniente.enderecoCorrespondencia">{{'label-adicionar-endereco'| translate | uppercase}}</label>
+                    <label ng-if="dadosResponsavel.interveniente.enderecoCorrespondencia">{{'label-editar-endereco'| translate | uppercase}}</label>
+                </md-button>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,31 @@
+<md-dialog aria-label="Suspender" flex="60" ng-cloak>
+  <form name="adicionarSolicitantes">
+    <md-toolbar>
+      <div class="md-toolbar-tools text-center">
+        <h2>{{'label-anotacoes' | translate}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="fechar()">
+          <md-icon md-svg-src="assets/img/icons/ic_close_24px.svg" aria-label="Fechar"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <div layout="row" flex="100" layout-margin>
+          <md-input-container  flex="100" class="md-block">
+            <label>{{'label-anotacoes' | translate}}*</label>
+            <textarea ng-model="requerimento.anotacoes"
+                      required name="anotacoes"
+                      maxlength="500"
+                      md-maxlength="500"></textarea>
+          </md-input-container>
+        </div>
+        <div layout="row" flex="100" layout-align="end center">
+          <md-button ng-click="confirmar()" class="md-raised">
+            Salvar
+          </md-button>
+        </div>
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>

@@ -1,0 +1,163 @@
+<div ng-if="!cessaoGratuitaCtrl.permissaoConcedida">
+    <acesso-negado></acesso-negado>
+</div>
+
+<exibir-elemento-por-permissao-destinacao permissoes="cessaoGratuitaCtrl.PERMISSOES"
+                               permissao-concedida="cessaoGratuitaCtrl.permissaoConcedida"
+                               detalhar="cessaoGratuitaCtrl.cessaoGratuita.detalhar">
+    <div class="margin-header-conteudo">
+      <titulo-servico class="titulo-verde titulo-verde-header"></titulo-servico>
+      <div class="base-vermelho"></div>
+      <hr class="linha-divisoria">
+    </div>
+    <div layout="row" layout-xs="column" class="margin-mapa"
+         ng-if="cessaoGratuitaCtrl.carregarDadosUtilizacao == true">
+      <div layout="column" flex="35" flex-xs="100">
+        <informacoes-imovel destinacao-imoveis="cessaoGratuitaCtrl.cessaoGratuita.destinacaoImoveis"></informacoes-imovel>
+        <div style="margin-top: 30px;" ng-show="cessaoGratuitaCtrl.existeFotoVideo(cessaoGratuitaCtrl.cessaoGratuita.destinacaoImoveis)">
+          <span class="negrito">{{'label-album-fotos-utilizacao'| translate}}</span>
+          <div class="borda-carrossel"></div>
+          <carousel-destinacao imagens="cessaoGratuitaCtrl.imagens"></carousel-destinacao>
+        </div>
+      </div>
+      <md-content class="md-padding" flex="65" flex-xs="100">
+        <md-tabs md-dynamic-height md-no-ink md-selected="indiceTabs">
+          <md-tab id="tabUtilizacao" ng-disabled="cessaoGratuitaCtrl.bloqueiaDadosUtilizacao">
+            <md-tab-label>{{'label-dados-utilizacao' | translate | uppercase}}</md-tab-label>
+            <md-tab-body>
+              <form name="cessaoGratuitaCtrl.formUtilizacao">
+                <div layout="column" flex="100" flex-xs="100" layout-xs="column" class="margin-conteudo">
+                  <div ng-cloak flex="100" flex-xs="100" offset="5">
+                    <v-accordion  ng-if="cessaoGratuitaCtrl.cessaoGratuita.statusDestinacao.id === 2" id="accordion" multiple class="vAccordion--default cancelamento">
+                        <v-pane>
+                            <v-pane-header id="id_acordion_cancelamento">{{'label-dados-cancelamento-destinacao' | translate | uppercase}}</v-pane-header>
+                            <v-pane-content>
+                                <apresentar-dados-cancelamento cancelamento-destinacao="cessaoGratuitaCtrl.cessaoGratuita">
+
+                                </apresentar-dados-cancelamento>
+                            </v-pane-content>
+                        </v-pane>
+                    </v-accordion>
+                      <v-accordion  ng-if="cessaoGratuitaCtrl.cessaoGratuita.statusDestinacao.id === 5" id="accordion" multiple class="vAccordion--default cancelamento">
+                          <v-pane>
+                              <v-pane-header id="id_acordion_encerramento">{{'label-dados-encerramento-destinacao' | translate | uppercase}}</v-pane-header>
+                              <v-pane-content>
+                                  <apresentar-dados-encerramento encerramento="cessaoGratuitaCtrl.cessaoGratuita">
+
+                                  </apresentar-dados-encerramento>
+                              </v-pane-content>
+                          </v-pane>
+                      </v-accordion>
+                      <dados-atendimento bloquear="cessaoGratuitaCtrl.cessaoGratuita.detalhar"
+                                       atendimento="cessaoGratuitaCtrl.atendimento"
+                                       tipo-destinacao="cessaoGratuitaCtrl.cessaoGratuita.tipoDestinacaoEnum"
+                                       destinacao-transito="cessaoGratuitaCtrl.cessaoGratuita"
+                                       editar="cessaoGratuitaCtrl.cessaoGratuita.editar">
+                      </dados-atendimento>
+                    <div class="margin-top">
+                      <v-accordion ng-show="cessaoGratuitaCtrl.cessaoGratuita.codFundamentoLegal" id="accordion" multiple class="vAccordion--default">
+                        <v-pane>
+                          <v-pane-header id="id_acordion_dadosImovel" class="titulo-verde negrito">{{'label-dados-imovel-parcela' | translate | uppercase}}</v-pane-header>
+                          <v-pane-content>
+                              <inserir-dados-parcela-imovel-page
+                                  destinacao="cessaoGratuitaCtrl.cessaoGratuita"
+                                  edicao="cessaoGratuitaCtrl.cessaoGratuita.editar"
+                                  bloquear="cessaoGratuitaCtrl.cessaoGratuita.detalhar"
+                                  rota-destinacao="'destinacao.cessaoGratuita'">
+                              </inserir-dados-parcela-imovel-page>
+                          </v-pane-content>
+                        </v-pane>
+                        <v-pane>
+                          <v-pane-header id="dadosResponsavel" class="titulo-verde negrito">{{'label-dados-responsavel-destinatario' | translate | uppercase}}</v-pane-header>
+                          <v-pane-content>
+                            <dados-responsavel-destinatario bloquear="cessaoGratuitaCtrl.cessaoGratuita.detalhar"
+                                               modo-editar="cessaoGratuitaCtrl.cessaoGratuita.editar"
+                                                            dados-responsavel="cessaoGratuitaCtrl.cessaoGratuita.dadosResponsavel"
+                                               atendimento="cessaoGratuitaCtrl.atendimento"
+                                                tipo-destinacao="cessaoGratuitaCtrl.cessaoGratuita.tipoDestinacaoEnum"
+                                                            destinacao="cessaoGratuitaCtrl.cessaoGratuita"
+                                                            nome-state="cessaoGratuitaCtrl.nomeState"
+                                                fundamento="cessaoGratuitaCtrl.cessaoGratuita.codFundamentoLegal">
+                            </dados-responsavel-destinatario>
+                          </v-pane-content>
+                        </v-pane>
+                          <v-pane>
+                              <v-pane-header id="id_acordion_dadosUtilizacao" class="titulo-verde negrito">{{'label-dados-uso' | translate | uppercase}}</v-pane-header>
+                              <v-pane-content>
+                                  <dados-utilizacao ng-if="cessaoGratuitaCtrl.cessaoGratuita.utilizacao"
+                                                    editar="cessaoGratuitaCtrl.cessaoGratuita.editar"
+                                                    bloquear="cessaoGratuitaCtrl.cessaoGratuita.detalhar"
+                                                    ng-if="cessaoGratuitaCtrl.cessaoGratuita.tipoDestinacaoEnum"
+                                                    utilizacao="cessaoGratuitaCtrl.cessaoGratuita.utilizacao"
+                                                    atendimento="cessaoGratuitaCtrl.atendimento"
+                                                    imoveis="cessaoGratuitaCtrl.cessaoGratuita.destinacaoImoveis"
+                                                    tipo-destinacao="cessaoGratuitaCtrl.cessaoGratuita.tipoDestinacaoEnum"
+                                                    responsaveis="cessaoGratuitaCtrl.cessaoGratuita.responsaveis"></dados-utilizacao>
+                              </v-pane-content>
+                          </v-pane>
+                        <v-pane>
+                          <v-pane-header id="dadosDoInstrumento" class="titulo-verde negrito">{{'label-dados-instrumento-ato' | translate | uppercase}}</v-pane-header>
+                          <v-pane-content>
+                              <instrumento-ato ng-if="cessaoGratuitaCtrl.carregarDadosUtilizacao === true"
+                                                destinacao-transito="cessaoGratuitaCtrl.cessaoGratuita"
+                                                bloquear="cessaoGratuitaCtrl.cessaoGratuita.detalhar"
+                                                rota-destinacao="'destinacao.cessaoGratuita'">
+                              </instrumento-ato>
+                          </v-pane-content>
+                        </v-pane>
+                      </v-accordion>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <!-- OS DADOS COMENTATOS SE REFEREM AO DADOS QUE FORAM REMOVIDOS DEVIDO A MINUTA -->
+              <!--div class="minuta margem-elementos-pagina" ng-if="cessaoGratuitaCtrl.exibirMinuta">
+                <b>{{'label-minuta' | translate}}</b>
+                <p style="margin-left: 2%;">Gerada em: {{cessaoGratuitaCtrl.dataMinuta}}</p>
+                <p style="margin-left: 2%;">Responsavel: {{cessaoGratuitaCtrl.responsavelMinuta}}</p>
+                <p>Arquivo: <label class="hand link">[nome do arquivo].pdf</label></p>
+              </div-->
+            </md-tab-body>
+          </md-tab>
+          <md-tab id="tabContrato" ng-disabled="!cessaoGratuitaCtrl.bloqueiaDadosUtilizacao">
+            <md-tab-label>{{'label-dados-contrato-termo' | translate | uppercase}}</md-tab-label>
+            <md-tab-body>
+              <form name="cessaoGratuitaCtrl.formContrato">
+                <div class="margin-top">
+                  <contrato bloquear="cessaoGratuitaCtrl.cessaoGratuita.detalhar"
+                            dados-contrato="cessaoGratuitaCtrl.cessaoGratuita.contrato"
+                            tipo-destinacao="cessaoGratuitaCtrl.tipoDestinacaoEnum"
+                            status-destinacao="cessaoGratuitaCtrl.cessaoGratuita.statusDestinacao"></contrato>
+                </div>
+                <div class="margin-conteudo">
+                  <v-accordion id="accordion" multiple class="vAccordion--default">
+                    <v-pane>
+                      <v-pane-header id="id_acordion_documentos" class="titulo-verde negrito">{{'label-documentos' | translate | uppercase}}</v-pane-header>
+                      <v-pane-content>
+                        <incluir-documento bloquear="cessaoGratuitaCtrl.cessaoGratuita.detalhar"
+                                           destinacao="cessaoGratuitaCtrl.cessaoGratuita"
+                                           rota-retorno="'destinacao.cessaoGratuita'" >
+
+                        </incluir-documento>
+                      </v-pane-content>
+                    </v-pane>
+                  </v-accordion>
+                </div>
+              </form>
+            </md-tab-body>
+          </md-tab>
+        </md-tabs>
+      </md-content>
+    </div>
+    <botoes-rodape bloquear="cessaoGratuitaCtrl.cessaoGratuita.detalhar"
+                   salvar-rascunho="cessaoGratuitaCtrl.salvarRascunho()"
+                   gravar="cessaoGratuitaCtrl.gravar()"
+                   avancar="cessaoGratuitaCtrl.avancar()"
+                   fechar="cessaoGratuitaCtrl.fechar()"
+                   voltar="cessaoGratuitaCtrl.voltar()"
+                   cancelar="cessaoGratuitaCrtl.cancelar()"
+                   botao-editar="cessaoGratuitaCtrl.botaoEditar()"
+                   gerar-minuta="cessaoGratuitaCtrl.bloqueiaDadosUtilizacao"
+                   cancelamento-encerramento="cessaoGratuitaCtrl.cessaoGratuita.cancelamentoEncerramento">
+    </botoes-rodape>
+</exibir-elemento-por-permissao-destinacao>

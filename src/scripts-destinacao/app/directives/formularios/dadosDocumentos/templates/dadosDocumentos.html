@@ -1,0 +1,66 @@
+<div layout="row">
+    <b>{{'label-documentos' | translate}}</b>
+</div>
+
+<div layout="row" ng-show="!isDetalhar()">
+    <md-input-container  class="md-block" flex="40" flex-xs="100" flex-sm="100" style="margin-right: 10px;">
+        <label>{{'label-nome' | translate}}:</label>
+        <input md-maxlength="200" maxlength="200" ng-model="descricao" type="text"/>
+    </md-input-container>
+
+    <md-button style="margin-top:18px;" class="md-raised"
+               ngf-multiple="false" ngf-select="adicionarDocumento($files)">
+        <label>{{'btn-selecionar-arquivo' | translate}}</label>
+    </md-button>
+
+    <md-input flex="25" layout="column"  style="padding-top: 38px;">
+        <label>{{documento.name}}</label>
+    </md-input>
+</div>
+<div ng-show="!isDetalhar() " layout="row" layout-xs="column" layout-md="column" style="text-align: right;" layout-align="end center">
+    <div layout="row" layout-xs="column">
+        <md-button class="md-raised" style="padding-left: 15px;padding-right: 15px;"
+                   ng-click="adicionarListaDocumentos()">
+            <label>{{'btn-adicionar' | translate}}</label>
+        </md-button>
+    </div>
+</div>
+
+<md-content ng-show="listaDocumentos.length > 0 " class="tabela-documento" ng-class="cancelamento ? 'tabela-cancelado': '' || encerramento ? 'tabela-cancelado': '' ">
+        <md-table-container>
+            <table md-table style="border: 1px solid #cccccc;">
+
+                <thead md-head>
+                <tr md-row class="upload-head">
+                    <th md-column>{{'label-nome'|translate}}</th>
+                    <th md-column>{{'label-arquivo' | translate}}</th>
+                    <th md-column></th>
+                </tr>
+                </thead>
+
+                <tbody md-body style="background-color: #FFFFFF">
+                <tr md-row ng-repeat="dados in paginacaoDocumentos | orderBy: 'contador'">
+                    <td md-cell>
+                        <span ng-bind="dados.descricao"></span>
+                    </td>
+                    <td md-cell>
+                        <a download="{{dados.nomeReal || dados.name}}" href="{{dados.url}}" target="_blank">{{dados.nomeReal || dados.name}}</a>
+                    </td>
+                    <td md-cell>
+                        <a ng-show="!isDetalhar()" href="" ng-click="removerDocumento(dados.contador, dados.id)">
+                            <ng-md-icon class="icon-subacao" icon="delete">
+                                <md-tooltip>{{"label-excluir" | translate}}</md-tooltip>
+                            </ng-md-icon>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+        </md-table-container>
+        <md-table-pagination md-limit="tamanhoLimite" md-limit-options="[5, 10, 15]"
+                             md-page="registroInicial" md-total="{{totalItems}}"
+                             md-on-paginate="paginarListaTelefones" md-page-select
+                             style="margin: -1px 5px 0 5px">
+        </md-table-pagination>
+</md-content>

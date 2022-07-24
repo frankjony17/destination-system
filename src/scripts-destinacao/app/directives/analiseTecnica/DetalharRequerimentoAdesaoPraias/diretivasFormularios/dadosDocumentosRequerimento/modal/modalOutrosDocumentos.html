@@ -1,0 +1,52 @@
+<md-dialog flex="50" aria-label="{{'label-outro-documentos' | translate}}"  ng-cloak>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{'label-confirmacao' | translate}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="fechar()">
+                    <md-icon aria-label="Close dialog">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div layout="row" layout-xs="column" >
+                    <md-input-container flex="100">
+                        <label>{{'label-nome-documeto' | translate}}</label>
+                        <input ng-model="documento.nome"/>
+                    </md-input-container>
+                </div>
+
+                <div>
+                    <div flex="30">
+                        <md-button ngf-multiple="true" ngf-select="addDocumentos($files, documento)">{{'procurar' | translate}}</md-button>
+                    </div>
+
+                    <md-list>
+                        <md-list-item ng-repeat="file in documento.files" style="min-height: 30%;">
+                            <p>
+                                <a href="#" ng-click="open(file)">
+                                    <label>{{file.name}}</label>
+                                </a>
+                                <md-icon
+                                        ng-click="removerArquivo($event, documento, $index);"
+                                        class="color-red hand">close</md-icon>
+                            </p>
+
+                        </md-list-item>
+                    </md-list>
+                </div>
+
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button ng-click="fechar()">
+                {{'btn-fechar' | translate}}
+            </md-button>
+            <md-button ng-click="salvar()">
+                {{'btn-salvar' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

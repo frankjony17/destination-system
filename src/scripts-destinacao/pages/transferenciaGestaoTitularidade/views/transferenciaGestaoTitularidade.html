@@ -1,0 +1,213 @@
+<div ng-if="!transferenciaCtrl.permissaoConcedida">
+    <acesso-negado></acesso-negado>
+</div>
+<exibir-elemento-por-permissao-destinacao permissoes="transferenciaCtrl.PERMISSOES"
+                                          permissao-concedida="transferenciaCtrl.permissaoConcedida"
+                                          detalhar="transferenciaCtrl.transferencia.detalhar">
+    <form name="transferenciaCtrl.form">
+      <div class="margin-header-conteudo">
+          <titulo-servico class="titulo-verde titulo-verde-header"></titulo-servico>
+        <div class="base-vermelho"></div>
+        <hr class="linha-divisoria">
+      </div>
+      <div layout="row" layout-xs="column" class="margin-mapa">
+        <div layout="column" flex="35" flex-xs="100">
+          <informacoes-imovel destinacao-imoveis="transferenciaCtrl.transferencia.destinacaoImoveis"></informacoes-imovel>
+        </div>
+        <div layout="column" flex="65" flex-xs="100" layout-xs="column" class="margin-conteudo">
+            <v-accordion  ng-if="transferenciaCtrl.transferencia.statusDestinacao.id === 2" id="accordion" multiple class="vAccordion--default cancelamento">
+                <v-pane>
+                    <v-pane-header id="id_acordion_cancelamento">{{'label-dados-cancelamento-destinacao' | translate | uppercase}}</v-pane-header>
+                    <v-pane-content>
+                        <apresentar-dados-cancelamento cancelamento-destinacao="transferenciaCtrl.transferencia">
+
+                        </apresentar-dados-cancelamento>
+                    </v-pane-content>
+                </v-pane>
+            </v-accordion>
+            <v-accordion  ng-if="transferenciaCtrl.transferencia.statusDestinacao.id === 5" id="accordion" multiple class="vAccordion--default cancelamento">
+                <v-pane>
+                    <v-pane-header id="id_acordion_encerramento">{{'label-dados-encerramento-destinacao' | translate | uppercase}}</v-pane-header>
+                    <v-pane-content>
+                        <apresentar-dados-encerramento encerramento="transferenciaCtrl.transferencia">
+
+                        </apresentar-dados-encerramento>
+                    </v-pane-content>
+                </v-pane>
+            </v-accordion>
+          <div ng-cloak flex="100" flex-xs="100" offset="5">
+            <div class="margin-top">
+                <dados-atendimento bloquear="transferenciaCtrl.transferencia.detalhar"
+                                   atendimento="transferenciaCtrl.atendimento"
+                                   tipo-destinacao="transferenciaCtrl.transferencia.tipoDestinacaoEnum"
+                                   destinacao-transito="transferenciaCtrl.transferencia"
+                                   editar="transferenciaCtrl.transferencia.editar">
+                </dados-atendimento>
+                <div class="margin-bottom margin-top" ng-show="transferenciaCtrl.transferencia.codFundamentoLegal">
+                    <div layout="row" flex>
+                        <div layout="column" flex>
+                            <md-input-container>
+                                <label>{{'label-tipo-transferencia' | translate}}</label>
+                                <md-select ng-disabled="transferenciaCtrl.transferencia.detalhar || transferenciaCtrl.transferencia.editar" required ng-model="transferenciaCtrl.transferencia.tipoTransferencia"
+                                           ng-model-options="{trackBy: '$value.id'}" name="{{'label-tipo-transferencia' | translate}}" >
+                                    <md-option ng-repeat="tipoTransferencia in transferenciaCtrl.tipoTransferencias" ng-value="tipoTransferencia">
+                                        {{tipoTransferencia.descricao}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+                <div class="margin-bottom margin-top" ng-show="transferenciaCtrl.transferencia.codFundamentoLegal">
+                    <div layout="row" flex>
+                        <div layout="column" flex="50">
+                            <md-input-container>
+                                <label>{{'label-ato-complementar' | translate}}</label>
+                                <input ng-disabled="transferenciaCtrl.transferencia.detalhar" md-maxlength="200" maxlength="200" ng-model="transferenciaCtrl.transferencia.atoComplementar" name="{{'label-ato-complementar' | translate}}">
+                            </md-input-container>
+                        </div>
+                        <div layout="column" flex="50">
+                            <md-button ng-disabled="!transferenciaCtrl.transferencia.atoComplementar" class="md-raised"
+                                       ngf-select="transferenciaCtrl.addArquivo($files)"
+                                       ngf-multiple="false">{{'btn-selecionar-arquivo' | translate | uppercase}}</md-button>
+                        </div>
+                    </div>
+
+                  <md-table-container ng-if="transferenciaCtrl.transferencia.atosComplementares.length > 0">
+                    <table md-table class="upload-table">
+                        <thead md-head >
+                            <tr md-row class="upload-head">
+                                <th md-column flex="40">{{'label-descricao' | translate}}</th>
+                                <th md-column flex="40">{{'label-documento' | translate}}</th>
+                                <th md-column flex="20" ng-if="!transferenciaCtrl.transferencia.detalhar"> </th>
+                            </tr>
+                        </thead>
+                      </thead>
+
+                      <tbody md-body>
+                      <tr md-row ng-repeat="item in transferenciaCtrl.transferencia.atosComplementares">
+                          <td md-cell>
+                              <span ng-bind="item.descricao"></span>
+                          </td>
+                          <td md-cell>
+                              <label class="hand link" ng-click="transferenciaCtrl.gerarPreview(item)">
+                                  {{item.nomeReal}}
+                              </label>
+                          </td>
+                          <td md-cell ng-if="!transferenciaCtrl.transferencia.detalhar">
+                              <ng-md-icon icon="delete" class="hand"
+                                      ng-click="transferenciaCtrl.removerArquivo(item);">
+                                  <md-tooltip>{{"btn-excluir" | translate}}</md-tooltip>
+                              </ng-md-icon>
+                          </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                      <md-table-pagination class="upload" style="margin: auto; background-color: #D8F8E1;"
+                                           md-limit="transferenciaCtrl.tabela.limit"
+                                           md-limit-options="transferenciaCtrl.tabela.limitsPage"
+                                           md-page="transferenciaCtrl.tabela.page"
+                                           md-total="{{transferenciaCtrl.transferencia.atosComplementares.length}}"
+                                           md-on-paginate="true"
+                                           md-page-select>
+                      </md-table-pagination>
+                  </md-table-container>
+                </div>
+              </div>
+
+              </div>
+              <v-accordion multiple ng-show="transferenciaCtrl.transferencia.codFundamentoLegal" class="vAccordion--default">
+                <v-pane expanded>
+                  <v-pane-header class="titulo-verde negrito">{{'label-dados-imovel' | translate | uppercase}}</v-pane-header>
+                  <v-pane-content>
+                      <dados-imovel
+                          destinacao-imoveis="transferenciaCtrl.transferencia"
+                          permite-editar="transferenciaCtrl.transferencia.editar"
+                          bloquear="transferenciaCtrl.transferencia.detalhar"
+                          tipo-destinacao="transferenciaCtrl.transferencia.tipoDestinacaoEnum"
+                          nome-state="'destinacao.transferenciaTitularidade'">
+                      </dados-imovel>
+                  </v-pane-content>
+                </v-pane>
+                <v-pane expanded>
+                  <v-pane-header class="titulo-verde negrito">{{'label-dados-destinatario' | translate | uppercase}}</v-pane-header>
+                  <v-pane-content>
+                      <div layout="row" style="margin-top: 1%">
+                            <div layout="column" flex="50">
+                              <md-input-container class="md-block" flex="100" flex-xs="100">
+                                <label>{{'label-tipo-destinatario' | translate}}:</label>
+                                <md-select ng-disabled="transferenciaCtrl.transferencia.detalhar || transferenciaCtrl.transferencia.editar" required ng-model="transferenciaCtrl.transferencia.tipoDestinatario"
+                                           ng-model-options="{trackBy: '$value.id'}" name="Tipo Destinatário" >
+                                  <md-option ng-repeat="tipoDestinatario in transferenciaCtrl.tipoDestinatarios" ng-value="tipoDestinatario">
+                                    {{tipoDestinatario.descricao}}
+                                  </md-option>
+                                </md-select>
+                              </md-input-container>
+                            </div>
+                            <div layout="column" ng-if="transferenciaCtrl.transferencia.tipoDestinatario.descricao === 'Autarquia/Fundação'" flex="50">
+                                <md-input-container class="md-block" flex="100" flex-xs="100">
+                                    <label>{{'label-lista-autarquias-fundacoes' | translate}}:</label>
+                                    <md-select ng-disabled="transferenciaCtrl.transferencia.detalhar || transferenciaCtrl.transferencia.editar" required ng-model="transferenciaCtrl.transferencia.destinatario.autarquiaFundacao"
+                                               ng-model-options="{trackBy: '$value'}" name="Autarquia Fundação" >
+                                        <md-option ng-repeat="autarquiaFundacao in transferenciaCtrl.listaAutarquiasFundacao" ng-value="autarquiaFundacao.descricao">
+                                            {{autarquiaFundacao.descricao}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                      </div>
+                      <div layout="row" class="margin-top" ng-if="transferenciaCtrl.transferencia.tipoDestinatario.descricao === 'Estatal'">
+                          <div layout="column" flex="50">
+                              <md-input-container class="md-block" flex="30" flex-xs="100">
+                                  <label>{{'label-destinatario-cnpj' | translate}}:</label>
+                                  <input ng-disabled="transferenciaCtrl.transferencia.detalhar || transferenciaCtrl.transferencia.editar" ng-model="transferenciaCtrl.transferencia.destinatario.cnpj" ui-br-cnpj-mask  ng-change="transferenciaCtrl.buscarDadosPessoaJuridica()">
+                                  <a href="" ng-if="transferenciaCtrl.transferencia.destinatario.cnpj" ng-click="transferenciaCtrl.detalharPessoa(transferenciaCtrl.transferencia.destinatario)">{{'label-ver-dados-pessoa-juridica' | translate}}</a>
+                              </md-input-container>
+                          </div>
+                          <div layout-align="center start" layout="column" ng-if="transferenciaCtrl.transferencia.destinatario.cnpj" style="padding:0 0 2% 2%" flex="50">
+                              {{'label-destinatario-razao-social' | translate}}: {{transferenciaCtrl.transferencia.destinatario.nomeEmpresarial}}
+                          </div>
+                      </div>
+                      <fieldset ng-if="transferenciaCtrl.transferencia.destinatario.cnpj">
+                          <div layout="row" flex>
+                              <h3>{{'label-endereco-correspondencia' | translate}}</h3>
+                          </div>
+                          <div class="button-botton" layout="row">
+                              <md-input flex="70" layout="row" ng-show="transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia">
+                                  <label ng-show="transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.pais.toUpperCase() == transferenciaCtrl.BRASIL"
+                                         ng-bind="transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.logradouro
+                            + ', ' + ('label-numero' | translate) + ' ' + transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.numero
+                            + ', ' + transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.bairro
+                            + ', ' + transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.municipio + '/' + transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.uf
+                            + ' - ' + transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.pais
+                            + '. ' + ('label-cep' | translate) + ': ' + (transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.cep | cep)"></label>
+                                  <label ng-show="transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.pais && transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.pais.toUpperCase() != transferenciaCtrl.BRASIL"
+                                         ng-bind="transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.enderecoExterior
+                            + ', ' + transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.nomeCidadeExterior
+                            + ' - ' + transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.pais
+                            + '. ' + ('label-codigo-postal' | translate) + ': ' + transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia.endereco.codigoPostal"></label>
+                              </md-input>
+                              <md-button class="md-raised" flex="30" ng-click="transferenciaCtrl.incluirEnderecoCorrespondencia()" layout-align="end center">
+                                  <label ng-if="!transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia">{{'label-adicionar-endereco'| translate | uppercase}}</label>
+                                  <label ng-if="transferenciaCtrl.transferencia.destinatario.enderecoCorrespondencia">{{'label-editar-endereco'| translate | uppercase}}</label>
+                              </md-button>
+                          </div>
+                      </fieldset>
+                  </v-pane-content>
+                </v-pane>
+              </v-accordion>
+          </div>
+      </div>
+
+      <hr class="linha-divisoria-footer">
+      <div class="button-botton" layout="row" layout-align="end center">
+          <md-button class="md-raised margin-botao-footer" ng-click="transferenciaCtrl.fechar()">{{'btn-fechar' | translate | uppercase}}</md-button>
+          <md-button ng-if="transferenciaCtrl.transferencia.detalhar && (transferenciaCtrl.transferencia.statusDestinacao.id != 2 && transferenciaCtrl.transferencia.statusDestinacao.id != 5)" class="md-raised margin-botao-footer" ng-click="transferenciaCtrl.cancelar()">{{'btn-cancelar-destinacao' | translate | uppercase}}</md-button>
+          <md-button ng-if="transferenciaCtrl.transferencia.detalhar && (transferenciaCtrl.transferencia.statusDestinacao.id != 2 && transferenciaCtrl.transferencia.statusDestinacao.id != 5)"  class="md-raised margin-botao-footer" ng-click="transferenciaCtrl.botaoEditar()">{{'btn-editar' | translate | uppercase}}</md-button>
+
+          <md-button class="md-raised" ng-if="!transferenciaCtrl.transferencia.detalhar"
+                   ng-click="transferenciaCtrl.gravar()">{{'btn-gravar' | translate | uppercase}}</md-button>
+      </div>
+
+    </form>
+</exibir-elemento-por-permissao-destinacao>

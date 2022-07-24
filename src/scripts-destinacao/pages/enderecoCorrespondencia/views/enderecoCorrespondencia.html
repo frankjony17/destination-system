@@ -1,0 +1,15 @@
+<form name="formularioEnderecoCorrespondencia" novalidate>
+<dados-endereco-correspondencia endereco-correspondencia="enderecoCorrespondencia"
+                                editar="enderecoCorrespondenciaCtrl.destinacao.editar"
+                                detalhar="destinacao.detalhar"></dados-endereco-correspondencia>
+
+<div layout="row" layout-align="end center">
+    <md-button class="md-primary md-raised margin-botao-footer" ng-click="fecharEnderecoCorrespondecia()">
+        {{'btn-fechar' | translate | uppercase}}
+    </md-button>
+
+    <md-button class="md-primary md-raised" ng-if="!destinacao.detalhar" ng-click="salvarEnderecoCorrepondencia()">
+        {{'btn-salvar' | translate | uppercase}}
+    </md-button>
+</div>
+</form>

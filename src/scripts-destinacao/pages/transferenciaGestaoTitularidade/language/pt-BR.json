@@ -1,0 +1,21 @@
+{
+  "label-destinacao-imoveis": "Destinação de Imóveis",
+  "label-dados-destinatario": "Dados do Destinatário",
+  "label-numero-processo": "Número do Processo",
+  "label-tipo-transferencia": "Tipo de Transferência",
+  "label-base-legal": "Base Legal",
+  "label-ato-complementar":"Ato Complementar",
+  "label-tipo-destinatario": "Tipo de Destinatário",
+  "label-destinatario-cnpj": "CNPJ",
+  "label-destinatario-razao-social": "Razão Social",
+    "label-lista-autarquias-fundacoes": "Lista de autarquias e fundações",
+
+  "btn-fechar": "Fechar",
+  "btn-gravar": "Gravar",
+  "btn-selecionar-arquivo": "Selecionar Arquivo",
+
+  "msg-confirmar-fechar": "Os dados da transferencia serão perdidos e não poderão ser recuperados. Deseja confirmar?",
+    "msg-fechar-editar": "As alterações realizadas serão perdidas. Deseja continuar?"
+
+
+}

@@ -1,0 +1,29 @@
+<md-dialog flex="70" aria-label="{{'label-gestor' | translate}}" ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{'label-gestor' | translate}}</h2>
+        <span flex></span>
+          <md-button class="md-icon-button" ng-click="modalVisualizarGestorCtrl.fechar()">
+            <md-icon md-svg-src="assets/img/icons/ic_close_white_24px.svg" aria-label="Fechar"></md-icon>
+          </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <md-container class="gestor">
+        <dados-incluir-gestor gestor="modalVisualizarGestorCtrl.gestor"
+                              bloquear-campos="modalVisualizarGestorCtrl.bloquearCampos"
+                              requerimento="modalVisualizarGestorCtrl.requerimento"></dados-incluir-gestor>
+        <dados-endereco-requerimento endereco="modalVisualizarGestorCtrl.gestor.enderecoAtuacao"
+                        nome-campo="'Endereço da Unidade de Atuação'"
+                        bloquear-campos="modalVisualizarGestorCtrl.bloquearCampos"
+                        utilizarEnderecoRequerente="modalVisualizarGestorCtrl.gestor.unidadeAtuacao"
+                        obrigatorio="true">
+        </dados-endereco-requerimento>
+      </md-container>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-raised" ng-click="modalVisualizarGestorCtrl.fechar()">
+            {{'btn-fechar' | translate}}
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

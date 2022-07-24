@@ -1,0 +1,56 @@
+<div layout="row" layout-xs="column">
+  <div layout="column" flex="100">
+    <md-content flex="100">
+      <md-table-container>
+
+        <table md-table>
+          <thead md-head>
+          <tr md-row>
+            <th md-column class="texto-centro coluna-um">
+              {{titulo}}
+            </th>
+            <th md-column class="texto-centro coluna-dois">
+            </th>
+            <th md-column class="texto-centro coluna-tres">
+            </th>
+          </tr>
+          </thead>
+
+          <tbody md-body>
+          <tr md-row ng-repeat="item in itensRequerimento">
+            <td md-cell class="texto-centro-corpo coluna-um">
+              <label ng-bind-html="item.item || item.descricao"></label>
+            </td>
+            <td md-cell class="texto-centro-corpo coluna-dois">
+              <md-radio-group class="md-primary" ng-model="itensAnalise[$index].resposta"
+                              flex-offset-xs="5"
+                              flex-offset="5"
+                              layout="row"
+                              layout-align="center center">
+                <md-radio-button ng-value="true"
+                                 ng-disabled="bloquearFormulario">
+                  {{'btn-sim' | translate}}
+                </md-radio-button>
+                <md-radio-button ng-value="false"
+                                 ng-disabled="bloquearFormulario">
+                  {{'btn-nao' | translate}}
+                </md-radio-button>
+              </md-radio-group>
+            <input type="hidden" ng-model="item.id" ng-init="itensAnalise[$index].idItem = item.id"/>
+            </td>
+            <td md-cell class="texto-centro-corpo coluna-tres">
+              <md-input-container class="md-block" style="margin-top:2%;">
+                <label>{{'label-obs' | translate}}</label>
+                <textarea ng-model="itensAnalise[$index].observacao" md-maxlength="150"
+                          rows="3" md-select-on-focus 
+                          ng-disabled="bloquearFormulario"
+                          name="{{titulo + ' - Item ' + ($index + 1)}}"></textarea>
+              </md-input-container>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+    </md-content>
+  </div>
+</div>

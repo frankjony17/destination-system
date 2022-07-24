@@ -1,0 +1,58 @@
+<md-dialog flex="50" aria-label="{{'label-documentos' | translate}}"  ng-cloak>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{'label-documentos' | translate}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="modalVisualizarArquivosCtrl.fechar()">
+                    <md-icon md-svg-src="assets/img/icons/ic_close_white_24px.svg" aria-label="Fechar"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div>
+                    <h3>{{'label-arquivos-do-documento' | translate}}: {{modalVisualizarArquivosCtrl.documento.nome}}</h3>
+                </div>
+
+                <md-container style="margin-top: 1%;">
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head>
+                                <tr md-row>
+                                    <th md-column>{{'label-nome-arquivo' | translate | uppercase}}</th>
+                                    <th md-column class="texto-centro">{{'label-acao' | translate | uppercase}}</th>
+                                </tr>
+                            </thead>
+                            <tbody md-body>
+                                <tr md-row ng-repeat="arquivo in modalVisualizarArquivosCtrl.arquivos">
+                                    <td md-cell>
+                                        <div>
+                                            {{arquivo.nome}}
+                                        </div>
+                                    </td>
+                                    <td md-cell>
+                                        <a ng-href="{{modalVisualizarArquivosCtrl.downloadArquivo(arquivo.id)}}">
+                                            <ng-md-icon icon="description" class="hand" style="fill:#788489" size="18"></ng-md-icon>
+                                        </a>                                        
+                                    </td>
+                                </tr>
+                                <tr ng-show="!modalVisualizarArquivosCtrl.arquivos || modalVisualizarArquivosCtrl.arquivos.length == 0">
+                                    <td colspan="2">
+                                        {{'label-nenhum-arquivo-anexado' | translate}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-container>
+
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button class="md-primary md-raised" ng-click="modalVisualizarArquivosCtrl.fechar()">
+                {{'btn-fechar' | translate}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

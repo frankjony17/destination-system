@@ -1,0 +1,44 @@
+<div layout="row" class="margin-mapa">
+  <hr class="linha-divisoria-footer" style="width: 100%">
+</div>
+<div class="button-botton" layout="row" layout-align="end center">
+
+  <md-button class="md-raised" ng-click="fechar(fecha);">{{'btn-fechar' | translate | uppercase}}</md-button>
+
+  <div ng-if="gerarMinuta">
+    <md-button class="md-raised" ng-click="voltar();">{{'btn-voltar' | translate | uppercase}}</md-button>
+  </div>
+
+  <div ng-if="(gerarMinuta && !bloquear) || (tipoDestinacaoEnum === 'POSSE_INFORMAL' && !bloquear)">
+    <md-button class="md-raised" ng-click="gravar();">{{'btn-gravar' | translate | uppercase}}</md-button>
+  </div>
+
+  <div ng-if="!gerarMinuta && !bloquear && tipoDestinacaoEnum!=='USO_PROPRIO' && tipoDestinacaoEnum !== 'POSSE_INFORMAL'">
+    <md-button class="md-raised"
+               ng-click="salvarRascunho();">{{'btn-salvar-rascunho' | translate | uppercase}}</md-button>
+  </div>
+
+  <div ng-if="bloquear && !cancelamentoEncerramento">
+    <md-button class="md-raised"
+               ng-click="cancelar();">{{'btn-cancelar-destinacao' | translate | uppercase}}</md-button>
+  </div>
+
+    <exibir-elemento-por-permissao-destinacao permissoes="permissaoBotaoEditar"
+                                   permissao-concedida="true"
+                                   detalhar="bloquear">
+        <div ng-if="bloquear && (tipoDestinacaoEnum !== 'USO_PROPRIO' || (tipoDestinacaoEnum === 'USO_PROPRIO' && pendente )) && !cancelamentoEncerramento">
+            <md-button class="md-raised"
+                       ng-click="botaoEditar();">{{'btn-editar' | translate | uppercase}}</md-button>
+        </div>
+    </exibir-elemento-por-permissao-destinacao>
+
+  <div ng-if="!gerarMinuta && tipoDestinacaoEnum !=='USO_PROPRIO' && tipoDestinacaoEnum !=='POSSE_INFORMAL'" >
+    <md-button class="md-raised"
+               ng-click="avancar();">{{'btn-avancar' | translate | uppercase}}</md-button>
+  </div>
+
+  <div ng-if="tipoDestinacaoEnum ==='USO_PROPRIO' && bloquear !== true">
+    <md-button class="md-raised" ng-click="enviar();">{{'btn-enviar-homologacao' | translate | uppercase}}</md-button>
+  </div>
+
+</div>

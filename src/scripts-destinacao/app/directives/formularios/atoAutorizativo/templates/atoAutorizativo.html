@@ -1,0 +1,34 @@
+    <div class="margin-top" layout="row" layout-xs="column" flex="100">
+
+      <md-input-container class="md-block margin-lateral-label margin-top-alinhar-data margem-elementos-pagina" flex="40">
+        <label>{{'label-tipo-ato-autorizacao'|translate}}</label>
+        <md-select ng-disabled="bloquear"
+                   ng-model="dadosAtoAutorizativo.tipoAtoAutorizativo"
+                   name="{{'label-tipo-ato-autorizacao'|translate}}"
+                   required>
+          <md-option
+            ng-value="tipoAtoAutorizativo"
+            ng-selected="tipoAtoAutorizativo.id === dadosAtoAutorizativo.tipoAtoAutorizativo.id"
+            ng-repeat="tipoAtoAutorizativo in tiposAutorizativos"
+            style="background-color: white !important">
+            {{tipoAtoAutorizativo.descricao}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <md-input-container class="md-block margin-lateral-label margin-top-alinhar-data margem-elementos-pagina" flex="40">
+        <label>{{"label-numero-ato-autorizativo" | translate }}:</label>
+        <input ng-model="dadosAtoAutorizativo.numeroAto" ng-disabled="bloquear" ng-required="true"/>
+      </md-input-container>
+
+      <div layout="column" class="margin-lateral-label margem-elementos-pagina">
+        <label class="label-date-picker">{{"label-data-publicacao" | translate}}:*</label>
+        <md-datepicker ng-model="dadosAtoAutorizativo.dataPublicacao"
+                       md-placeholder="dd/mm/aaaa"
+                       name="{{'label-data-publicacao' | translate}}"
+                       ng-disabled="bloquear"
+                       required>
+        </md-datepicker>
+      </div>
+
+    </div>

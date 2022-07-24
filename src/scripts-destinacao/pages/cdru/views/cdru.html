@@ -1,0 +1,166 @@
+<div ng-if="!cdruCtrl.permissaoConcedida">
+    <acesso-negado></acesso-negado>
+</div>
+<exibir-elemento-por-permissao-destinacao permissoes="cdruCtrl.PERMISSOES"
+                               permissao-concedida="cdruCtrl.permissaoConcedida"
+                               detalhar="cdruCtrl.cdru.detalhar">
+    <div class="margin-header-conteudo">
+        <titulo-servico class="titulo-verde titulo-verde-header"></titulo-servico>
+        <div class="base-vermelho"></div>
+        <hr class="linha-divisoria">
+    </div>
+    <div layout="row" layout-xs="column" class="margin-mapa" ng-if="cdruCtrl.carregarDadosUtilizacao == true">
+      <div layout="column" flex="35" flex-xs="100">
+        <informacoes-imovel destinacao-imoveis="cdruCtrl.cdru.destinacaoImoveis"></informacoes-imovel>
+      </div>
+      <md-content class="md-padding" flex="65" flex-xs="100">
+        <md-tabs md-dynamic-height md-no-ink md-selected="indiceTabs">
+          <md-tab id="tabUtilizacao" ng-disabled="cdruCtrl.bloqueiaDadosUtilizacao">
+              <md-tab-label>{{'label-dados-utilizacao' | translate | uppercase}}</md-tab-label>
+              <md-tab-body>
+                <form name="cdruCtrl.formUtilizacao">
+                  <div layout="column" layout-xs="column" class="margin-conteudo">
+                    <div ng-cloak flex="100" flex-xs="100" offset="5">
+                        <v-accordion  ng-if="cdruCtrl.cdru.statusDestinacao.id === 2" id="accordion" multiple class="vAccordion--default cancelamento">
+                            <v-pane>
+                                <v-pane-header id="id_acordion_cancelamento">{{'label-dados-cancelamento-destinacao' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                    <apresentar-dados-cancelamento cancelamento-destinacao="cdruCtrl.cdru">
+
+                                    </apresentar-dados-cancelamento>
+                                </v-pane-content>
+                            </v-pane>
+                        </v-accordion>
+                        <v-accordion  ng-if="cdruCtrl.cdru.statusDestinacao.id === 5" id="accordion" multiple class="vAccordion--default cancelamento">
+                            <v-pane>
+                                <v-pane-header id="id_acordion_encerramento">{{'label-dados-encerramento-destinacao' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                    <apresentar-dados-encerramento encerramento="cdruCtrl.cdru">
+
+                                    </apresentar-dados-encerramento>
+                                </v-pane-content>
+                            </v-pane>
+                        </v-accordion>
+
+                      <dados-atendimento bloquear="cdruCtrl.cdru.detalhar"
+                                         atendimento="cdruCtrl.atendimento"
+                                         tipo-destinacao="cdruCtrl.cdru.tipoDestinacaoEnum"
+                                         financeiro="cdruCtrl.cdru.financeiro"
+                                         destinacao-transito="cdruCtrl.cdru"
+                                         editar="cdruCtrl.cdru.editar"></dados-atendimento>
+                      <div class="margin-top">
+                        <v-accordion multiple class="vAccordion--default" ng-show="cdruCtrl.cdru.codFundamentoLegal">
+                          <v-pane>
+                            <v-pane-header id="accordion-dados-imovel-cdru" class="titulo-verde negrito">{{'label-dados-imovel-parcela' | translate | uppercase}}</v-pane-header>
+                            <v-pane-content>
+                              <inserir-dados-parcela-imovel-page
+                                bloquear="cdruCtrl.cdru.detalhar"
+                                destinacao="cdruCtrl.cdru"
+                                edicao="cdruCtrl.cdru.editar"
+                                rota-destinacao="'destinacao.cdru'">
+                              </inserir-dados-parcela-imovel-page>
+                            </v-pane-content>
+                          </v-pane>
+                          <v-pane>
+                            <v-pane-header id="accordion-dados-responsavel-cdru" class="titulo-verde negrito">{{'label-dados-responsavel-destinatario' | translate | uppercase}}</v-pane-header>
+                            <v-pane-content>
+                              <dados-responsavel-destinatario
+                                dados-responsavel="cdruCtrl.cdru.dadosResponsavel"
+                                atendimento="cdruCtrl.atendimento"
+                                tipo-destinacao="cdruCtrl.cdru.tipoDestinacaoEnum"
+                                destinacoes-imoveis="cdruCtrl.cdru.destinacaoImoveis"
+                                tipo-modalidade="cdruCtrl.atendimento.tipoModalidade"
+                                modo-editar="cdruCtrl.cdru.editar"
+                                bloquear="cdruCtrl.cdru.detalhar"
+                                destinacao="cdruCtrl.cdru"
+                                nome-state="cdruCtrl.nomeState"
+                                fundamento="cdruCtrl.cdru.codFundamentoLegal">
+                              </dados-responsavel-destinatario>
+                            </v-pane-content>
+                          </v-pane>
+
+                          <v-pane>
+                            <v-pane-header id="accordion-dados-licitacao-cdru" class="titulo-verde negrito">{{'label-dados-licitacao' | translate | uppercase}}</v-pane-header>
+                            <v-pane-content>
+                              <div class="espacamento-top">
+                                <dados-licitacao bloquear="cdruCtrl.cdru.detalhar"
+                                                 licitacao="cdruCtrl.cdru.licitacao"
+                                                 atendimento="cdruCtrl.atendimento"></dados-licitacao>
+                              </div>
+                            </v-pane-content>
+                          </v-pane>
+
+                          <v-pane ng-if="cdruCtrl.verificarSePodeExibirFinanceiro();">
+                            <v-pane-header id="accordion-dados-financeiros-cdru" class="titulo-verde negrito">{{'label-dados-financeiro' | translate | uppercase}}</v-pane-header>
+                            <v-pane-content>
+                              <dados-financeiros editar="cdruCtrl.cdru.editar"
+                                                 bloquear="cdruCtrl.cdru.detalhar"
+                                                 financeiro="cdruCtrl.cdru.financeiro"
+                                                 destinacao-imoveis="cdruCtrl.cdru.destinacaoImoveis"
+                                                 licitacao="cdruCtrl.cdru.licitacao"
+                                                 laudo-avaliacao="cdruCtrl.cdru.laudoAvaliacao"></dados-financeiros>
+                            </v-pane-content>
+                          </v-pane>
+                          <v-pane>
+                            <v-pane-header id="accordion-dados-instrumento-cdru" class="titulo-verde negrito">{{'label-dados-instrumento-ato' | translate | uppercase}}</v-pane-header>
+                            <v-pane-content>
+
+                              <instrumento-ato bloquear="cdruCtrl.cdru.detalhar"
+                                               destinacao-transito="cdruCtrl.cdru"
+                                               rota-destinacao="'destinacao.cdru'"></instrumento-ato>
+
+                            </v-pane-content>
+                          </v-pane>
+                        </v-accordion>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <div class="minuta margem-elementos-pagina" ng-if="cdruCtrl.exibirMinuta">
+                  <b>{{'label-minuta' | translate}}</b>
+                  <p>Gerada em: dd/mm/aaaa</p>
+                  <p>Responsavel: [CPF] - [Nome]</p>
+                  <p>Arquivo: <label class="hand link">[nome do arquivo].pdf</label></p>
+                </div>
+              </md-tab-body>
+          </md-tab>
+          <md-tab id="tabContrato" ng-disabled="!cdruCtrl.bloqueiaDadosUtilizacao">
+            <md-tab-label>{{'label-dados-contrato-termo' | translate | uppercase}}</md-tab-label>
+            <md-tab-body>
+              <form name="cdruCtrl.formContrato">
+                <div class="margin-top">
+                  <contrato dados-contrato="cdruCtrl.cdru.contrato"
+                            tipo-destinacao="cdruCtrl.cdru.tipoDestinacaoEnum"
+                            status-destinacao="cdruCtrl.cdru.statusDestinacao"
+                            bloquear="cdruCtrl.cdru.detalhar"></contrato>
+                </div>
+                <div class="margin-conteudo">
+                  <v-accordion id="accordion" multiple class="vAccordion--default">
+                    <v-pane>
+                      <v-pane-header id="accordion-documentos-cdru" class="titulo-verde negrito">{{'label-documentos' | translate | uppercase}}</v-pane-header>
+                      <v-pane-content>
+                        <incluir-documento bloquear="cdruCtrl.cdru.detalhar"
+                                           destinacao="cdruCtrl.cdru"
+                                           rota-retorno="'destinacao.cdru'"></incluir-documento>
+                      </v-pane-content>
+                    </v-pane>
+                  </v-accordion>
+                </div>
+              </form>
+            </md-tab-body>
+          </md-tab>
+        </md-tabs>
+      </md-content>
+    </div>
+    <botoes-rodape bloquear="cdruCtrl.cdru.detalhar"
+                   salvar-rascunho="cdruCtrl.salvarRascunho()"
+                   gravar="cdruCtrl.gravar()"
+                   avancar="cdruCtrl.avancar()"
+                   cancelar="cdruCtrl.cancelar()"
+                   fechar="cdruCtrl.fechar()"
+                   voltar="cdruCtrl.voltar()"
+                   botao-editar="cdruCtrl.botaoEditar()"
+                   gerar-minuta="cdruCtrl.bloqueiaDadosUtilizacao"
+                   cancelamento-encerramento="cdruCtrl.cdru.cancelamentoEncerramento">
+    </botoes-rodape>
+</exibir-elemento-por-permissao-destinacao>

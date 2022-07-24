@@ -1,0 +1,91 @@
+<div>
+
+    <div layout="row" flex>
+        <h3>{{'label-demais-residentes' | translate}}</h3>
+    </div>
+
+    <div flex-xs flex-sm layout="row" flex="100">
+        <md-input-container class="md-block" flex="30">
+            <label>{{'label-cpf' | translate}}:</label>
+            <input ng-model="residente.cpf" ui-br-cpf-mask
+                   name="{{'label-cpf' | translate}}"
+                   ng-disabled="editar || detalhar"/>
+        </md-input-container>
+
+        <md-input flex="25" layout="column">
+            <label>{{'label-nome'| translate}}</label>
+            <label>{{residente.nome}}</label>
+        </md-input>
+    </div>
+
+    <div flex-xs flex-sm layout="row" flex="100">
+        <md-input-container class="md-block" flex="30">
+            <label>{{'label-descricao' | translate}}:</label>
+            <md-select ng-model="residente.descricao" ng-disabled="editar || detalhar"
+                       name="{{'label-descricao' | translate}}">
+                <md-option ng-repeat="item in listaDescricoesParentesco | orderBy: 'codigo'" ng-value="item.nome">
+                    {{item.descricao}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex="30" ng-if="residente.descricao==OUTRO">
+            <label>{{'label-descricao-outro-residente' | translate}}:</label>
+            <input ng-model="residente.descricaoOutro" ng-disabled="editar || detalhar"
+                   name="{{'label-descricao-outro-residente' | translate}}"/>
+        </md-input-container>
+
+        <md-input-container layout-xs="row" flex="30" flex-xs flex-sm class="md-block"  layout-xs="column" layout-sm="column">
+            <label>{{'label-rensa-rs' | translate}}:</label>
+            <input ng-model="residente.renda" ui-money-mask="2" ng-disabled="editar || detalhar"
+                   name="{{'label-rensa-rs' | translate}}" />
+        </md-input-container>
+    </div>
+
+    <md-dialog-actions flex layout="row" layout-align="end end" ng-if="editar !== true && detalhar !== true">
+        <md-button class="md-raised" ng-click="incluirResidenteLista();">
+            <label>{{'btn-incluir' | translate}}</label>
+        </md-button>
+    </md-dialog-actions>
+
+    <br/>
+
+        <md-table-container flex="100" ng-show="listaResidentes.length > 0">
+            <table md-table  style="border: 1px solid #cccccc;">
+                <thead md-head>
+                <tr md-row class="upload-head">
+                    <th md-column>{{'label-cpf' | translate}}</th>
+                    <th md-column>{{'label-nome' | translate}}</th>
+                    <th md-column>{{'label-descricao' | translate}}</th>
+                    <th md-column ng-if="editar !== true && detalhar !== true">{{'label-acoes' | translate}}</th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="dados in paginacaoResidentes | orderBy: 'sequencial'">
+                    <td md-cell>
+                        {{dados.cpf | cpfcnpj}}
+                    </td>
+                    <td md-cell>
+                        {{dados.nome}}
+                    </td>
+                    <td md-cell>
+                        {{formatarDescricaoParentesco(dados.descricao)}}
+                    </td>
+                    <td md-cell ng-if="editar !== true && detalhar !== true">
+                        <a href="" ng-click="removerResidente(dados.sequencial)">
+                            <ng-md-icon class="icon-subacao" icon="delete">
+                                <md-tooltip>{{'label-excluir' | translate}}</md-tooltip>
+                            </ng-md-icon>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <md-table-pagination md-limit="tamanhoLimite" md-limit-options="[5, 10, 15]"
+                                 md-page="registroInicial" md-total="{{totalItems}}"
+                                 md-on-paginate="paginarListaResidentes" md-page-select
+                                 style="border: 1px solid #cccccc;">
+            </md-table-pagination>
+        </md-table-container>
+
+</div>

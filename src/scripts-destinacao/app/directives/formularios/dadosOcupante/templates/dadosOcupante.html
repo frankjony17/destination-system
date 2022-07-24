@@ -1,0 +1,207 @@
+<div>
+  <div>
+    <md-input-container class="md-block margin-top">
+      <label>{{'label-tipo-posse-ocupacao' | translate}}</label>
+      <md-select required ng-model="posseInformal.tipoPosse"
+                 name="{{'label-tipo-posse-ocupacao' | translate}}"
+                 ng-change="limparEscopo()"
+                 ng-disabled="posseInformal.detalhar"
+                ng-click="buscarListaTipoPosse()"
+                 ng-model-options="{trackBy:'$value.id'}">
+        <md-option ng-repeat="tipoPosse in listaTiposPosse"  ng-value="tipoPosse">
+          {{tipoPosse.descricao}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+  <div ng-if="posseInformal.tipoPosse.id != 4 && posseInformal.tipoPosse.id ">
+    <div layout="row" layout-xs="column" ng-show="posseInformal.tipoPosse.id != 1 && posseInformal.tipoPosse.id != 2">
+      <div flex="50">
+        <md-input-container class="md-block">
+          <md-checkbox ng-disabled="posseInformal.detalhar" class="md-primary margin-top-alinhar-data" ng-model="semCnpj">
+            {{'label-entidade-sem-cnpj' | translate}}
+          </md-checkbox>
+        </md-input-container>
+      </div>
+      <div flex="50">
+        <md-input-container class="md-block margin-top" flex="100" flex-xs="100" ng-show="!semCnpj"
+                            ng-if="posseInformal.tipoPosse.id != 1 && posseInformal.tipoPosse.id != 2">
+          <label >{{'label-cnpj' | translate}}:</label>
+          <input ui-br-cnpj-mask
+                 name="{{'label-cnpj' | translate}}"
+                 ng-model="posseInformal.cnpj"
+                 ng-required="!semCnpj"
+                 ng-blur="validaCpfCnpj(posseInformal.cnpj,1)"
+                 ng-disabled="posseInformal.detalhar"/>
+        </md-input-container>
+      </div>
+    </div>
+    <div flex ng-if="posseInformal.tipoPosse.id != 1 && posseInformal.tipoPosse.id != 2">
+      <md-input-container class="md-block margin-top" >
+        <label>{{'label-nome-entidade' | translate}}:</label>
+        <input ng-model="posseInformal.nomeEntidade"
+               name="{{'label-nome-entidade' | translate}}"
+               ng-required="posseInformal.tipoPosse.id != 1 && posseInformal.tipoPosse.id != 2"
+               md-maxlength="200"
+               maxlength="200"
+               ng-disabled="posseInformal.detalhar">
+      </md-input-container>
+    </div>
+    <div layout="row" ng-show="posseInformal.cnpj" flex>
+      <div flex="50">
+        <label>{{'label-endereco-correspondencia-entidade' | translate}}</label>
+        <div style="padding: 10px" ng-if="posseInformal.cnpj">Esplanada dos Ministérios, Bloco K, 9º andar,
+          sala 943, Brasília/DF - Brasil. CEP. 70.040-906</div>
+      </div>
+      <div flex="50" style="text-align: right" ng-show="!posseInformal.detalhar">
+        <md-button id="btn-adicionar-editar-endereco" class="md-\primary md-raised"  ng-click="enderecoCorrespondencia.abrirInserirEnderecoCorrespondencia()">
+          {{'btn-adicionar-endereco'| translate}}
+        </md-button>
+      </div>
+    </div>
+
+    <fieldset style="border-radius: 5px;" class="margem-elementos-pagina margin-top">
+      <span class="titulo-verde negrito">{{'label-ocupante' | translate}}</span>
+      <hr class="linha-divisoria">
+      <div layout="row" layout-xs="column" ng-show="!posseInformal.detalhar">
+        <div flex="100">
+          <md-input-container class="md-block margin-top">
+            <label>{{'label-cpf-cnpj'| translate}}</label>
+            <input ui-br-cpfcnpj-mask
+                   name="{{'label-cpf-cnpj' | translate}}" ng-model="dadoOcupante.cpfCnpj" ng-blur="validaCpfCnpj(dadoOcupante.cpfCnpj,2)"/>
+            <span style="font-size: 12px" ng-if="verificarPessoaJuridicaOcupante();">Razão Social: Empresa</span>
+            <span style="font-size: 12px" ng-if="verificarPessoaFisica();">Nome: Nome da Pessoa Fisíca</span>
+          </md-input-container>
+        </div>
+        <div flex="45" style="margin-left:60px;" ng-show="verificarPessoaJuridicaOcupante();">
+          <md-input-container class="md-block margin-top">
+            <label>{{'label-codigo-da-ug' | translate}}:</label>
+            <input ui-number-mask="0"
+                   ng-model="dadoOcupante.ug"
+                   name="{{'label-codigo-da-ug' | translate}}"
+                   ng-required="verificarPessoaJuridicaOcupante();"
+                   ng-disabled="posseInformal.detalhar">
+          </md-input-container>
+        </div>
+      </div>
+      <div layout="row" flex ng-show="dadoOcupante.cpfCnpj && !posseInformal.detalhar">
+        <div flex="50">
+          <label>{{'label-endereco-correspondencia-ocupante' | translate}}</label>
+          <div style="padding:10px ">Qs 08 conjunto 5c, Nº10, Riacho Fundo, Brasilia/DF - Brasil. CEP. 71820-825</div>
+        </div>
+        <div flex="50" style="text-align: right">
+          <md-button id="btn-adicionar-editar-endereco1"
+                     class="md-\primary md-raised"
+                     ng-click="enderecoCorrespondencia.abrirInserirEnderecoCorrespondencia()"
+                     ng-disabled="posseInformal.detalhar">
+            {{'btn-adicionar-endereco'| translate}}
+          </md-button>
+        </div>
+      </div>
+      <div layout="row"  ng-if="verificarPessoaFisica() && !posseInformal.detalhar" layout-xs="column" flex >
+        <div flex="100" >
+          <md-input-container class="md-block margin-top">
+            <label>{{'label-estado-civil' | translate}}</label>
+            <md-select ng-model="dadoOcupante.estadoCivil"
+                       name="{{'label-estado-civil' | translate}}"
+                       ng-disabled="posseInformal.detalhar">
+              <md-option value="solteiro">{{'label-solteiro' | translate}}</md-option>
+              <md-option value="casado">{{'label-casado' | translate}}</md-option>
+              <md-option value="divorciado">{{'label-divorciado' | translate}}</md-option>
+              <md-option value="viuvo">{{'label-viuvo' | translate}}</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+
+        <div flex="50" style="margin-left: 60px" ng-if="dadoOcupante.estadoCivil === 'casado' ||
+        dadoOcupante.estadoCivil === 'viuvo' ">
+          <md-input-container class="md-block margin-top" flex="100" flex-xs="100" >
+            <label >{{'label-cpf-conjuge' | translate}}:</label>
+            <input ui-br-cpf-mask
+                   name="{{'label-cpf-conjuge' | translate}}"
+                   ng-model="dadoOcupante.cpfConjuge"
+                   ng-required="dadoOcupante.estadoCivil === 'casado'"
+                   ng-blur="validaCpfCnpj(dadoOcupante.cpfConjuge,3)"
+                   ng-disabled="posseInformal.detalhar"/>
+            <span style="font-size: 12px" ng-if="dadoOcupante.cpfConjuge">Nome: Nome Cônjuge</span>
+          </md-input-container>
+        </div>
+      </div>
+
+      <div flex="100" layout="row" layout-xs="column" ng-show="!posseInformal.detalhar">
+        <md-input-container class="md-block margin-top" flex>
+          <label>{{'label-area-utilizada'| translate}}</label>
+          <input ui-number-mask ng-model="dadoOcupante.areaUtilizada"
+                 name="{{'label-area-utilizada' | translate}}"
+                 ng-disabled="posseInformal.detalhar">
+        </md-input-container>
+      </div>
+      <div layout="row" layout-align="end end" flex ng-show="!posseInformal.detalhar">
+        <md-button id="btn-adicionar" class="md-raised margin-lateral-label" ng-click="adicionarOcupante();"
+                   ng-disabled="verificarIndividual();">
+          {{modoEdicao ? 'btn-salvar' : 'btn-adicionar'| translate}}
+        </md-button>
+      </div>
+
+      <div  class="margin-top" ng-show="posseInformal.ocupantes.length > 0">
+        <md-table-container>
+          <table md-table>
+            <thead md-head>
+            <tr md-row>
+              <th md-column>{{'label-cpf-cnpj' | translate}}</th>
+              <th md-column>{{'label-nome-razao' | translate}}</th>
+              <th md-column>{{'label-area-utilizada' | translate}}</th>
+              <th ng-show="!posseInformal.detalhar"></th>
+            </tr>
+            </thead>
+            <tbody md-body >
+            <tr md-row ng-repeat="ocupante in posseInformal.ocupantes
+                        | limitTo: tabela.limit:
+                        (tabela.page - 1) * tabela.limit">
+              <td md-cell>
+                <span>{{ocupante.cpfCnpj | cpfcnpj}}</span>
+              </td>
+              <td md-cell>
+                <span>Nome/Razão Social</span>
+              </td>
+              <td md-cell>
+                <span>{{ocupante.areaUtilizada | number:2}}</span>
+              </td>
+              <td md-cell style="position: relative" ng-show="!posseInformal.detalhar">
+
+                <md-fab-speed-dial md-direction="left" class="hand md-scale">
+
+                  <md-fab-trigger>
+                    <ng-md-icon class="icon-acao" icon="more_vert">
+                    </ng-md-icon>
+                  </md-fab-trigger>
+
+                  <md-fab-actions>
+                    <ng-md-icon class="icon-subacao" icon="edit"
+                                ng-click="editar(ocupante);">
+                      <md-tooltip>{{"btn-editar" | translate}}</md-tooltip>
+                    </ng-md-icon>
+
+                    <ng-md-icon class="icon-subacao" icon="delete"
+                                ng-click="remover(ocupante);">
+                      <md-tooltip>{{"btn-excluir" | translate}}</md-tooltip>
+                    </ng-md-icon>
+                  </md-fab-actions>
+                </md-fab-speed-dial>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </md-table-container>
+        <md-table-pagination md-limit="tabela.limit"
+                             md-limit-options="tabela.limitsPage"
+                             md-page="tabela.page"
+                             md-total="{{posseInformal.ocupantes.length}}"
+                             md-on-paginate="true"
+                             md-page-select>
+        </md-table-pagination>
+      </div>
+    </fieldset>
+
+  </div>
+</div>

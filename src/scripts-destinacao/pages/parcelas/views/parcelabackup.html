@@ -1,0 +1,346 @@
+<form name="criarParcelaCtrl.form">
+  <div class="margin-header-conteudo">
+    <span class="titulo-verde-header">{{'label-criar-parcela' | translate | uppercase}}</span>
+    <div class="base-vermelho"></div>
+    <hr class="linha-divisoria">
+  </div>
+
+  <div layout="row" flex="100" flex-xs="100">
+    <v-accordion multiple class="vAccordion--default" flex="100" flex-xs="100">
+        <v-pane>
+            <v-pane-header class="titulo-verde negrito">
+                {{'label-dados-imovel' | translate | uppercase}}
+            </v-pane-header>
+            <v-pane-content>
+
+                <div layout="row" layout-xs="column">
+                    <label>{{'label-rip' | translate}}: &nbsp;</label>
+                    <span>
+                        {{criarParcelaCtrl.dadosRipUtilizacao.rip}}
+                    </span>
+                </div>
+                <div layout="row" layout-xs="column" class="margin-top">
+                    <label>{{'label-area-terreno' | translate}} (m²): &nbsp;</label>
+                    <span>
+                        {{criarParcelaCtrl.dadosRipUtilizacao.areaTerreno | number:2}}
+                    </span>
+                </div>
+            
+                <md-table-container class="margin-top" ng-show="criarParcelaCtrl.dadosRipUtilizacao.benfeitorias.length > 0">
+                    <table md-table>
+
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column>{{"label-acessao-benfeitoria" | translate}}</th>
+                        <th md-column>{{"label-area-construida" | translate}}</th>
+                        <th md-column>{{"label-detalhar" | translate}}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody md-body>
+
+                    <tr md-row ng-repeat="benfeitoria in criarParcelaCtrl.dadosRipUtilizacao.benfeitorias |
+                                            limitTo: criarParcelaCtrl.tabelaBenfeitorias.limit:
+                                            (criarParcelaCtrl.tabelaBenfeitorias.page - 1) * criarParcelaCtrl.tabelaBenfeitorias.limit">
+                        <td md-cell>
+                            {{benfeitoria.codigo}} - {{benfeitoria.tipo}}
+                        </td>
+                        <td md-cell>
+                            {{benfeitoria.areaConstruida | number:2}}
+                        </td>
+                        <td md-cell>
+                            <ng-md-icon icon="search" 
+                                        class="hand cor-remover" 
+                                        size="18"
+                                        ng-click="criarParcelaCtrl.abrirDetalharImovel();">
+                            </ng-md-icon>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                    </table>
+                </md-table-container>
+                <md-table-pagination md-limit="criarParcelaCtrl.tabelaBenfeitorias.limit"
+                       md-limit-options="criarParcelaCtrl.tabelaBenfeitorias.limitsPage"
+                       md-page="criarParcelaCtrl.tabelaBenfeitorias.page"
+                       md-total="{{criarParcelaCtrl.dadosRipUtilizacao.benfeitorias.length}}"
+                       md-on-paginate="true">
+                </md-table-pagination>
+
+            </v-pane-content>
+        </v-pane>
+    </v-accordion>
+
+  </div>
+
+  <div layout="row">    
+
+    <md-input-container class="margin-top margin-right" flex="50" flex-xs="100" >
+      <label>{{'label-nova-parcela' | translate}}*</label>
+      <md-select ng-model="criarParcelaCtrl.parcelaSelecionada"
+                 ng-change="criarParcelaCtrl.filtrarBenfeitorias(criarParcelaCtrl.parcelaSelecionada)"
+                 ng-model-options="{trackBy:'$value.sequencial'}"
+                 ng-disabled="criarParcelaCtrl.parcelas.length == 1"
+                 ng-required="true">
+        <md-option ng-repeat="parcela in criarParcelaCtrl.parcelas"
+                    ng-value="parcela">
+          {{parcela.sequencial}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+
+    <label class="margin-top" ng-show="criarParcelaCtrl.parcelaSelecionada">
+
+      {{'label-origem-parcela' | translate}}:
+
+      {{criarParcelaCtrl.valorTotalParcela | number:2}}
+
+    </label>
+  </div>
+
+  <div layout="row" class="margin-top" style="margin-bottom: 1%;">
+      <label class="titulo-verde negrito">{{'label-parcela-ser-criada' | translate | uppercase}}</label>
+  </div>
+  <div flex="100" flex-xs="100">
+      <hr class="linha-divisoria">
+  </div>
+
+  <!-- INICIO NOVA PARCELA -->
+  <md-input-container class="margin-top md-block" flex="50" flex-xs="100">
+    <label>{{'label-parcela-area' | translate}}*</label>
+    <input ng-model="criarParcelaCtrl.parcelaSalva.areaTerreno"
+           ng-blur="criarParcelaCtrl.validadeAreaInserida()"
+           ng-required="true"
+           ui-number-mask>
+  </md-input-container>
+
+  <div layout="row">
+      <label>{{'label-selecione-acessoes-benfeitoria' | translate}}</label>
+  </div>
+
+  <md-table-container class="margin-top" ng-show="criarParcelaCtrl.listaBenfeitoriasFiltradas.length != 0">
+    <table md-table>
+
+      <thead md-head>
+      <tr md-row>
+        <th md-column>
+          <md-checkbox class="md-primary" ng-model="criarParcelaCtrl.checkboxAll"
+                       ng-change="criarParcelaCtrl.selecionarTodosCheckboxs(criarParcelaCtrl.checkboxAll)">
+          </md-checkbox>
+        </th>
+        <th md-column>{{"label-acessao-benfeitoria" | translate}}</th>
+        <th md-column>{{"label-area-construida" | translate}}</th>
+      </tr>
+      </thead>
+
+      <tbody md-body>
+
+      <tr md-row ng-repeat="benfeitoria in criarParcelaCtrl.listaBenfeitoriasFiltradas">
+        <td md-cell>
+          <md-checkbox class="md-primary"
+                       ng-change="criarParcelaCtrl.verificarTodosSelecionados()"
+                       ng-model="benfeitoria.selecionado">
+          </md-checkbox>
+        </td>
+        <td md-cell>
+          {{benfeitoria.codigo}} - {{benfeitoria.tipo}}
+        </td>
+        <td md-cell>
+          {{benfeitoria.areaConstruida | number:2}}
+        </td>
+      </tr>
+      </tbody>
+
+    </table>
+  </md-table-container>  
+
+  <md-input-container class="margin-top md-block" flex>
+    <label>{{'label-memorial-descritivo' | translate}}</label>
+    <textarea rows="5"
+              ng-disabled="criarParcelaCtrl.desabilitarMemorialDescritivo"
+              ng-model="criarParcelaCtrl.parcelaSalva.memorialDescritivo">
+        </textarea>
+  </md-input-container>
+
+  <label>{{'label-planta-memorial' | translate}}</label>
+  <div layout="row" flex="80">
+    <div style="margin-top: 7px">
+      <md-button class="md-primary md-raised"
+                 ngf-select="criarParcelaCtrl.adicionarArquivos($files)"
+                 ngf-multiple="true">
+        {{"btn-escolher-arquivo" | translate}}
+      </md-button>
+    </div>
+    <div layout="column" flex="40" class="margin-left espacamento-arquivos-adicionados">
+      <md-container>
+      <div ng-repeat="arquivo in criarParcelaCtrl.parcelaSalva.arquivo">
+        <div layout="row" layout-column="center">
+          <a ng-click="criarParcelaCtrl.gerarPreview(arquivo)">
+            <label class="hand link">{{arquivo.name || arquivo.nome}}</label>
+          </a>
+          <ng-md-icon icon="close" class="hand cor-remover" size="18" ng-click="criarParcelaCtrl.removerArquivo(arquivo,$index)"></ng-md-icon>
+        </div>
+      </div>
+      </md-container>
+    </div>
+  </div>
+
+  <!-- FIM NOVA PARCELA -->
+
+  <!-- INICIO PARCELA REMANESCENTE -->
+  <div ng-show="criarParcelaCtrl.parcelaSalva.areaTerreno">
+
+    <div layout="row" class="margin-top" style="margin-bottom: 1%;">
+        <label class="titulo-verde negrito">{{'label-parcela-remanescente-criada' | translate | uppercase}}</label>
+    </div>
+    <div flex="100" flex-xs="100">
+        <hr class="linha-divisoria">
+    </div>
+
+    <md-input-container class="margin-top md-block" flex="50" flex-xs="100">
+        <label>{{'label-parcela-area' | translate}}*</label>
+        <input ng-model="criarParcelaCtrl.parcelaSalva.areaTerreno"
+            ng-blur="criarParcelaCtrl.validadeAreaInserida()"
+            ng-required="true"
+            ui-number-mask>
+    </md-input-container>
+
+    <div layout="row">
+        <label>{{'label-selecione-acessoes-benfeitoria' | translate}}</label>
+    </div>
+
+    <md-table-container class="margin-top" ng-show="criarParcelaCtrl.listaBenfeitoriasFiltradas.length != 0">
+        <table md-table>
+
+        <thead md-head>
+        <tr md-row>
+            <th md-column>
+            <md-checkbox class="md-primary" ng-model="criarParcelaCtrl.checkboxAll"
+                        disabled
+                        ng-change="criarParcelaCtrl.selecionarTodosCheckboxs(criarParcelaCtrl.checkboxAll)">
+            </md-checkbox>
+            </th>
+            <th md-column>{{"label-acessao-benfeitoria" | translate}}</th>
+            <th md-column>{{"label-area-construida" | translate}}</th>
+        </tr>
+        </thead>
+
+        <tbody md-body>
+
+        <tr md-row ng-repeat="benfeitoria in criarParcelaCtrl.listaBenfeitoriasFiltradas">
+            <td md-cell>
+            <md-checkbox class="md-primary"
+                        disabled
+                        ng-change="criarParcelaCtrl.verificarTodosSelecionados()"
+                        ng-model="benfeitoria.selecionado">
+            </md-checkbox>
+            </td>
+            <td md-cell>
+            {{benfeitoria.codigo}} - {{benfeitoria.tipo}}
+            </td>
+            <td md-cell>
+            {{benfeitoria.areaConstruida | number:2}}
+            </td>
+        </tr>
+        </tbody>
+
+        </table>
+    </md-table-container>  
+
+    <md-input-container class="margin-top md-block" flex>
+        <label>{{'label-memorial-descritivo' | translate}}</label>
+        <textarea rows="5"
+                disabled
+                ng-model="criarParcelaCtrl.parcelaSalva.memorialDescritivo">
+        </textarea>
+    </md-input-container>
+
+    <label>{{'label-planta-memorial' | translate}}</label>
+    <div layout="row" flex="80">
+        <div style="margin-top: 7px">
+        <md-button class="md-primary md-raised"
+                    ngf-select="criarParcelaCtrl.adicionarArquivos($files)"
+                    ngf-multiple="true">
+            {{"btn-escolher-arquivo" | translate}}
+        </md-button>
+        </div>
+        <div layout="column" flex="40" class="margin-left espacamento-arquivos-adicionados">
+        <md-container>
+        <div ng-repeat="arquivo in criarParcelaCtrl.parcelaSalva.arquivo">
+            <div layout="row" layout-column="center">
+            <a ng-click="criarParcelaCtrl.gerarPreview(arquivo)">
+                <label class="hand link">{{arquivo.name || arquivo.nome}}</label>
+            </a>
+            <ng-md-icon icon="close" class="hand cor-remover" size="18" ng-click="criarParcelaCtrl.removerArquivo(arquivo,$index)"></ng-md-icon>
+            </div>
+        </div>
+        </md-container>
+        </div>
+    </div>
+  </div>
+  <!-- FIM PARCELA REMANESCENTE -->
+
+  <hr class="linha-divisoria-footer">
+  <div class="button-botton" layout="row" layout-align="end center">
+    <md-button class="md-raised margin-botao-footer" ng-click="criarParcelaCtrl.voltar()">
+      {{'btn-fechar' | translate | uppercase}}</md-button>
+    <md-button class="md-raised"
+               ng-click="criarParcelaCtrl.limparCampos()">{{'btn-limpar' | translate | uppercase}}</md-button>
+    <md-button class="md-raised"
+               ng-click="criarParcelaCtrl.salvar()">{{'btn-salvar-parcela' | translate | uppercase}}</md-button>
+  </div>
+
+
+
+  <md-table-container ng-show="criarParcelaCtrl.todasParcelas.length > 0">
+    <table md-table>
+
+      <thead md-head>
+      <tr md-row>
+        <th md-column>{{"label-parcela-tabela" | translate}}</th>
+        <th md-column>{{"label-area-terreno-parcela" | translate}}</th>
+        <th md-column>{{"label-benfeitoria" | translate}}</th>
+        <th md-column>{{"label-area-construida-total" | translate}}</th>
+        <th md-column>{{"label-acao" | translate}}</th>
+      </tr>
+      </thead>
+
+      <tbody md-body>
+
+      <tr md-row ng-repeat="objeto in criarParcelaCtrl.todasParcelas |
+       limitTo: criarParcelaCtrl.tabelaTodasParcelas.limit:
+       (criarParcelaCtrl.tabelaTodasParcelas.page - 1) * criarParcelaCtrl.tabelaTodasParcelas.limit">
+        <td md-cell>
+          {{objeto.sequencial}}
+        </td>
+        <td md-cell>
+          {{objeto.areaTerreno | number:2}}
+        </td>
+        <td md-cell>
+          {{objeto.codigo ? objeto.codigo : '-'}}
+        </td>
+        <td md-cell>
+          {{criarParcelaCtrl.formatarAreaBenfeitoria(objeto.areConstruidaBenfeitoria)}}
+        </td>
+        <td md-cell>
+          <ng-md-icon icon="flip" ng-click="criarParcelaCtrl.filtrarBenfeitorias(objeto)">
+            <md-tooltip>{{"tooltip-adicionar-parcela" | translate}}</md-tooltip>
+          </ng-md-icon>
+          <ng-md-icon icon="clear" ng-click="criarParcelaCtrl.abrirModal(objeto)"
+                      ng-show="criarParcelaCtrl.parcelas.length != 1">
+            <md-tooltip>{{"tooltip-remover-parcela" | translate}}</md-tooltip></ng-md-icon>
+        </td>
+      </tr>
+      </tbody>
+
+    </table>
+  </md-table-container>
+  <md-table-pagination md-limit="criarParcelaCtrl.tabelaTodasParcelas.limit"
+                       md-limit-options="criarParcelaCtrl.tabelaTodasParcelas.limitsPage"
+                       md-page="criarParcelaCtrl.tabelaTodasParcelas.page"
+                       md-total="{{criarParcelaCtrl.todasParcelas.length}}"
+                       md-on-paginate="true">
+  </md-table-pagination>
+
+</form>

@@ -1,0 +1,53 @@
+<div layout="column" layout-margin="5">
+
+  <div layout="row" layout-xs="column">
+    <md-input-container flex="30" flex-xs="100">
+      <label>{{'label-cpf' | translate}}*</label>
+      <input ui-br-cpf-mask
+             name="{{nomeCampo}} - {{'label-cpf' | translate}}"
+             ng-model="requerimento.requerente.cpfCnpj"
+             ng-disabled="bloquearCampos">
+    </md-input-container>
+
+    <md-input-container flex="65" flex-offset="5" flex-xs="100" flex-offset-xs="0">
+      <label>{{'label-nome' | translate}}*</label>
+      <input ng-model="requerimento.requerente.nome"
+             name="{{nomeCampo}} - Nome"
+             ng-disabled="bloquearCampos">
+    </md-input-container>
+  </div>
+
+  <div layout="row" layout-xs="column">
+    <md-input-container flex="30" flex-xs="100">
+      <label>{{'label-rg' | translate}}*</label>
+      <input name="{{nomeCampo}} - {{'label-rg' | translate}}"
+             ng-disabled="bloquearCampos"
+             ng-model="requerimento.requerente.rg">
+    </md-input-container>
+
+    <md-input-container flex="20" flex-offset="5" flex-xs="100" flex-offset-xs="0">
+      <label>{{'label-orgao-expedidor' | translate}}*</label>
+      <input ng-model="requerimento.requerente.orgaoExpedidor"
+             ng-disabled="bloquearCampos"
+             name="{{nomeCampo}} - {{'label-orgao-expedidor' | translate}}">
+    </md-input-container>
+  </div>
+
+  <div layout="row" layout-xs="column">
+        <md-input-container flex="50" flex-xs="100" >
+            <label>{{'label-email' | translate}}</label>
+            <input type="email"
+                ng-model="requerimento.requerente.email"
+                maxlength="100"
+                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+                name="{{campo}} - E-mail"
+                ng-disabled="true">
+        </md-input-container>
+    </div>
+
+  <dados-telefones entidade="requerimento.requerente"
+                   tipo-requerimento="'ADESAO_GESTAO_PRAIAS'"
+                   bloquear-campos="bloquearCampos">
+  </dados-telefones>
+
+</div>

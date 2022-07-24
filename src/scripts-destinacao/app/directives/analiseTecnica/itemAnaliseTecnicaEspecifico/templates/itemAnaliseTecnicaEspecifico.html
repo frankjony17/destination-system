@@ -1,0 +1,52 @@
+<div style="margin-top: 1%;">
+
+    <div layout="row" flex="100" style="margin-left: 1%; margin-right: 1%;">
+        <div layout="column" flex="50" flex-xs="100">
+                <md-input-container class="md-block" >
+                    <label>{{'label-instrumento-ato' | translate}}*:</label>
+                    <md-select required
+                               ng-disabled="desabilitarTipoDestinacao();"
+                               ng-model="analiseTecnica.tipoDestinacao"
+                               ng-model-options="{trackBy: '$value.id'}"
+                               name="{{'label-instrumento-ato' | translate}}"
+                               ng-change="carregarFundamentoLegal();">
+                        <md-option ng-repeat="tipoDestinacao in tiposDestinacoes" ng-value="tipoDestinacao">
+                        {{tipoDestinacao.descricao}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+
+            <div layout="column" flex="50" flex-xs="100">
+                <md-input-container class="md-block">
+                    <label>{{'label-fundamento-legal' | translate}}*:</label>
+                    <md-select required 
+                               ng-model="analiseTecnica.fundamentoLegal"
+                               ng-model-options="{trackBy: '$value.id'}"
+                               ng-disabled="bloquearFormulario"
+                               name="{{'label-fundamento-legal' | translate}}">
+                        <md-option ng-repeat="fundamentoLegal in fundamentosLegais" ng-value="fundamentoLegal">
+                        {{fundamentoLegal.descricao}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+    </div>
+
+    <item-analise
+        ng-show="analiseTecnica.itensVerificacaoEspecifica.length > 0"
+        itens-analise="analiseTecnica.itensVerificacaoEspecifica"
+        itens-requerimento="itensVerificacao"
+        bloquear-formulario="bloquearFormulario"
+        titulo="'Itens de Verificação Específico'"
+        ng-show="analiseTecnica.itensVerificacao.length > 0"></item-analise>
+
+    <!-- dados-destinacao></dados-destinacao -->
+
+  <informacao-complementar
+    ng-model="analiseTecnica.informacaoComplementarEspecifica"
+    bloquear-formulario="bloquearFormulario"
+    documentos="analiseTecnica.documentosComplementaresEspecificos"></informacao-complementar>
+
+</div>
+

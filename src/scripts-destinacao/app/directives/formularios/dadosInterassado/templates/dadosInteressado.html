@@ -1,0 +1,88 @@
+<div>
+  <md-input-container class="md-block" flex="100" style="margin-top: 1em">
+    <label>{{'label-tipo-posse-ocupacao' | translate}}:</label>
+    <md-select ng-model="posseInformal.tipoPosse" ng-model-options="{trackBy: '$value.id'}"
+               name="{{'label-tipo-posse-ocupacao' | translate}}" required>
+      <md-option ng-repeat="item in tiposPosse" ng-value="item">
+        {{item.descricao}}
+      </md-option>
+    </md-select>
+  </md-input-container>
+
+
+  <div ng-if="posseInformal.tipoPosse.id === 3">
+    <md-input-container class="md-block" flex="100" flex-xs="100" style="margin-top: 1em">
+      <label>{{'label-nome-entidade' | translate}}:</label>
+      <input ng-model="posseInformal.nomeEntidade" name="{{'label-nome-entidade' | translate}}" required>
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="100" flex-xs="100">
+      <label>{{'label-cnpj-entidade' | translate}}:</label>
+      <input  name="{{'label-cnpj-entidade' | translate}}" ui-br-cnpj-mask ng-model="posseInformal.cnpj">
+    </md-input-container>
+  </div>
+
+  <div layout="row" layout-align="end center">
+    <md-button class="md-raised" ng-click="abrirModalIncluirInteressado($event)">
+      {{'btn-incluir-interessado' | translate | uppercase}}
+    </md-button>
+  </div>
+
+  <div ng-show="posseInformal.interessados.length > 0">
+    <form name="form">
+      <md-table-container>
+        <table md-table>
+
+          <thead md-head>
+          <tr md-row>
+            <th md-column>{{'label-cpf-cnpj' | translate}}</th>
+            <th md-column>{{'label-nome-razao' | translate}}</th>
+            <th md-column>{{'label-ug' | translate }}</th>
+            <th md-column>{{'label-area-utilizada' | translate}}</th>
+            <th md-column>{{'label-fotos' | translate}}</th>
+            <th md-column>{{'label-acao'| translate}}</th>
+          </tr>
+          </thead>
+
+          <tbody md-body>
+          <tr md-row
+              ng-repeat="item in posseInformal.interessados | limitTo: tabelaInteressados.limit: (tabelaInteressados.page - 1) * tabelaInteressados.limit">
+            <td md-cell>
+              <span ng-bind="item.cpfCnpj"></span>
+            </td>
+            <td md-cell>
+              <span ng-bind="item.nomeRazao"></span>
+            </td>
+            <td md-cell>
+              <span ng-bind="item.ug"></span>
+            </td>
+            <td md-cell>
+              <span ng-bind="item.areaUtilizada"></span>
+            </td>
+            <td md-cell>
+              <ng-md-icon icon="insert_photo" style="" alt="Limpar">
+                <md-tooltip>{{'btn-detalhar'|translate}}</md-tooltip>
+              </ng-md-icon>
+            </td>
+            <td md-cell>
+              <ng-md-icon icon="close" style="" alt="Limpar"
+                          ng-click="remover(item);">
+                <md-tooltip>{{'btn-excluir'|translate}}</md-tooltip>
+              </ng-md-icon>
+            </td>
+          </tr>
+          </tbody>
+
+        </table>
+      </md-table-container>
+
+      <md-table-pagination md-limit="tabelaInteressados.limit"
+                           md-limit-options="tabelaInteressados.limitsPage"
+                           md-page="tabelaInteressados.page"
+                           md-total="{{posseInformal.interessados.length}}"
+                           md-on-paginate="true">
+
+      </md-table-pagination>
+    </form>
+  </div>
+</div>

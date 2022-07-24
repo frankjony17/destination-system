@@ -1,0 +1,58 @@
+<div style="margin-left: 1%; margin-right: 1%;">
+    <h2 class="titulo-verde negrito">{{'label-despacho' | translate | uppercase}}</h2>
+    <md-radio-group class="md-primary" ng-model="despachos[0].id"
+                    flex-offset-xs="5"
+                    flex-offset="5"
+                    layout="column"
+                    ng-disabled="bloquearFormulario"
+                    ng-change="verificarJustificativaObrigatoria(despachos[0])">
+
+            <md-radio-button value="1" ng-disabled="bloquearFormulario || verificarItensObrigatoriosPreenchidos();">
+                {{'rb-atende-requisitos' | translate}}
+            </md-radio-button>
+
+            <md-radio-button value="2" ng-disabled="bloquearFormulario">
+                {{'rb-nao-atende-requisitos' | translate}}
+            </md-radio-button>
+
+            <md-radio-button value="3" ng-disabled="bloquearFormulario">
+                {{'rb-pendencia-requerente' | translate}}
+            </md-radio-button>
+
+            <md-radio-button value="4" ng-disabled="bloquearFormulario">
+                {{'rb-cancelar-erro-duplicidade' | translate}}
+            </md-radio-button>
+
+            <md-radio-button value="5" ng-disabled="bloquearFormulario">
+                {{'rb-manifestacao-outra-area' | translate}}
+            </md-radio-button>
+
+            <div ng-show="despachos[0].id == SOLICITA_MANIFESTACAO_OUTRA_AREA">
+                <div>
+                <md-input-container class="md-block">
+                    <label>{{'label-area' | translate}}:</label>
+                    <md-select
+                            ng-model="area"
+                            ng-model-options="{trackBy: '$value.id'}">
+                    <md-option ng-repeat="area in areas">
+                    </md-option>
+                    </md-select>
+                </md-input-container>
+                </div>
+            </div>
+
+    </md-radio-group>
+
+    <div layout="row" layout-xs="column" flex="100">
+        <md-input-container flex="100">
+            <label>{{'label-justificativa-anotacoes-complementares' | translate}}: {{justificativaObrigatoria ? '*': ''}}</label>
+            <textarea md-maxlength="500"
+                    ng-model="despachos[0].justificativa"
+                    flex="100"
+                    ng-disabled="bloquearFormulario"
+                    ng-required="justificativaObrigatoria"
+                    name="{{'label-justificativa-anotacoes-complementares' | translate}}"></textarea>
+        </md-input-container>
+    </div>
+</div>
+

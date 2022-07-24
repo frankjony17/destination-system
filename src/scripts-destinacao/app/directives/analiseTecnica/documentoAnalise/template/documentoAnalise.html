@@ -1,0 +1,108 @@
+<div layout="row" layout-xs="column">
+  <div layout="column" flex="100">
+    <md-content flex="100">
+      <md-table-container>
+
+        <table md-table>
+          <thead md-head>
+          <tr md-row>
+            <th md-column class="texto-centro coluna-um">
+              {{titulo}}
+            </th>
+            <th md-column class="texto-centro coluna-dois">
+            </th>
+            <th md-column class="texto-centro coluna-tres">
+            </th>
+            <th md-column class="texto-centro coluna-quatro">
+            </th>
+          </tr>
+          </thead>
+
+          <tbody md-body>
+          <tr md-row ng-repeat="doc in documentosRequerimento">
+            <td md-cell class="texto-centro-corpo coluna-um">
+              {{doc.nome}}
+            </td>
+            <td md-cell class="texto-centro-corpo coluna-dois">
+              <div ng-show="doc.arquivos.length > 1">
+                <md-icon  class="hand"
+                        flex-offset-xs="5" flex-offset="5"
+                        ng-click="abrirModalVisualizarDocumentos($event, doc)">
+                  description
+                </md-icon>
+              </div>
+              <div ng-show="doc.arquivos.length == 1">
+                <a ng-href="{{downloadArquivo(doc.arquivos[0].id)}}">
+                  <md-icon class="hand" flex-offset-xs="5" flex-offset="5">
+                    description
+                  </md-icon>
+                </a>
+              </div>
+
+
+            </td>
+            <td md-cell class="texto-centro-corpo coluna-tres">
+              <md-radio-group class="md-primary" ng-model="documentosAnalise[$index].resposta"
+                              flex-offset-xs="5"
+                              flex-offset="5"
+                              layout="row"
+                              layout-align="center center">
+                <md-radio-button ng-value="true"
+                                 ng-disabled="bloquearFormulario">
+                  {{'btn-sim' | translate}}
+                </md-radio-button>
+                <md-radio-button ng-value="false"
+                                 ng-disabled="bloquearFormulario">
+                  {{'btn-nao' | translate}}
+                </md-radio-button>
+              </md-radio-group>
+              <input type="hidden" ng-model="doc.id" ng-init="documentosAnalise[$index].idDocumento = doc.id"/>
+              <input type="hidden" ng-model="doc.tipo" ng-init="documentosAnalise[$index].tipoDocumento = doc.tipo"/>
+            </td>
+            <td md-cell class="texto-centro-corpo coluna-quatro">
+              <md-input-container class="md-block" style="margin-top:2%;">
+                <label>{{'label-obs' | translate}}</label>
+                <textarea ng-model="documentosAnalise[$index].observacao" md-maxlength="150"
+                          rows="3" md-select-on-focus
+                          ng-disabled="bloquearFormulario"
+                          name="{{titulo + ' - Documento ' + ($index + 1)}}"></textarea>
+              </md-input-container>
+            </td>
+          </tr>
+          <tr md-row ng-show="tipoComplementar">
+              <td md-cell class="texto-centro-corpo coluna-um">
+                Existe documentação pendente?
+              </td>
+              <td md-cell class="texto-centro-corpo coluna-um">
+              </td>
+              <td md-cell class="texto-centro-corpo coluna-tres">
+                <md-radio-group class="md-primary" ng-model="analiseTecnica.documentoPendente"
+                                flex-offset-xs="5"
+                                flex-offset="5"
+                                layout="row"
+                                layout-align="center center">
+                  <md-radio-button ng-value="true"
+                                   ng-disabled="bloquearFormulario">
+                    {{'btn-sim' | translate}}
+                  </md-radio-button>
+                  <md-radio-button ng-value="false"
+                                   ng-disabled="bloquearFormulario">
+                    {{'btn-nao' | translate}}
+                  </md-radio-button>
+                </md-radio-group>
+              </td>
+              <td md-cell class="texto-centro-corpo coluna-quatro">
+                <md-input-container class="md-block" style="margin-top:2%;">
+                  <label>{{'label-obs' | translate}}</label>
+                  <textarea ng-model="analiseTecnica.obsDocumentoPendente" md-maxlength="150"
+                            rows="3" ng-disabled="bloquearFormulario"
+                            md-select-on-focus></textarea>
+                </md-input-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+    </md-content>
+  </div>
+</div>

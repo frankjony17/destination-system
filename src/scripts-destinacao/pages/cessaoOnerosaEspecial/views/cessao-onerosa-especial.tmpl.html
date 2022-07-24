@@ -1,0 +1,179 @@
+<div ng-if="!cessaoOnerosaCtrl.permissaoConcedida">
+    <acesso-negado></acesso-negado>
+</div>
+<exibir-elemento-por-permissao-destinacao permissoes="cessaoOnerosaCtrl.PERMISSOES"
+                                          permissao-concedida="cessaoOnerosaCtrl.permissaoConcedida"
+                                          detalhar="cessaoOnerosaCtrl.cessaoOnerosaEspecial.detalhar">
+    <div class="margin-header-conteudo">
+        <titulo-servico class="titulo-verde titulo-verde-header"></titulo-servico>
+        <div class="base-vermelho"></div>
+        <hr class="linha-divisoria">
+    </div>
+    <div layout="row" layout-xs="column" class="margin-mapa" ng-if="cessaoOnerosaCtrl.carregarDadosUtilizacao == true">
+        <div layout="column" flex="35" flex-xs="100">
+            <informacoes-imovel destinacao-imoveis="cessaoOnerosaCtrl.cessaoOnerosaEspecial.destinacaoImoveis"></informacoes-imovel>
+        </div>
+        <md-content class="md-padding" flex="65" flex-xs="100">
+            <md-tabs md-dynamic-height md-no-ink md-selected="indiceTabs">
+                <md-tab id="tabUtilizacao" ng-disabled="cessaoOnerosaCtrl.bloqueiaDadosUtilizacao">
+                    <md-tab-label>{{'label-dados-utilizacao' | translate | uppercase}}</md-tab-label>
+                    <md-tab-body>
+                        <form name="cessaoOnerosaCtrl.formUtilizacao">
+                            <div layout="column" layout-xs="column" class="margin-conteudo">
+                                <div ng-cloak flex="100" flex-xs="100" offset="5">
+                                    <v-accordion  ng-if="cessaoOnerosaCtrl.cessaoOnerosaEspecial.statusDestinacao.id === 2" id="accordion" multiple class="vAccordion--default cancelamento">
+                                        <v-pane>
+                                            <v-pane-header id="id_acordion_cancelamento">{{'label-dados-cancelamento-destinacao' | translate | uppercase}}</v-pane-header>
+                                            <v-pane-content>
+                                                <apresentar-dados-cancelamento cancelamento-destinacao="cessaoOnerosaCtrl.cessaoOnerosaEspecial">
+
+                                                </apresentar-dados-cancelamento>
+                                            </v-pane-content>
+                                        </v-pane>
+                                    </v-accordion>
+
+                                    <v-accordion  ng-if="cessaoOnerosaCtrl.cessaoOnerosaEspecial.statusDestinacao.id === 5" id="accordion" multiple class="vAccordion--default cancelamento">
+                                        <v-pane>
+                                            <v-pane-header id="id_acordion_encerramento">{{'label-dados-encerramento-destinacao' | translate | uppercase}}</v-pane-header>
+                                            <v-pane-content>
+                                                <apresentar-dados-encerramento encerramento="cessaoOnerosaCtrl.cessaoOnerosaEspecial">
+
+                                                </apresentar-dados-encerramento>
+                                            </v-pane-content>
+                                        </v-pane>
+                                    </v-accordion>
+                                    <dados-atendimento bloquear="cessaoOnerosaCtrl.cessaoOnerosaEspecial.detalhar"
+                                                       atendimento="cessaoOnerosaCtrl.atendimento"
+                                                       tipo-destinacao="cessaoOnerosaCtrl.cessaoOnerosaEspecial.tipoDestinacaoEnum"
+                                                       financeiro="cessaoOnerosaCtrl.cessaoOnerosaEspecial.financeiro"
+                                                       destinacao-transito="cessaoOnerosaCtrl.cessaoOnerosaEspecial"
+                                                       editar="cessaoOnerosaCtrl.cessaoOnerosaEspecial.editar"></dados-atendimento>
+                                    <div class="margin-top">
+                                        <v-accordion multiple  class="vAccordion--default" ng-show="cessaoOnerosaCtrl.cessaoOnerosaEspecial.codFundamentoLegal">
+                                            <v-pane ng-disabled="cessaoOnerosaCtrl.habilitarAccordion()">
+                                                <v-pane-header id="accordion-dados-imovel-cessao-onerosa-especial" class="titulo-verde negrito">{{'label-dados-imovel-parcela' | translate | uppercase}}</v-pane-header>
+                                                <v-pane-content>
+                                                    <inserir-dados-parcela-imovel-page
+                                                        bloquear="cessaoOnerosaCtrl.cessaoOnerosaEspecial.detalhar"
+                                                        destinacao="cessaoOnerosaCtrl.cessaoOnerosaEspecial"
+                                                        edicao="cessaoOnerosaCtrl.cessaoOnerosaEspecial.editar"
+                                                        rota-destinacao="'destinacao.cessaoOnerosa'">
+                                                    </inserir-dados-parcela-imovel-page>
+                                                </v-pane-content>
+                                            </v-pane>
+                                            <v-pane ng-disabled="cessaoOnerosaCtrl.habilitarAccordion()">
+                                                <v-pane-header id="accordion-dados-responsavel-cessao-onerosa-especial" class="titulo-verde negrito">{{'label-dados-responsavel-destinatario' | translate | uppercase}}</v-pane-header>
+                                                <v-pane-content>
+                                                    <dados-responsavel-destinatario
+                                                        dados-responsavel="cessaoOnerosaCtrl.cessaoOnerosaEspecial.dadosResponsavel"
+                                                        atendimento="cessaoOnerosaCtrl.atendimento"
+                                                        financeiro="cessaoOnerosaCtrl.cessaoOnerosaEspecial.financeiro"
+                                                        tipo-destinacao="cessaoOnerosaCtrl.cessaoOnerosaEspecial.tipoDestinacaoEnum"
+                                                        destinacoes-imoveis="cessaoOnerosaCtrl.cessaoOnerosaEspecial.destinacaoImoveis"
+                                                        tipo-modalidade="cessaoOnerosaCtrl.atendimento.tipoModalidade"
+                                                        modo-editar="cessaoOnerosaCtrl.cessaoOnerosaEspecial.editar"
+                                                        bloquear="cessaoOnerosaCtrl.cessaoOnerosaEspecial.detalhar"
+                                                        destinacao="cessaoOnerosaCtrl.cessaoOnerosaEspecial"
+                                                        nome-state="cessaoOnerosaCtrl.nomeState"
+                                                        fundamento="cessaoOnerosaCtrl.cessaoOnerosaEspecial.codFundamentoLegal">
+                                                    </dados-responsavel-destinatario>
+                                                </v-pane-content>
+                                            </v-pane>
+                                            <v-pane ng-disabled="cessaoOnerosaCtrl.habilitarAccordion()">
+                                                <v-pane-header id="id_acordion_dadosUtilizacao" class="titulo-verde negrito">{{'label-dados-uso' | translate | uppercase}}</v-pane-header>
+                                                <v-pane-content>
+                                                    <dados-utilizacao ng-if="cessaoOnerosaCtrl.cessaoOnerosaEspecial.utilizacao"
+                                                                      editar="cessaoOnerosaCtrl.cessaoOnerosaEspecial.editar"
+                                                                      bloquear="cessaoOnerosaCtrl.cessaoOnerosaEspecial.detalhar"
+                                                                      ng-if="cessaoOnerosaCtrl.cessaoOnerosaEspecial.tipoDestinacaoEnum"
+                                                                      utilizacao="cessaoOnerosaCtrl.cessaoOnerosaEspecial.utilizacao"
+                                                                      atendimento="cessaoOnerosaCtrl.atendimento"
+                                                                      financeiro="cessaoOnerosaCtrl.cessaoOnerosaEspecial.financeiro"
+                                                                      imoveis="cessaoOnerosaCtrl.cessaoOnerosaEspecial.destinacaoImoveis"
+                                                                      tipo-destinacao="cessaoOnerosaCtrl.cessaoOnerosaEspecial.tipoDestinacaoEnum"
+                                                                      responsaveis="cessaoOnerosaCtrl.cessaoOnerosaEspecial.responsaveis"></dados-utilizacao>
+                                                </v-pane-content>
+                                            </v-pane>
+
+                                            <v-pane ng-disabled="cessaoOnerosaCtrl.habilitarAccordion()">
+                                                <v-pane-header id="accordion-dados-licitacao-cessao-onerosa-especial" class="titulo-verde negrito">{{'label-dados-licitacao' | translate | uppercase}}</v-pane-header>
+                                                <v-pane-content>
+                                                    <div class="espacamento-top">
+                                                        <dados-licitacao bloquear="cessaoOnerosaCtrl.cessaoOnerosaEspecial.detalhar"
+                                                                         licitacao="cessaoOnerosaCtrl.cessaoOnerosaEspecial.licitacao"
+                                                                         atendimento="cessaoOnerosaCtrl.atendimento"></dados-licitacao>
+                                                    </div>
+                                                </v-pane-content>
+                                            </v-pane>
+                                            <v-pane ng-if="cessaoOnerosaCtrl.verificarSePodeExibirFinanceiro()">
+                                                <v-pane-header id="id_acordion_dadosFinanceiros" class="titulo-verde negrito">{{'label-dados-financeiro' | translate | uppercase}}</v-pane-header>
+                                                <v-pane-content>
+                                                    <dados-financeiros-cessao editar="cessaoOnerosaCtrl.cessaoOnerosaEspecial.editar"
+                                                                              bloquear="cessaoOnerosaCtrl.cessaoOnerosaEspecial.detalhar"
+                                                                              financeiro="cessaoOnerosaCtrl.cessaoOnerosaEspecial.financeiro"
+                                                    ></dados-financeiros-cessao>
+                                                </v-pane-content>
+                                            </v-pane>
+                                            <v-pane ng-disabled="cessaoOnerosaCtrl.habilitarAccordion()">
+                                                <v-pane-header id="accordion-dados-instrumento-cessao-onerosa-especial" class="titulo-verde negrito">{{'label-dados-instrumento-ato' | translate | uppercase}}</v-pane-header>
+                                                <v-pane-content>
+
+                                                    <instrumento-ato bloquear="cessaoOnerosaCtrl.cessaoOnerosaEspecial.detalhar"
+                                                                     destinacao-transito="cessaoOnerosaCtrl.cessaoOnerosaEspecial"
+                                                                     rota-destinacao="'destinacao.cessaoOnerosa'"></instrumento-ato>
+
+                                                </v-pane-content>
+                                            </v-pane>
+                                        </v-accordion>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="minuta margem-elementos-pagina" ng-if="cessaoOnerosaCtrl.exibirMinuta">
+                            <b>{{'label-minuta' | translate}}</b>
+                            <p>Gerada em: dd/mm/aaaa</p>
+                            <p>Responsavel: [CPF] - [Nome]</p>
+                            <p>Arquivo: <label class="hand link">[nome do arquivo].pdf</label></p>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab id="tabContrato" ng-disabled="!cessaoOnerosaCtrl.bloqueiaDadosUtilizacao">
+                    <md-tab-label>{{'label-dados-contrato-termo' | translate | uppercase}}</md-tab-label>
+                    <md-tab-body>
+                        <form name="cessaoOnerosaCtrl.formContrato">
+                            <div class="margin-top">
+                                <contrato dados-contrato="cessaoOnerosaCtrl.cessaoOnerosaEspecial.contrato"
+                                          tipo-destinacao="cessaoOnerosaCtrl.cessaoOnerosaEspecial.tipoDestinacaoEnum"
+                                          status-destinacao="cessaoOnerosaCtrl.cessaoOnerosaEspecial.statusDestinacao"
+                                          bloquear="cessaoOnerosaCtrl.cessaoOnerosaEspecial.detalhar"></contrato>
+                            </div>
+                            <div class="margin-conteudo">
+                                <v-accordion id="accordion" multiple class="vAccordion--default">
+                                    <v-pane>
+                                        <v-pane-header id="accordion-documentos-cessao-onerosa-especial" class="titulo-verde negrito">{{'label-documentos' | translate | uppercase}}</v-pane-header>
+                                        <v-pane-content>
+                                            <incluir-documento bloquear="cessaoOnerosaCtrl.cessaoOnerosaEspecial.detalhar"
+                                                               destinacao="cessaoOnerosaCtrl.cessaoOnerosaEspecial"
+                                                               rota-retorno="'destinacao.cessaoOnerosa'"></incluir-documento>
+                                        </v-pane-content>
+                                    </v-pane>
+                                </v-accordion>
+                            </div>
+                        </form>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
+        </md-content>
+    </div>
+    <botoes-rodape bloquear="cessaoOnerosaCtrl.cessaoOnerosaEspecial.detalhar"
+                   salvar-rascunho="cessaoOnerosaCtrl.salvarRascunho()"
+                   gravar="cessaoOnerosaCtrl.gravar()"
+                   avancar="cessaoOnerosaCtrl.avancar()"
+                   cancelar="cessaoOnerosaCtrl.cancelar()"
+                   fechar="cessaoOnerosaCtrl.fechar()"
+                   voltar="cessaoOnerosaCtrl.voltar()"
+                   botao-editar="cessaoOnerosaCtrl.botaoEditar()"
+                   gerar-minuta="cessaoOnerosaCtrl.bloqueiaDadosUtilizacao"
+                   cancelamento-encerramento="cessaoOnerosaCtrl.cessaoOnerosaEspecial.cancelamentoEncerramento">>
+    </botoes-rodape>
+</exibir-elemento-por-permissao-destinacao>

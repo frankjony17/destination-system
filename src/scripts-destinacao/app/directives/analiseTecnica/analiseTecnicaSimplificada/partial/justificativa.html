@@ -1,0 +1,30 @@
+<md-dialog aria-label="Suspender" flex="60" ng-cloak>
+    <form name="adicionarSolicitantes">
+        <md-toolbar>
+            <div class="md-toolbar-tools text-center">
+                <h2>{{'label-justificativa' | translate}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="fechar()">
+                    <md-icon md-svg-src="assets/img/icons/ic_close_24px.svg" aria-label="Fechar"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div layout="row" layout-margin>
+                    <md-input-container class="md-block" flex >
+                        <label>{{'label-justificativa' | translate}}:</label>
+                        <textarea ng-model="justificativa" required name="justificativa"
+                                  maxlength="500"
+                                  md-maxlength="500"></textarea>
+                    </md-input-container>
+                </div>
+                <div layout="row" flex="100" layout-align="end center">
+                    <md-button ng-click="fechar()" class="md-raised">
+                        Fechar
+                    </md-button>
+                </div>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

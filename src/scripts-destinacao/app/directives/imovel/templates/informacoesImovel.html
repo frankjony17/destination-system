@@ -1,0 +1,12 @@
+<div layout="row" layout-xs="column">
+  <div flex flex-xs="100">
+      <span class="negrito">{{'label-localizacao-imovel' | translate}}</span>
+      <div class="borda-titulo-mapa"></div>
+      <mapa-destinacao imoveis="imoveis" imagens="imagens"></mapa-destinacao>
+      <div style="margin-top: 30px;" ng-show="imagens.length > 0">
+        <span class="negrito">{{'label-album-fotos' | translate}}</span>
+        <div class="borda-carrossel"></div>
+        <carousel-destinacao imagens="imagens"></carousel-destinacao>
+      </div>
+  </div>
+</div>

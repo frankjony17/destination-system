@@ -1,0 +1,73 @@
+  <div layout="row" layout-xs="column" flex-xs="100" ng-show="!bloquear">
+
+    <md-input-container class="margin-top" flex="50" flex-xs="100">
+      <label>{{'label-descricao' | translate}}</label>
+      <input md-maxlength="200" maxlength="200" ng-model="arquivo.descricao" name="{{'label-descricao' | translate}}">
+    </md-input-container>
+
+    <div class="button-botton" layout="row" layout-align="end center" flex="50">
+      <md-button style="margin-left: 20px; width: 100%"
+                 class="md-raised btn-margin-bottom" ngf-select="addArquivo($files)"
+                 ngf-multiple="false"
+                 name="{{'label-documento' | translate}}">{{'btn-selecionar-documento' | translate}}
+      </md-button>
+    </div>
+  </div>
+
+  <div layout="column" class="margin-left espacamento-arquivos-adicionados" ng-show="!bloquear">
+    <md-container>
+      <label ng-show="arquivo.documento">{{arquivo.documento.name}}</label>
+    </md-container>
+  </div>
+
+  <div class="button-botton" layout="row" layout-align="end center" ng-show="!bloquear">
+    <md-button class="md-raised btn-margin-bottom" ng-click="incluirArquivo()">
+      {{'btn-adicionar' | translate | uppercase}}
+    </md-button>
+  </div>
+
+  <div ng-show="destinacao.documentosArquivo.length >0" class="margin-top">
+    <md-table-container>
+      <table md-table class="upload-table">
+
+        <thead md-head >
+          <tr md-row class="upload-head">
+            <th md-column flex="40">{{'label-descricao' | translate}}</th>
+            <th md-column flex="40">{{'label-documento' | translate}}</th>
+            <th md-column flex="20" ng-show="!bloquear"> </th>
+          </tr>
+        </thead>
+        <tbody md-body>
+          <tr md-row ng-repeat="arq in destinacao.documentosArquivo
+                          | limitTo: tabela.limit:
+                          (tabela.page - 1) * tabela.limit">
+
+            <td md-cell flex="40">
+              <span>{{arq.arquivo.descricao}}</span>
+            </td>
+            <td md-cell flex="40">
+                <a ng-show="!arq.arquivo.exibirPreview" ng-href="{{baixarArquivo(arq.arquivo.documento)}}" target="_blank">
+                    <label class="hand link">{{arq.arquivo.documento.nomeReal}}</label>
+                </a>
+
+                <label ng-show="arq.arquivo.exibirPreview" class="hand link" ng-click="gerarPreview(arq.arquivo.documento)">{{arq.arquivo.documento.nomeReal}}</label>
+            </td>
+            <td md-cell flex="20" ng-show="!bloquear">
+              <ng-md-icon icon="delete" class="hand"
+                          ng-click="removerArquivo(arq)">
+                <md-tooltip>{{'btn-excluir' | translate}}</md-tooltip>
+              </ng-md-icon>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <md-table-pagination class="upload" style="margin: auto; background-color: #D8F8E1;"
+                           md-limit="tabela.limit"
+                           md-limit-options="tabela.limitsPage"
+                           md-page="tabela.page"
+                           md-total="{{destinacao.documentosArquivo.length}}"
+                           md-on-paginate="true"
+                           md-page-select>
+      </md-table-pagination>
+    </md-table-container>
+  </div>

@@ -1,0 +1,135 @@
+<form name="analiseTecnicaCtrl.formAnalise">
+  <v-accordion id="accordion" class="vAccordion--default" flex="100">
+    <v-pane expanded id="requerimento">
+      <v-pane-header class="texto-verde">
+        <h3>{{analiseTecnicaCtrl.requerimento.servico.titulo}}</h3>
+      </v-pane-header>
+      <v-pane-content>
+        <requerimento-adesao-praia ng-if="analiseTecnicaCtrl.requerimento"
+                                   requerimento="analiseTecnicaCtrl.requerimento"></requerimento-adesao-praia>
+      </v-pane-content>
+    </v-pane>
+
+    <v-pane id="triagem-requerimento" ng-if="false"> <!--ng-if="analiseTecnicaCtrl.requerimento.statusRequerimento != 'AGUARDANDO_ANALISE_PREVIA'" -->
+      <v-pane-header class="texto-verde">
+        <h3>{{'label-triagem-requerimento' | translate}}</h3>
+      </v-pane-header>
+      <v-pane-content>
+        <analise-simplificada ng-if="analiseTecnicaCtrl.requerimento"
+                              requerimento="analiseTecnicaCtrl.requerimento">
+
+        </analise-simplificada>
+      </v-pane-content>
+    </v-pane>
+
+    <div layout="row" layout-align="end center" ng-if="analiseTecnicaCtrl.mostrarTriagem == false">
+      <md-button class="md-raised" ng-click="">{{'btn-fechar' | translate | uppercase}}</md-button>
+      <md-button class="md-raised"
+                 exibir-elemento-por-permissao="DESTINACAO_EXEC_ANALISE_TEC_TECNICO,
+                                                DESTINACAO_EXEC_ANALISE_TEC_CHEFIA,
+                                                DESTINACAO_EXEC_ANALISE_TEC_SUPERINTENDENTE,
+                                                DESTINACAO_EXEC_ANALISE_TEC_SECRETARIO"
+                 ng-click="analiseTecnicaCtrl.mostrarAnalise(true)">{{'btn-iniciar-analise' | translate | uppercase}}</md-button>
+    </div>
+
+    <v-pane id="triagem-destinacao" ng-if="analiseTecnicaCtrl.mostrarTriagem">
+      <v-pane-header class="texto-verde">
+        <h3>{{'label-analise-destinacao' | translate}}</h3>
+      </v-pane-header>
+      <v-pane-content>
+        <historico analise-tecnica="analiseTecnicaCtrl.analiseTecnica"></historico>
+
+        <item-analise
+          itens-analise="analiseTecnicaCtrl.analiseTecnica.itensVerificacao"
+          itens-requerimento="analiseTecnicaCtrl.requerimento.servico.analisesTecnicas"
+          bloquear-formulario="analiseTecnicaCtrl.verificarPodeEditar()"
+          titulo="'Itens de Verificação'"></item-analise>
+
+        <documento-analise
+          ng-show="analiseTecnicaCtrl.documentosObrigatorios.length > 0"
+          documentos-analise="analiseTecnicaCtrl.analiseTecnica.documentosAnaliseObrigatorio"
+          documentos-requerimento="analiseTecnicaCtrl.documentosObrigatorios"
+          bloquear-formulario="analiseTecnicaCtrl.verificarPodeEditar()"
+          obrigatorio="true"
+          titulo="'Documentos Obrigatórios'"
+          tipo-complementar="false"
+          analise-tecnica="analiseTecnicaCtrl.analiseTecnica"></documento-analise>
+
+        <documento-analise
+          documentos-analise="analiseTecnicaCtrl.analiseTecnica.documentosAnaliseComplementar"
+          documentos-requerimento="analiseTecnicaCtrl.documentosComplementares"
+          bloquear-formulario="analiseTecnicaCtrl.verificarPodeEditar()"
+          titulo="'Documentos Complementares'"
+          tipo-complementar="true"
+          analise-tecnica="analiseTecnicaCtrl.analiseTecnica"></documento-analise>
+
+        <informacao-complementar
+          ng-show="analiseTecnicaCtrl.analiseTecnica.documentosComplementares.length > 0"
+          ng-model="analiseTecnicaCtrl.analiseTecnica.informacaoComplementar"
+          documentos="analiseTecnicaCtrl.analiseTecnica.documentosComplementares"
+          bloquear-formulario="analiseTecnicaCtrl.verificarPodeEditar()"></informacao-complementar>
+
+        <item-analise-tecnica-especifico analise-tecnica="analiseTecnicaCtrl.analiseTecnica"
+                                         tipo-destinacao="analiseTecnicaCtrl.tipoDestinacao"
+                                         bloquear-formulario="analiseTecnicaCtrl.verificarPodeEditar()">
+        </item-analise-tecnica-especifico>
+
+        <despacho-tecnico bloquear-formulario="analiseTecnicaCtrl.verificarPodeEditar()"
+                          despachos="analiseTecnicaCtrl.analiseTecnica.despachosTecnico"
+                          analise-tecnica="analiseTecnicaCtrl.analiseTecnica"
+                          ng-if="(analiseTecnicaCtrl.analiseTecnica
+                                  && analiseTecnicaCtrl.analiseTecnica.despachosTecnico.length > 0)
+                                  || analiseTecnicaCtrl.exibirDespachoTecnico()">
+        </despacho-tecnico>
+
+        <despacho-chefia despachos="analiseTecnicaCtrl.analiseTecnica.despachosChefia"
+                        analise-tecnica="analiseTecnicaCtrl.analiseTecnica"
+                        bloquear-formulario="analiseTecnicaCtrl.verificarPodeEditarChefia()"
+                        ng-if="(analiseTecnicaCtrl.analiseTecnica
+                                && analiseTecnicaCtrl.analiseTecnica.despachosChefia.length > 0)
+                               || analiseTecnicaCtrl.exibirDespachoChefia()">
+        </despacho-chefia>
+
+        <despacho-superintendente despachos="analiseTecnicaCtrl.analiseTecnica.despachosSuperintendente"
+                        analise-tecnica="analiseTecnicaCtrl.analiseTecnica"
+                        bloquear-formulario="analiseTecnicaCtrl.verificarPodeEditarSuperintendente()"
+                        ng-if="(analiseTecnicaCtrl.analiseTecnica
+                                && analiseTecnicaCtrl.analiseTecnica.despachosSuperintendente.length > 0)
+                               || analiseTecnicaCtrl.exibirDespachoSuperintendente()">
+        </despacho-superintendente>
+
+        <despacho-secretario despachos="analiseTecnicaCtrl.analiseTecnica.despachosSecretario"
+                             analise-tecnica="analiseTecnicaCtrl.analiseTecnica"
+                             bloquear-formulario="analiseTecnicaCtrl.verificarPodeEditarSecretario()"
+                             ng-if="analiseTecnicaCtrl.analiseTecnica"></despacho-Secretario>
+
+        <div class="button-botton" layout="row" layout-align="end center" ng-show="!analiseTecnicaCtrl.exibirDadosPublicacaoDiario()">
+          <md-button class="md-raised" ng-click="analiseTecnicaCtrl.fechar();">{{'btn-fechar' | translate | uppercase}}</md-button>
+          <md-button class="md-raised"
+                      ng-show="analiseTecnicaCtrl.exibirBotaoRascunho()"
+                      ng-click="analiseTecnicaCtrl.salvarRascunho()">{{'btn-gravar-rascunho' | translate | uppercase}}</md-button>
+          <md-button class="md-raised"
+                      exibir-elemento-por-permissao="DESTINACAO_EXEC_ANALISE_TEC_TECNICO"
+                      ng-show="analiseTecnicaCtrl.exibirBotaoEnviarChefia()"
+                      ng-click="analiseTecnicaCtrl.salvarAnalise()">{{'btn-enviar-chefia' | translate | uppercase}}</md-button>
+          <md-button class="md-raised"
+                     exibir-elemento-por-permissao="DESTINACAO_EXEC_ANALISE_TEC_CHEFIA,
+                                                    DESTINACAO_EXEC_ANALISE_TEC_SUPERINTENDENTE,
+                                                    DESTINACAO_EXEC_ANALISE_TEC_SECRETARIO"
+                      ng-show="analiseTecnicaCtrl.exibirBotaoEnviar()"
+                      ng-click="analiseTecnicaCtrl.salvarAnalise()">{{'btn-enviar' | translate | uppercase}}</md-button>
+        </div>
+
+      </v-pane-content>
+    </v-pane>
+
+  </v-accordion>
+
+</form>
+
+<div ng-if="analiseTecnicaCtrl.exibirDadosPublicacaoDiario()">
+    <publicacao-diario-uniao analise-tecnica="analiseTecnicaCtrl.analiseTecnica">
+    </publicacao-diario-uniao>
+</div>
+
+

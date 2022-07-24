@@ -1,0 +1,24 @@
+{
+  "label-destinacao-imoveis": "Destinação de Imóveis",
+  "label-album-fotos-utilizacao": "Album de fotos",
+  "label-dados-destinatario": "Dados do Destinatário",
+  "label-numero-processo": "Número do Processo",
+  "label-tipo-transferencia": "Tipo de Transferência",
+  "label-base-legal": "Base Legal",
+  "label-ato-complementar":"Ato Complementar",
+  "label-tipo-destinatario": "Tipo de Destinatário",
+  "label-destinatario-cnpj": "CNPJ",
+  "label-destinatario-razao-social": "Razão Social",
+  "label-homologacao": "Homologação",
+
+  "btn-fechar": "Fechar",
+  "btn-gravar": "Gravar",
+  "btn-selecionar-arquivo": "Selecionar Arquivo",
+
+  "msg-confirmar-fechar": "Os dados serão perdidos. Deseja continuar?"
+
+
+}
+
+
+

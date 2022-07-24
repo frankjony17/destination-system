@@ -1,0 +1,135 @@
+<md-dialog flex="70" ng-init="incluirBeneficiarioCtrl.init();">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{'label-incluir-beneficiarios' | translate | uppercase}}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="incluirBeneficiarioCtrl.fechar()">
+                <md-icon md-svg-src="assets/img/icons/ic_close_white_24px.svg" aria-label="Fechar"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <form name="incluirBeneficiarioCtrl.form">
+        <div layout-margin="10">
+
+            <div>
+                <label class="negrito">{{'label-familia-beneficiada' | translate}} {{incluirBeneficiarioCtrl.sequencial}}</label>
+            </div>
+
+            <div layout="row">
+              <md-input-container style="margin-top: 1em" class="md-block" flex-gt-sm ng-show="true">
+                  <label>{{'label-cpf-responsavel' | translate}}:</label>
+                  <input ng-model="incluirBeneficiarioCtrl.familiaBeneficiada.cpfResponsavel"
+                         name="{{'label-cpf-responsavel' | translate}}"
+                         ng-change="incluirBeneficiarioCtrl.buscarPessoaPorCpf('RESPONSAVEL')"
+                         ui-br-cpf-mask required>
+              </md-input-container>
+              <md-input-container style="margin-top: 1em" class="md-block" flex-gt-sm ng-show="true">
+                  <label>{{incluirBeneficiarioCtrl.familiaBeneficiada.nomeResponsavel}}</label>
+              </md-input-container>
+            </div>
+
+            <div layout="row">
+                <md-input-container style="margin-top: 1em" class="md-block" flex-gt-sm ng-show="true">
+                    <label>{{'label-cpf-conjuge' | translate}}:</label>
+                    <input ng-model="incluirBeneficiarioCtrl.familiaBeneficiada.cpfConjuge"
+                            name="{{'label-cpf-conjuge' | translate}}"
+                            ng-change="incluirBeneficiarioCtrl.buscarPessoaPorCpf('CONJUGE')"
+                            ui-br-cpf-mask>
+                </md-input-container>
+                <md-input-container style="margin-top: 1em" class="md-block" flex-gt-sm ng-show="true">
+                    <label>{{incluirBeneficiarioCtrl.familiaBeneficiada.nomeConjuge}}</label>
+                </md-input-container>
+            </div>
+
+            <div layout="row" ng-show="incluirBeneficiarioCtrl.coletivo" flex="50">
+                <md-input-container style="margin-top: 1em" class="md-block" flex-gt-sm ng-show="true">
+                    <label>{{'label-area-utilizada' | translate}}:</label>
+                    <input ng-model="incluirBeneficiarioCtrl.familiaBeneficiada.areaUtilizada"
+                            name="{{'label-area-utilizada' | translate}}"
+                            ui-number-mask
+                            ng-required="incluirBeneficiarioCtrl.coletivo">
+                </md-input-container>
+            </div>
+
+            <div layout="row" layout-align="end center">
+                <md-button class="md-primary md-raised" ng-click="incluirBeneficiarioCtrl.incluir()">
+                    {{'btn-incluir' | translate | uppercase}}
+                </md-button>
+            </div>
+
+            <div ng-show="incluirBeneficiarioCtrl.familiasBeneficiadas.length > 0">
+
+                <md-table-container>
+                    <table md-table style="border: 1px solid #cccccc;">
+
+                        <thead md-head>
+                        <tr md-row class="upload-head">
+                        <th md-column>{{'label-familia-beneficiada'|translate}}</th>
+                        <th md-column>{{'label-nome-resposavel' | translate}}</th>
+                        <th md-column>{{'label-nome-conjuge' | translate}}</th>
+                        <th md-column>{{'label-area-utilizada-beneficiario' | translate}}</th>
+                        <th md-column>{{'label-acao'|translate}}</th>
+                        </tr>
+                        </thead>
+
+                        <tbody md-body>
+                        <tr md-row ng-repeat="familiaBeneficiada in incluirBeneficiarioCtrl.familiasBeneficiadas | limitTo: 5">
+                        <td md-cell>
+                            <span ng-bind="familiaBeneficiada.sequencial"></span>
+                        </td>
+                        <td md-cell>
+                            <span ng-bind="familiaBeneficiada.nomeResponsavel"></span>
+                        </td>
+                        <td md-cell>
+                            <span ng-bind="familiaBeneficiada.nomeConjuge"></span>
+                        </td>
+                        <td md-cell>
+                            <span ng-bind="familiaBeneficiada.areaUtilizada | number:2"></span>
+                        </td>
+                        <td md-cell style="position: relative">
+                          <md-fab-speed-dial md-direction="left" class="hand md-scale">
+
+                            <md-fab-trigger>
+                              <ng-md-icon class="icon-acao" icon="more_vert">
+                              </ng-md-icon>
+                            </md-fab-trigger>
+
+                            <md-fab-actions>
+                              <ng-md-icon icon="create" class="icon-subacao" alt="{{'label-editar' | translate}}"
+                                          ng-click="incluirBeneficiarioCtrl.editar(familiaBeneficiada);">
+                                  <md-tooltip>{{'label-editar'|translate}}</md-tooltip>
+                              </ng-md-icon>
+                              <ng-md-icon icon="close" class="icon-subacao" alt="{{'label-excluir' | translate}}"
+                                          ng-click="incluirBeneficiarioCtrl.remover(familiaBeneficiada);">
+                                  <md-tooltip>{{'label-excluir'|translate}}</md-tooltip>
+                              </ng-md-icon>
+                            </md-fab-actions>
+                          </md-fab-speed-dial>
+                        </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                    </md-table-container>
+                    <md-table-pagination md-limit="incluirBeneficiarioCtrl.tabelaBeneficiario.limit"
+                                        md-limit-options="incluirBeneficiarioCtrl.tabelaBeneficiario.limitsPage"
+                                        md-page="incluirBeneficiarioCtrl.tabelaBeneficiario.page"
+                                        md-total="{{incluirBeneficiarioCtrl.familiasBeneficiadas.length}}"
+                                        md-on-paginate="true"
+                                         style="border: 1px solid #cccccc;">
+                    </md-table-pagination>
+                </md-table-container>
+
+            </div>
+
+          <div layout="row" layout-align="end center" ng-show="incluirBeneficiarioCtrl.familiasBeneficiadas.length > 0">
+              <md-button class="md-primary md-raised" ng-click="incluirBeneficiarioCtrl.confirmar();">
+                  {{'btn-confirmar' | translate | uppercase}}
+              </md-button>
+          </div>
+        </div>
+      </form>
+    </md-dialog-content>
+</md-dialog>

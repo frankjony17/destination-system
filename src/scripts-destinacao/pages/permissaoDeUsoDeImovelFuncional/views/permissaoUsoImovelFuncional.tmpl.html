@@ -1,0 +1,162 @@
+<div ng-if="!permissaoUsoImovelFuncionalCtrl.permissaoConcedida">
+    <acesso-negado></acesso-negado>
+</div>
+<exibir-elemento-por-permissao-destinacao permissoes="permissaoUsoImovelFuncionalCtrl.PERMISSOES"
+                               permissao-concedida="permissaoUsoImovelFuncionalCtrl.permissaoConcedida"
+                               detalhar="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.detalhar">
+    <div class="margin-header-conteudo">
+        <titulo-servico class="titulo-verde titulo-verde-header"></titulo-servico>
+        <div class="base-vermelho"></div>
+        <hr class="linha-divisoria">
+    </div>
+
+    <div layout="row" layout-xs="column" class="margin-mapa">
+      <div layout="column" flex="35" flex-xs="100">
+        <informacoes-imovel destinacao-imoveis="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.destinacaoImoveis"></informacoes-imovel>
+        <div style="margin-top: 30px;" ng-show="permissaoUsoImovelFuncionalCtrl.existeFotoVideo(permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.destinacaoImoveis)">
+          <span class="negrito">{{'label-album-fotos-utilizacao'| translate}}</span>
+          <div class="borda-carrossel"></div>
+          <carousel-destinacao imagens="permissaoUsoImovelFuncionalCtrl.imagens"></carousel-destinacao>
+        </div>
+      </div>
+        <md-content class="md-padding" flex="65" flex-xs="100">
+            <md-tabs md-dynamic-height md-no-ink md-selected="permissaoUsoImovelFuncionalCtrl.indiceTabs">
+                <md-tab id="tabUtilizacao" ng-disabled="permissaoUsoImovelFuncionalCtrl.bloqueiaDadosUtilizacao">
+                    <md-tab-label>{{'label-dados-utilizacao' | translate | uppercase}}</md-tab-label>
+                    <md-tab-body>
+                        <form name="permissaoUsoImovelFuncionalCtrl.formUtilizacao">
+                            <div ng-cloak flex="100" flex-xs="100" class="margin-conteudo" offset="5">
+                                <v-accordion ng-if="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.statusDestinacao.id === 2" id="accordion" multiple class="vAccordion--default cancelamento">
+                                    <v-pane>
+                                        <v-pane-header id="id_acordion_cancelamento">{{'label-dados-cancelamento-destinacao' | translate | uppercase}}</v-pane-header>
+                                        <v-pane-content>
+                                            <apresentar-dados-cancelamento cancelamento-destinacao="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional">
+
+                                            </apresentar-dados-cancelamento>
+                                        </v-pane-content>
+                                    </v-pane>
+                                </v-accordion>
+                                <v-accordion  ng-if="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.statusDestinacao.id === 5" id="accordion" multiple class="vAccordion--default cancelamento">
+                                    <v-pane>
+                                        <v-pane-header id="id_acordion_encerramento">{{'label-dados-encerramento-destinacao' | translate | uppercase}}</v-pane-header>
+                                        <v-pane-content>
+                                            <apresentar-dados-encerramento encerramento="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional">
+
+                                            </apresentar-dados-encerramento>
+                                        </v-pane-content>
+                                    </v-pane>
+                                </v-accordion>
+                                <dados-atendimento atendimento="permissaoUsoImovelFuncionalCtrl.atendimento"
+                                                   tipo-destinacao="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.tipoDestinacaoEnum"
+                                                   bloquear="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.detalhar"
+                                                   destinacao-transito="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional"
+                                                   editar="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional"></dados-atendimento>
+                                <div class="margin-top">
+                                <v-accordion multiple class="vAccordion--default" ng-show="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.codFundamentoLegal">
+                                    <v-pane>
+                                        <v-pane-header id="dadosImovel" class="titulo-verde negrito">{{'label-dados-imovel-parcela' | translate | uppercase}}</v-pane-header>
+                                        <v-pane-content>
+                                            <inserir-dados-parcela-imovel-page edicao="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.editar"
+                                                                   bloquear="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.detalhar"
+                                                                   destinacao="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional"
+                                                                  rota-destinacao="'destinacao.permissaoUsoImovelFuncional'"
+                                            ></inserir-dados-parcela-imovel-page>
+                                        </v-pane-content>
+                                    </v-pane>
+                                    <v-pane>
+                                        <v-pane-header id="dados-responsavel-destinatario" class="titulo-verde negrito">{{'label-dados-responsavel-destinatario' | translate | uppercase}}</v-pane-header>
+                                        <v-pane-content>
+                                            <dados-responsavel-destinatario  ng-if="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.dadosResponsavel"
+                                                                             dados-responsavel="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.dadosResponsavel"
+                                                                             bloquear="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.detalhar"
+                                                                             modo-editar="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.editar"
+                                                                             atendimento="permissaoUsoImovelFuncionalCtrl.atendimento"
+                                                                             destinacoes-imoveis="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.destinacaoImoveis"
+                                                                             destinacao="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional"
+                                                                             tipo-destinacao="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.tipoDestinacaoEnum"
+                                                                             nome-state="permissaoUsoImovelFuncionalCtrl.nomeState"
+                                                                             fundamento="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.codFundamentoLegal"></dados-responsavel-destinatario>
+                                        </v-pane-content>
+                                    </v-pane>
+                                    <v-pane>
+                                        <v-pane-header id="dados-utilizacao" class="titulo-verde negrito">{{'label-dados-utilizacao' | translate | uppercase}}</v-pane-header>
+                                        <v-pane-content>
+
+                                            <dados-utilizacao ng-if="permissaoUsoImovelFuncionalCtrl.carregarDadosUtilizacao === true"
+                                                              utilizacao="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.utilizacao"
+                                                              atendimento="permissaoUsoImovelFuncionalCtrl.atendimento"
+                                                              bloquear="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.detalhar"
+                                                              editar="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.editar"
+                                                              imoveis="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.imoveis"
+                                                              responsaveis="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.responsaveis"
+                                                              tipo-destinacao="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.tipoDestinacaoEnum">
+                                            </dados-utilizacao>
+                                        </v-pane-content>
+                                    </v-pane>
+                                    <v-pane>
+                                        <v-pane-header id="dados-instrumento-ato" class="titulo-verde negrito">{{'label-dados-instrumento-ato' | translate | uppercase}}</v-pane-header>
+                                            <v-pane-content>
+
+                                              <instrumento-ato ng-if="permissaoUsoImovelFuncionalCtrl.carregarDadosUtilizacao === true"
+                                                               destinacao-transito="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional"
+                                                               bloquear="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.detalhar"
+                                                               rota-destinacao="'destinacao.permissaoUsoImovelFuncional'">
+                                              </instrumento-ato>
+
+                                            </v-pane-content>
+                                    </v-pane>
+
+                                </v-accordion>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="minuta margem-elementos-pagina" ng-if="permissaoUsoImovelFuncionalCtrl.exibirMinuta">
+                          <b>{{'label-minuta' | translate}}</b>
+                          <p style="margin-left: 2%;">Gerada em: {{permissaoUsoImovelFuncionalCtrl.dataMinuta}}</p>
+                          <p style="margin-left: 2%;">Responsavel: {{permissaoUsoImovelFuncionalCtrl.responsavelMinuta}}</p>
+                          <p>Arquivo: <label class="hand link">[nome do arquivo].pdf</label></p>
+                        </div>
+                    </md-tab-body>
+                </md-tab>
+                <md-tab id="tabContrato" ng-disabled="!permissaoUsoImovelFuncionalCtrl.bloqueiaDadosUtilizacao">
+                    <md-tab-label>{{'label-dados-contrato-termo' | translate | uppercase}}</md-tab-label>
+                    <md-tab-body>
+                        <form name="permissaoUsoImovelFuncionalCtrl.formContrato">
+                            <div class="margin-top">
+                            <contrato bloquear="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.detalhar"
+                                      dados-contrato="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.contrato"
+                                      tipo-destinacao="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.tipoDestinacaoEnum"
+                                      status-destinacao="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.statusDestinacao"></contrato>
+                            </div>
+                            <div class="margin-conteudo">
+                            <v-accordion id="accordion" multiple class="vAccordion--default">
+                                <v-pane>
+                                <v-pane-header id="documentos" class="titulo-verde negrito">{{'label-documentos' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                    <incluir-documento bloquear="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.detalhar"
+                                                       destinacao="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional"
+                                                       rota-retorno="'destinacao.permissaoUsoImovelFuncional'" >
+
+                                    </incluir-documento>
+                                </v-pane-content>
+                                </v-pane>
+                            </v-accordion>
+                            </div>
+                        </form>
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
+        </md-content>
+    </div>
+    <botoes-rodape bloquear="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.detalhar"
+                   salvar-rascunho="permissaoUsoImovelFuncionalCtrl.salvarRascunho()"
+                   gravar="permissaoUsoImovelFuncionalCtrl.gravar()"
+                   avancar="permissaoUsoImovelFuncionalCtrl.avancar()"
+                   fechar="permissaoUsoImovelFuncionalCtrl.fechar()"
+                   voltar="permissaoUsoImovelFuncionalCtrl.voltar()"
+                   cancelar="permissaoUsoImovelFuncionalCtrl.cancelar()"
+                   botao-editar="permissaoUsoImovelFuncionalCtrl.botaoEditar()"
+                   gerar-minuta="permissaoUsoImovelFuncionalCtrl.bloqueiaDadosUtilizacao"
+                    cancelamento-encerramento="permissaoUsoImovelFuncionalCtrl.permissaoUsoImovelFuncional.cancelamentoEncerramento">
+    </botoes-rodape>
+</exibir-elemento-por-permissao-destinacao>

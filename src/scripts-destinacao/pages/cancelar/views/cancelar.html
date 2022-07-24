@@ -1,0 +1,147 @@
+<div style="margin: 1%;" >
+    <form name="cancelarCtrl.formCancelar">
+
+        <div class="margin-header-conteudo">
+            <span class="titulo-verde-header">{{'label-cancelar-destinacao'| translate | uppercase}}</span>
+            <div class="base-vermelho"></div>
+            <hr class="linha-divisoria">
+        </div>
+
+        <div class="margin-conteudo">
+            <label>{{'label-responsavel-tecnico'| translate}}: {{cancelarCtrl.responsavelTecnico}}</label>
+            <div layout="row" class="margin-top" flex>
+                <div layout="column" flex="50" class="inputCancelamento" style="margin-top: 10px">
+                    <label class="label-date-picker">{{"label-data-cancelamento"| translate}}*</label>
+                    <md-datepicker ng-model="cancelarCtrl.cancelar.dataCancelamento"
+                                   md-placeholder="dd/mm/aaaa"
+                                   md-custom-clean-mask="false"
+                                   name="{{'label-data-cancelamento'| translate}}"
+                                   class="special"
+                                   required>
+                    </md-datepicker>
+                </div>
+
+                <div layout="column" flex="50" class="margem-elementos-pagina margin-top">
+                    <md-input-container class="md-block margin-top">
+                        <label>{{'label-motivo'| translate}}:</label>
+                        <md-select ng-model="cancelarCtrl.cancelar.motivoCancelamento"
+                                   ng-model-options="{trackBy: '$value.id'}"
+                                   name="{{'label-motivo'| translate}}"
+                                   required>
+                            <md-option ng-repeat="motivo in cancelarCtrl.motivosCancelamento"
+                                       ng-value="motivo">
+                                {{motivo.descricao}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" class="margin-header-conteudo">
+                <md-input-container class="md-block margin-top" flex="100">
+                    <label>{{'label-observacao'|translate}}:</label>
+                    <textarea required
+                              name="{{'label-observacao'|translate}}"
+                              ng-model="cancelarCtrl.cancelar.observacao"
+                              md-maxlength="2000" maxlength="2000"
+                              class="descricaoFinalidade"></textarea>
+                </md-input-container>
+            </div>
+
+            <fieldset style="border-radius: 5px;" class="margem-elementos-pagina margin-top">
+                <ng-form name="cancelarCtrl.formDocumentos">
+                    <span class="titulo-verde negrito">{{'label-documentos'| translate}}</span>
+                    <hr class="linha-divisoria">
+                    <div layout="column" class="margin-bottom-label margem-elementos-pagina " style="margin-top: 30px">
+                        <div layout="row" flex="100">
+                            <div layout="column" flex="50" class="margin-top margin-lateral-label">
+                                <md-input-container>
+                                    <label>{{'label-nome'| translate}}:</label>
+                                    <input ng-model="cancelarCtrl.arquivo.nome"
+                                           maxlength="100"
+                                           required
+                                           name="{{'label-nome'| translate}}">
+                                </md-input-container>
+                            </div>
+
+                            <div layout="column" class="margin-lateral-label button-botton flex-item" style="margin-top: 12px">
+                                <md-button class="md-raised btn-margin-bottom" ngf-select="cancelarCtrl.addArquivo($files)"
+                                           ngf-multiple="false"
+                                           name="{{'label-documento'| translate}}">{{"btn-escolher-arquivo"| translate}}
+                                </md-button>
+                            </div>
+                        </div>
+                        <div class="margin-top">
+                            <div layout="row" flex="100">
+                                <div layout="row" flex="70">
+                                    <div layout="column" flex="40" class="margin-left espacamento-arquivos-adicionados">
+                                        <md-container>
+                                            <label ng-show="cancelarCtrl.arquivo.documento">{{cancelarCtrl.arquivo.documento.name}}</label>
+                                        </md-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <div layout="row" layout-align="end center" flex="100">
+                                <md-button class="md-primary md-raised md-button" ng-click="cancelarCtrl.incluirArquivo()">{{"btn-adicionar"| translate}}
+                                </md-button>
+                            </div>
+                        </div>
+                        <div ng-show="cancelarCtrl.cancelar.arquivos.length > 0" class="margin-top">
+                            <md-table-container>
+                                <table md-table style="border: 1px solid #cccccc;">
+                                    <thead md-head>
+                                        <tr md-row class="upload-head">
+                                            <th md-column>{{'label-nome'| translate}}</th>
+                                            <th md-column>{{'label-documento'| translate}}</th>
+                                            <th md-column>{{'label-acao'| translate}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody md-body>
+                                        <tr md-row ng-repeat="arq in cancelarCtrl.cancelar.arquivos
+                                                                    | limitTo: cancelarCtrl.tabela.limit:
+                                (cancelarCtrl.tabela.page - 1) * cancelarCtrl.tabela.limit">
+                                            <td md-cell>
+                                                <span>{{arq.nome}}</span>
+                                            </td>
+                                            <td md-cell>
+                                                <div ng-if="arq.exibirPreview">
+                                                    <label class="hand link" ng-click="cancelarCtrl.gerarPreview(arq.documento)">{{arq.documento.nomeReal}}</label>
+                                                </div>
+                                                <div ng-if="!arq.exibirPreview">
+                                                    <a ng-href="{{cancelarCtrl.baixarArquivo(arq.documento)}}" target="_blank">
+                                                        <label class="hand link">{{arq.documento.nomeReal}}</label>
+                                                    </a>
+                                                </div>
+                                            </td>
+
+                                            <td md-cell>
+                                    <ng-md-icon icon="delete"
+                                                ng-click="cancelarCtrl.removerArquivo(arq)">
+                                        <md-tooltip>{{'btn-excluir'| translate}}</md-tooltip>
+                                    </ng-md-icon>
+                                    </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </md-table-container>
+                            <md-table-pagination md-limit="tabela.limit"
+                                                 md-limit-options="tabela.limitsPage"
+                                                 md-page="tabela.page"
+                                                 md-total="{{cancelarCtrl.arquivos.length}}"
+                                                 md-on-paginate="true"
+                                                 md-page-select
+                                                 style="border: 1px solid #cccccc; margin:0 5px 0 5px;">
+                            </md-table-pagination>
+                        </div>
+                    </div>
+                </ng-form>
+            </fieldset>
+        </div>
+    </form>
+</div>
+<div layout="row" class="margin-mapa">
+    <hr class="linha-divisoria-footer" style="width: 100%">
+</div>
+<div class="button-botton" layout="row" layout-align="end center">
+    <md-button class="md-raised" ng-click="fechar();">{{'btn-fechar'| translate | uppercase}}</md-button>
+    <md-button class="md-raised" ng-click="">{{'btn-submeter-superintendente'| translate | uppercase}}</md-button>
+</div>

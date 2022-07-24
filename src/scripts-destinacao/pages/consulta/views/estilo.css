@@ -1,0 +1,59 @@
+#su-destinacao .margin-esquerda {
+    margin-left: 0.3% !important;
+    margin-right: 0.3% !important;
+}
+
+#su-destinacao .centraliza-texto-antes-input {
+    margin-top: 2%;
+}
+
+#su-destinacao .centraliza-texto-antes-input-de {
+    margin-top: 2%;
+    margin-left: 0;
+}
+
+#su-destinacao .tamanho-font{
+  font-size:13px;
+}
+
+#su-destinacao md-input-container > md-select {
+  height: 30px;
+}
+
+#su-destinacao md-input-container{
+  padding-left: 0.5%;
+  padding-right: 0.5%;
+}
+
+#su-destinacao .principal{
+    margin: 44px 20px 20px 20px;
+}
+
+#su-destinacao .ng-binding{
+  padding-left: 8px !important;
+}
+
+#su-destinacao .linha-divisoria{
+  margin-right: 20px;
+}
+
+#su-destinacao .linha-divisoria-footer{
+  margin-right: 20px;
+}
+
+#su-destinacao md-dialog, .md-raised {
+  margin-right: 20px;
+}
+
+#su-destinacao .alinhar-md-fab-speed-dial {
+  margin-left: -127px;
+}
+#su-destinacao .alinhar-uso-proprio-md-fab-speed-dial {
+    margin-left: -50px;
+}
+
+#su-destinacao .texto-vemelho {
+  color: red;
+}
+
+

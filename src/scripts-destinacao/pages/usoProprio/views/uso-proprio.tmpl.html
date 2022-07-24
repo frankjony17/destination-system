@@ -1,0 +1,135 @@
+<div ng-if="!usoProprioCtrl.permissaoConcedida">
+    <acesso-negado></acesso-negado>
+</div>
+<exibir-elemento-por-permissao-destinacao permissoes="usoProprioCtrl.PERMISSOES"
+                               permissao-concedida="usoProprioCtrl.permissaoConcedida"
+                               detalhar="usoProprioCtrl.usoProprio.detalhar">
+    <form name="usoProprioCtrl.form">
+        <div class="margin-header-conteudo">
+            <titulo-servico class="titulo-verde titulo-verde-header"></titulo-servico>
+            <div class="base-vermelho"></div>
+            <hr class="linha-divisoria">
+        </div>
+      <div layout="row" layout-xs="column" class="margin-mapa">
+        <div layout="column" flex="35" flex-xs="100">
+          <informacoes-imovel destinacao-imoveis="usoProprioCtrl.usoProprio.destinacaoImoveis"
+                              bloquear="usoProprioCtrl.usoProprio.detalhar">
+          </informacoes-imovel>
+          <div style="margin-top: 30px;" ng-show="usoProprioCtrl.usoProprio.destinacaoImoveis[0].fotoVideo.length > 0">
+            <span class="negrito">{{'label-album-fotos-utilizacao'| translate}}</span>
+            <div class="borda-carrossel"></div>
+            <carousel-destinacao imagens="usoProprioCtrl.usoProprio.destinacaoImoveis[0].fotoVideo"></carousel-destinacao>
+          </div>
+        </div>
+        <div layout="column" flex="65" flex-xs="100" layout-xs="column" class="margin-conteudo">
+          <div ng-cloak flex="100" flex-xs="100" offset="5">
+              <v-accordion  ng-if="usoProprioCtrl.usoProprio.statusDestinacao.id === 2" id="accordion" multiple class="vAccordion--default cancelamento">
+                  <v-pane>
+                      <v-pane-header id="id_acordion_cancelamento">{{'label-dados-cancelamento-destinacao' | translate | uppercase}}</v-pane-header>
+                      <v-pane-content>
+                          <apresentar-dados-cancelamento cancelamento-destinacao="usoProprioCtrl.usoProprio">
+
+                          </apresentar-dados-cancelamento>
+                      </v-pane-content>
+                  </v-pane>
+              </v-accordion>
+
+              <v-accordion  ng-if="usoProprioCtrl.usoProprio.statusDestinacao.id === 5" id="accordion" multiple class="vAccordion--default cancelamento">
+                  <v-pane>
+                      <v-pane-header id="id_acordion_encerramento">{{'label-dados-encerramento-destinacao' | translate | uppercase}}</v-pane-header>
+                      <v-pane-content>
+                          <apresentar-dados-encerramento encerramento="usoProprioCtrl.usoProprio">
+
+                          </apresentar-dados-encerramento>
+                      </v-pane-content>
+                  </v-pane>
+              </v-accordion>
+            <dados-atendimento atendimento="usoProprioCtrl.atendimento"
+                               tipo-destinacao="usoProprioCtrl.usoProprio.tipoDestinacaoEnum"
+                               bloquear="usoProprioCtrl.usoProprio.detalhar"
+                               editar="usoProprioCtrl.usoProprio.editar">
+            </dados-atendimento>
+            <div class="margin-top">
+         <v-accordion id="accordion" multiple class="vAccordion--default">
+
+           <v-pane>
+             <v-pane-header id="accordion-dados-imovel-uso-proprio" class="titulo-verde negrito">{{'label-dados-imovel-parcela' | translate | uppercase}}</v-pane-header>
+             <v-pane-content>
+
+               <inserir-dados-parcela-imovel-page
+                 destinacao="usoProprioCtrl.usoProprio"
+                 bloquear="usoProprioCtrl.usoProprio.detalhar"
+                 rota-destinacao="'destinacao.usoProprio'">
+               </inserir-dados-parcela-imovel-page>
+
+             </v-pane-content>
+           </v-pane>
+
+           <v-pane>
+             <v-pane-header id="accordion-dados-responsavel-uso-proprio" class="titulo-verde negrito">{{'label-dados-responsavel-destinatario' | translate | uppercase}}</v-pane-header>
+             <v-pane-content>
+               <dados-responsavel-uso-proprio destinacao-imoveis="usoProprioCtrl.usoProprio.destinacaoImoveis"
+                                              uso-proprio="usoProprioCtrl.usoProprio"></dados-responsavel-uso-proprio>
+            </v-pane-content>
+            </v-pane>
+
+           <v-pane>
+             <v-pane-header class="titulo-verde negrito">{{'label-dados-utilizacao' | translate | uppercase}}</v-pane-header>
+              <v-pane-content>
+
+                <dados-utilizacao ng-if="usoProprioCtrl.carregarDadosUtilizacao === true"
+                                  utilizacao="usoProprioCtrl.usoProprio.utilizacao"
+                                  atendimento="usoProprioCtrl.atendimento"
+                                  bloquear="usoProprioCtrl.usoProprio.detalhar"
+                                  imoveis="usoProprioCtrl.usoProprio.imoveis"
+                                  tipo-destinacao="usoProprioCtrl.usoProprio.tipoDestinacaoEnum"
+                                  responsaveis="usoProprioCtrl.usoProprio.responsaveis"></dados-utilizacao>
+
+              </v-pane-content>
+           </v-pane>
+
+          <v-pane id="painel-fotos">
+            <v-pane-header class="titulo-verde negrito">{{'label-fotos' | translate | uppercase}}</v-pane-header>
+            <v-pane-content>
+              <fotos ng-if="usoProprioCtrl.carregarDadosUtilizacao == true"
+                     destinacao="usoProprioCtrl.usoProprio"
+                     bloquear="usoProprioCtrl.usoProprio.detalhar">
+              </fotos>
+            </v-pane-content>
+          </v-pane>
+
+           <v-pane id="accordion-observacao" ng-show="usoProprioCtrl.emEdicao || usoProprioCtrl.isDetalharComObservacao()">
+             <v-pane-header class="titulo-verde negrito">{{'label-homologacao' | translate | uppercase}}</v-pane-header>
+             <v-pane-content>
+               <md-input-container class="md-block margin-top" >
+                 <label>{{'label-anotacoes'|translate}}:</label>
+                 <textarea name="{{'label-label-anotacoes'|translate}}"
+                           ng-model="usoProprioCtrl.usoProprio.observacao"
+                           md-maxlength="2000" maxlength="2000"
+                           class="descricaoFinalidade"
+                           ng-disabled="!usoProprioCtrl.emEdicao">
+                 </textarea>
+               </md-input-container>
+             </v-pane-content>
+           </v-pane>
+
+
+         </v-accordion>
+          </div>
+         </div>
+        </div>
+      </div>
+
+      <botoes-rodape bloquear="usoProprioCtrl.usoProprio.detalhar"
+                     acao="usoProprioCtrl.acao"
+                     tipo-destinacao-enum="usoProprioCtrl.usoProprio.tipoDestinacaoEnum"
+                     gravar="usoProprioCtrl.gravar()"
+                     fechar="usoProprioCtrl.fechar()"
+                     botao-editar="usoProprioCtrl.botaoEditar()"
+                     enviar="usoProprioCtrl.gravar()"
+                     cancelar="usoProprioCtrl.cancelar()"
+                     pendente="usoProprioCtrl.usoProprio.statusDestinacao.id === 3"
+                     cancelamento-encerramento="usoProprioCtrl.usoProprio.cancelamentoEncerramento">
+      </botoes-rodape>
+    </form>
+</exibir-elemento-por-permissao-destinacao>

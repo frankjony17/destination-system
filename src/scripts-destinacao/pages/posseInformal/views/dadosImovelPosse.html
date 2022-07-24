@@ -1,0 +1,129 @@
+<div>
+  <div layout="row" layout-xs="column">
+    <md-input-container class="md-block" flex="40" flex-xs="100" style="margin-top: 1em">
+      <label>{{'label-RIP' | translate}}:</label>
+      <input required name="{{'label-RIP' | translate}}" ng-model="posseCtrl.posseInformal.imovel.rip">
+    </md-input-container>
+
+    <div lauyout="row" layout-align="center center">
+      <md-button class="md-raised" ng-click="posseCtrl.buscarDestinacao()">{{'btn-consultar' | translate | uppercase}}</md-button>
+      <span> {{'label-nao-sabe-rip' | translate}}, <a ng-href="www.google.com">{{'label-consulte-aqui' | translate}}</a></span>
+    </div>
+  </div>
+
+  <div ng-show="posseCtrl.mostrarDadosImovel">
+    <p>{{'label-endereco' | translate}} :</p>
+    <div ng-show="posseCtrl.posseInformal.imovel.endereco">
+      <div layout="row" class="margin-top">
+        <div flex="33">
+          <label class="margin-right">{{'label-bairro' | translate}}:</label>
+          <label ng-bind="posseCtrl.posseInformal.imovel.endereco.bairro ? posseCtrl.posseInformal.imovel.endereco.bairro
+          : 'label-nao-informado' | translate"></label>
+        </div>
+
+        <div flex="33">
+          <label class="margin-right">{{'label-cep' | translate}}:</label>
+          <label ng-bind="posseCtrl.posseInformal.imovel.endereco.cep ? posseCtrl.posseInformal.imovel.endereco.cep
+          : 'label-nao-informado' | translate"></label>
+        </div>
+
+        <div flex="33">
+          <label class="margin-right">{{'label-codigo_postal' | translate}}:</label>
+          <label ng-bind="posseCtrl.posseInformal.imovel.endereco.codigoPostal ? posseCtrl.posseInformal.imovel.endereco.codigoPostal
+          : 'label-nao-informado' | translate"></label>
+        </div>
+      </div>
+      <div layout="row" class="margin-top">
+        <div flex="33">
+          <label class="margin-right">{{'label-complemento' | translate}}:</label>
+          <label ng-bind="posseCtrl.posseInformal.imovel.endereco.complemento ? posseCtrl.posseInformal.imovel.endereco.complemento
+          : 'label-nao-informado' | translate"></label>
+        </div>
+
+        <div flex="33">
+          <label class="margin-right">{{'label-logradouro' | translate}}:</label>
+          <label ng-bind="posseCtrl.posseInformal.imovel.endereco.logradouro ? posseCtrl.posseInformal.imovel.endereco.logradouro
+          : 'label-nao-informado' | translate"></label>
+        </div>
+
+        <div flex="33">
+          <label class="margin-right">{{'label-municipio' | translate}}:</label>
+          <label ng-bind="posseCtrl.posseInformal.imovel.endereco.municipio ? posseCtrl.posseInformal.imovel.endereco.municipio
+          : 'label-nao-informado' | translate"></label>
+        </div>
+      </div>
+      <div layout="row" class="margin-top">
+        <div flex="33">
+          <label class="margin-right">{{'label-numero' | translate}}:</label>
+          <label ng-bind="posseCtrl.posseInformal.imovel.endereco.numero ? posseCtrl.posseInformal.imovel.endereco.numero
+          : 'label-nao-informado' | translate"></label>
+        </div>
+
+        <div flex="33">
+          <label class="margin-right">{{'label-tipo_logradouro' | translate}}:</label>
+          <label ng-bind="posseCtrl.posseInformal.imovel.endereco.tipoLogradouro ? posseCtrl.posseInformal.imovel.endereco.tipoLogradouro
+          : 'label-nao-informado' | translate"></label>
+        </div>
+
+        <div flex="33">
+          <label class="margin-right">{{'label-tipo_uf' | translate}}:</label>
+          <label ng-bind="posseCtrl.posseInformal.imovel.endereco.uf ? posseCtrl.posseInformal.imovel.endereco.uf
+          : 'label-nao-informado' | translate"></label>
+        </div>
+        <div/>
+      </div>
+    </div>
+
+    <p>{{'label-proprietario' | translate}} :   <label ng-bind="posseCtrl.posseInformal.imovel.tipoProprietarioReal
+    ? posseCtrl.posseInformal.imovel.tipoProprietarioReal : 'label-nao-informado' | translate"></label>
+    </p>
+
+    <p>{{'label-processo-imovel' | translate}} : <label ng-bind="posseCtrl.posseInformal.imovel.numeroProcesso
+    ? posseCtrl.posseInformal.imovel.numeroProcesso : 'label-nao-informado' | translate"></label>
+    </p>
+
+    <div>
+      <md-table-container>
+        <table md-table>
+          <thead md-head>
+          <tr md-row>
+            <th md-column>{{'label-intrumento-destinacao' | translate}}</th>
+            <th md-column>{{'label-destinatario' | translate}}/CPF - CNPJ</th>
+            <th md-column>{{'label-destinatario' | translate}}/Nome</th>
+          </tr>
+          </thead>
+
+          <tbody md-body>
+          <tr md-row ng-repeat="item in posseCtrl.posseInformal.imovel.destinacoes | limitTo : posseCtrl.tabelaDestinacao.limit: (posseCtrl.tabelaDestinacao.page - 1) * posseCtrl.tabelaDestinacao.limit">
+            <td md-cell>
+              <span ng-bind="item.tipoDestinacao.descricao"></span>
+            </td>
+
+              <td md-cell>
+                <div ng-repeat="responsavel in item.responsaveis">
+                    <span ng-bind="responsavel.cpfCnpj"></span>
+                </div>
+              </td>
+
+              <td md-cell>
+                <div ng-repeat="responsavel in item.responsaveis">
+                  <span ng-bind="responsavel.nomeRazaoSocial"></span>
+                  <span ng-bind="responsavel.nomeResponsavel"></span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </md-table-container>
+      <md-table-pagination md-limit="posseCtrl.tabelaDestinacao.limit"
+                           md-limit-options="posseCtrl.tabelaDestinacao.limitsPage"
+                           md-page="posseCtrl.tabelaDestinacao.page"
+                           md-total="{{posseCtrl.posseInformal.imovel.destinacoes.length}}"
+                           md-on-paginate="true">
+      </md-table-pagination>
+    </div>
+    <p>{{'label-nao-sabe-rip' | translate}} : {{}} </p>
+    <p><a ng-href="www.google.com">{{'label-ver-dados-imovel' | translate}} : {{}} </a></p>
+  </div>
+</div>

@@ -1,0 +1,103 @@
+<form name="parcelaCtrl.form">
+  <titulo-destinacao parcela="true"></titulo-destinacao>
+
+
+  <div layout="row" layout-xs="column" class="margin-mapa">
+    <md-input-container class="margin-top md-block margin-lateral-label" flex="20" flex-xs="100">
+      <label> {{'label-rip' | translate}}:</label>
+      <input ng-model="parcelaCtrl.rip">
+    </md-input-container>
+
+    <md-input-container class="margin-top md-block margin-lateral-label" flex="15" flex-xs="100">
+      <label> {{'label-cep' | translate}}:</label>
+      <input ui-br-cep-mask ng-model="parcelaCtrl.localizacaoEctDto.cep" ng-blur="parcelaCtrl.buscarImovelByCep(parcelaCtrl.localizacaoEctDto.cep)">
+    </md-input-container>
+
+    <md-input-container flex="15" flex-xs="100" class="margin-top md-block margin-lateral-label">
+      <label>{{'label-uf' | translate}}:</label>
+      <md-select name="{{'label-uf' | translate}}" ng-model="parcelaCtrl.localizacaoEctDto.uf" ng-required="true" ng-disabled="parcelaCtrl.desabilitaUfMunicipio">
+        <md-option ng-repeat="uf in parcelaCtrl.ufs" ng-value="uf">
+          {{uf}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+    <md-input-container class="margin-top md-block margin-lateral-label" flex="50" flex-xs="100">
+      <label>{{'label-municipio' | translate}}:</label>
+      <input ng-model="parcelaCtrl.localizacaoEctDto.municipio" ng-disabled="parcelaCtrl.desabilitaUfMunicipio">
+    </md-input-container>
+  </div>
+
+
+  <div class="button-botton" layout="row" layout-align="end center">
+    <md-button class="md-raised"
+               ng-click="parcelaCtrl.limparCampos()">{{'btn-limpar' | translate | uppercase}}</md-button>
+    <md-button class="md-raised"
+               ng-click="parcelaCtrl.consultaDestinacoes()">
+      {{'btn-consultar' | translate | uppercase}}
+    </md-button>
+  </div>
+
+
+  <div layout="row" layout-xs="column" class="margin-mapa margin-lateral-label"
+  ng-show="parcelaCtrl.listaUtilizacoes.length > 0">
+    <md-content flex="100">
+    <md-table-container flex="100" flex-xs="100">
+      <table md-table id="tabela">
+
+        <thead md-head>
+        <tr md-row>
+          <th md-column>{{"label-rip" | translate}}</th>
+          <th md-column>{{"label-endereco" | translate}}</th>
+          <th md-column>{{"label-area-terreno" | translate}}</th>
+          <th md-column>{{"label-area-construida" | translate}}</th>
+          <th md-column>{{"label-quantidade-parcelas" | translate}}</th>
+          <th md-column>{{"label-acao" | translate}}</th>
+        </tr>
+        </thead>
+
+        <tbody md-body>
+
+        <tr md-row ng-repeat="utilizacoes in parcelaCtrl.listaUtilizacoes">
+          <td md-cell>
+           {{utilizacoes.rip}}
+          </td>
+
+          <td md-cell>
+            <p>{{"label-logradouro" | translate | uppercase}}: {{utilizacoes.endereco.logradouro}}, {{"label-numero" | translate | uppercase}}: {{utilizacoes.endereco.numero}}</p>
+            <p>{{utilizacoes.endereco.bairro }}, {{utilizacoes.endereco.municipio}} - {{utilizacoes.endereco.uf}}</p>
+            <p>{{"label-cep" | translate | uppercase}}: {{utilizacoes.endereco.cep | cep}}</p>
+          </td>
+
+          <td md-cell>
+            {{utilizacoes.areaTerreno | number:2}}
+          </td>
+          <td md-cell>
+            {{utilizacoes.areaConstruida | number:2}}
+          </td>
+          <td md-cell>
+            {{utilizacoes.quantidade}}
+          </td>
+          <td md-cell>
+            <ng-md-icon icon="create" id="icon-editar-parcela" class="hand" ng-click="parcelaCtrl.editar(utilizacoes.rip)">
+              <md-tooltip>{{"btn-editar" | translate | uppercase}}</md-tooltip>
+            </ng-md-icon>
+          </td>
+        </tr>
+        </tbody>
+
+      </table>
+
+    </md-table-container>
+    <md-table-pagination style="margin: auto; background-color: #D8F8E1;"
+                         md-limit="parcelaCtrl.tabelaImoveisComParcela.limit"
+                         md-limit-options="parcelaCtrl.tabelaImoveisComParcela.limitsPage"
+                         md-page="parcelaCtrl.tabelaImoveisComParcela.page"
+                         md-total="{{parcelaCtrl.tabelaImoveisComParcela.total}}"
+                         md-on-paginate="parcelaCtrl.consultarDestinacaoPaginada"
+                         md-page-select>
+    </md-table-pagination>
+    </md-content>
+    </div>
+</form>
+

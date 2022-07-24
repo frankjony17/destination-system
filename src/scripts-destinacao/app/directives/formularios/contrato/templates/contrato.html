@@ -1,0 +1,76 @@
+<div>
+  <!-- OS DADOS COMENTATOS SE REFEREM AO DADOS QUE FORAM REMOVIDOS DEVIDO A MINUTA -->
+  <!--div ng-if="statusDestinacao.id === 4">
+    <div style="margin-bottom: 25px; margin-left: 2%;">
+      <md-button class="md-primary md-raised">Gerar Contrato/Termo para assinatura</md-button>
+    </div>
+
+    <div class="minuta">
+      <b>{{'label-contrato-termo' | translate}}</b>
+      <p>Nº do Termo/Contarto [número]</p>
+      <p>Data da Assinatura: dd/mm/aaaa</p>
+    </div>
+
+    <hr class="linha-divisoria-tab">
+  </div -->
+  <div layout="row" layout-xs="column" flex style="margin: 30px 0 20px 2%;">
+
+    <div ng-if="!bloquear" class="button-botton flex-item" flex="50" layout="row">
+      <md-button class="md-primary md-raised"
+                 ngf-select="addContrato($files)"
+                 ngf-multiple="false"
+                 style="width: 100%; max-height: 36px; text-transform: none;">{{"btn-escolher-arquivo" | translate}}
+      </md-button>
+    </div>
+    <div class="flex-item" layout="row" flex="50" style="margin-top: 25px ">
+     <div layout="column" >
+        <span ng-show="dadosContrato.arquivo">
+          <label class="hand link" style="word-break: break-all;" ng-click="gerarPreview()">{{dadosContrato.arquivo.nomeReal}}</label>
+          <input name="{{'label-arquivo-contrato' | translate}}" type="hidden" ng-model="dadosContrato.arquivo" required/>
+        </span>
+     </div>
+      <div ng-show="!bloquear" layout="column">
+        <ng-md-icon icon="close" class="hand cor-remover"
+                    size="18" ng-click="remover()"
+                    ng-show="dadosContrato.arquivo">
+        </ng-md-icon>
+      </div>
+    </div>
+  </div>
+
+  <div layout="row" layout-xs="column" style="margin-left: 2%" flex>
+    <div layout="column" flex="33" class="md-block flex-item">
+      <label class="label-date-picker">{{"label-data-inicio-vigencia" | translate}}:</label>
+      <md-datepicker ng-disabled="bloquear"
+                     ng-model="dadosContrato.dataInicio"
+                     md-placeholder="dd/mm/aaaa"
+                     ng-change="validarDataVigencia()"
+                     name="{{'label-data-inicio-vigencia' | translate}}"
+                     class="special aumenta-data"
+                     required>
+      </md-datepicker>
+    </div>
+
+    <div layout="column" flex="33" class="md-block flex-item">
+      <label class="label-date-picker">{{"label-data-final-vigencia" | translate}}:</label>
+      <md-datepicker ng-disabled="bloquear"
+                     ng-model="dadosContrato.dataFinal"
+                     md-placeholder="dd/mm/aaaa"
+                     name="{{'label-data-final-vigencia' | translate}}"
+                     ng-required="exibirPorTipoDestinacao();"
+                     ng-change="atualizaDataFinal(); validarDataVigencia()"
+                     class="special aumenta-data">
+      </md-datepicker>
+    </div>
+
+    <div layout="column" class="margem-elementos-pagina" flex="33" style="margin-left: 10px;">
+      <div style="margin-top: 10px;" layout="row" layout-align="center center" flex="100" flex-xs="100" layout-margin-xs="5" >
+        <md-input-container class="md-block margin-lateral-label" flex="100" style="margin-top: 2%;height: 26px;">
+          <label>{{"label-numero-contrato" | translate}}:</label>
+          <input ng-disabled="bloquear" ng-model="dadosContrato.numero"/>
+        </md-input-container>
+      </div>
+    </div>
+  </div>
+
+</div>

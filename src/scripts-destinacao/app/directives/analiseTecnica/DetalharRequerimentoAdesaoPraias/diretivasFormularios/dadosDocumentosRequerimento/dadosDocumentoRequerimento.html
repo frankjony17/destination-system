@@ -1,0 +1,128 @@
+<div layout="column" layout-margin="5">
+
+    <div layout="row" layout-xs="column">
+        <md-input-container flex="30"  flex-xs="100">
+            <label>{{'tipo-solicitante' | translate}}*</label>
+            <md-select ng-change="buscarDocumentos()"
+                       ng-model="requerimento.requerente.tipoSolicitante"
+                       ng-model-options="{trackBy: '$value.id'}"
+                       name="{{documentos}} - Tipo de Solicitante"
+                       ng-disabled="bloquearCampos">
+                <md-option ng-repeat="solicitante in listaTipoSolicitante | orderBy:'tipo'"
+                           ng-value="{{solicitante}}">
+                    {{solicitante.tipo}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+
+    <div ng-show="documento.documentosObrigatorios.length > 0">
+        <md-container class="infoSocioEconomica table-responsive-vertical">
+            <md-table-container>
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column class="texto-centro">{{'label-documentos-obrigatorios' | translate}}</th>
+                        <th md-column class="texto-centro">{{'label-acao' | translate }}</th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row ng-repeat="documento in documento.documentosObrigatorios | orderBy: 'ordem'">
+                        <td md-cell class="texto-centro">{{documento.nome}}</td>
+                        <td md-cell class="texto-centro">
+                            <ng-md-icon ngf-select="addDocumentos($files, documento, true)"
+                                        ngf-multiple="true"
+                                        icon="attach_file" class="hand"
+                                        ng-if="!bloquearCampos"
+                                        style="fill:#788489" size="18">
+                            </ng-md-icon>
+                            <ng-md-icon icon="search"class="hand" style="fill:#788489" size="18" ng-show="documento.files.length > 0" ng-click="abrirListaDocumentos($event, documento)"></ng-md-icon>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </md-container>
+    </div>
+
+    <div ng-show="documento.documentosComplementares.length > 0 && !detalhar">
+        <md-container class="infoSocioEconomica table-responsive-vertical">
+            <md-table-container>
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column class="texto-centro">{{'label-documentos-complementares' | translate }}</th>
+                        <th md-column class="texto-centro">{{'label-situacao' | translate }}:</th>
+                        <th md-column class="texto-centro">{{'label-acao' | translate }}</th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row ng-repeat="documento in documento.documentosComplementares | orderBy: 'ordem'">
+                        <td md-cell class="texto-centro">{{documento.nome}}</td>
+                        <td md-cell class="texto-centro">
+                            <md-select ng-model="documento.situacaoDocumentoComplementar"
+                                       ng-change="removerDocComplSituacao(documento)">
+                                <md-option selected>{{'selecione' | translate}}</md-option>
+                                <md-option value="POSSUO">{{'possuo' | translate}}</md-option>
+                                <md-option value="NAO_POSSUO">{{'nao-possuo' | translate}}</md-option>
+                                <md-option value="POSSO_CONSEGUIR">{{'nao-possuo-consegui' | translate}}</md-option>
+                            </md-select>
+                        </td>
+                        <td md-cell class="texto-centro">
+                            <ng-md-icon ngf-select="addDocumentos($files, documento, true)"
+                                        ngf-multiple="true"
+                                        ng-show="documento.situacaoDocumentoComplementar == 'POSSUO'"
+                                        ng-if="!bloquearCampos"
+                                        icon="attach_file" class="hand" style="fill:#788489" size="18"></ng-md-icon>
+                            <ng-md-icon icon="search" class="hand" style="fill:#788489" size="18" ng-show="documento.files.length > 0" ng-click="abrirListaDocumentos($event, documento)"></ng-md-icon>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </md-container>
+    </div>
+
+    <div ng-show="documento.outrosDocumentos.length > 0">
+        <md-container class="infoSocioEconomica table-responsive-vertical">
+            <md-table-container>
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column class="texto-centro">{{'label-outro-documentos' | translate }}</th>
+                        <th md-column class="texto-centro">{{'label-acao' | translate }}</th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row ng-repeat="(index, documento) in documento.outrosDocumentos | orderBy: 'ordem'">
+                        <td md-cell class="texto-centro">{{documento.nome}}</td>
+                        <td md-cell class="texto-centro">
+                            <ng-md-icon ngf-multiple="true" ng-if="!bloquearCampos"
+                                        ngf-select="addDocumentos($files, documento, false)"
+                                        icon="attach_file" class="hand" style="fill:#788489" size="18"></ng-md-icon>
+                            <ng-md-icon icon="search" class="hand" style="fill:#788489" size="18" ng-show="documento.files.length > 0" ng-click="abrirListaDocumentos($event, documento)"></ng-md-icon>
+                            <ng-md-icon icon="delete" class="hand" style="fill:#788489" size="18" ng-click="removerOutrosDocumentos($event, index, documento)"></ng-md-icon>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </md-container>
+    </div>
+
+    <!--- FOTOS -->
+
+    <fotos-imovel flex="100" imovel="requerimento.imovel" ng-if="requerimentoConsultarDominialidade"></fotos-imovel>
+
+    <div ng-if="(documento.documentosObrigatorios.length > 0 || documento.documentosComplementares.length > 0) && !bloquearCampos">
+        Deseja adicionar outros documentos?
+        <a href="" ng-click="adicionarOutrosDocumentos($event);">
+            Clique aqui
+           <!-- {{'adicionar' | translate}}-->
+                <md-tooltip md-direction="botton">
+                    Adiconar Outros Documentos
+                </md-tooltip>
+        </a>
+    </div>
+
+</div>

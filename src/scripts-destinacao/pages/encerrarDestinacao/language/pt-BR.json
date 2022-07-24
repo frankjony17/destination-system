@@ -1,0 +1,17 @@
+{
+    "label-encerrar-destinacao": "Encerrar Destinação",
+    "label-responsavel-tecnico": "Responsável Técnico",
+    "label-data-encerramento": "Data do Encerramento",
+    "label-motivo": "Motivo",
+    "label-observacao": "Observação",
+
+    "label-fechar": "Fechar",
+    "label-submeter-ao-superintendente": "Submeter ao Superintendente",
+    "btn-confirmar": "Confirmar",
+
+    "msg-data-invalida": "Data inválida",
+    "msg-necessario-incluir-documento": "Necessário incluir um documento",
+
+    "label-despacho": "Despacho",
+    "label-superintendente": "Superintendente"
+}

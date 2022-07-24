@@ -1,0 +1,33 @@
+<div>
+    <div layout="row" class="tiraRecuo">
+        <span>
+        <b>{{'label-natureza-juridica'|translate}}:</b>
+        {{responsaveis[0].naturezaJuridica || 'Sem Informação'}}
+        </span>
+    </div>
+
+    <div layout="row" style="margin-top:2%">
+        <md-input-container class="md-block" flex="50" style="margin-right: 2%">
+        <label>{{'label-UF'|translate}}:</label>
+        <input ng-model="responsaveis[0].endereco.uf" disabled/>
+        </md-input-container>
+        <md-input-container class="md-block" flex="50">
+        <label>{{'label-municipio'|translate}}</label>
+        <input ng-model="responsaveis[0].endereco.municipio" disabled/>
+        </md-input-container>
+    </div>
+
+    <div class="tiraRecuo">
+        <p><b>{{'label-nome-razao' | translate}}:</b> {{responsaveis[0].nomeEmpresarial}}</p>
+
+        <p><b>{{'label-cnpj' | translate}}:</b> {{responsaveis[0].cnpj | cpfcnpj}}</p>
+
+        <!-- <p><b>{{'label-codigo-ug' | translate}}:</b> {{responsaveis[0].codigoUG}}</p> -->
+
+        <p><b>{{'label-fantasia'|translate}}:</b> {{responsaveis[0].nomeFantasia}}</p>
+
+        <p><b>{{'label-cpf-representante'|translate}}:</b> {{responsaveis[0].cpfResponsavel | cpfcnpj}}</p>
+
+        <p><b>{{'label-nome-representante'|translate}}:</b> {{responsaveis[0].nomeResponsavel || 'Sem Informação'}}</p>
+    </div>
+</div>

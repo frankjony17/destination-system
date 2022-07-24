@@ -1,0 +1,200 @@
+<form name="formularioDadosResponsavel" novalidate>
+    <md-content flex>
+        <div id="formData" layout="column">
+            <toaster-container></toaster-container>
+            <div layout="row" flex>
+                <h2>{{'title-incluir-responsavel' | translate}}</h2>
+            </div>
+
+            <div layout="row" layout-xs="column" layout-sm="column">
+                <div flex="30" layout="column" ng-if="!responsavel.cpfCnpj || responsavel.cpfCnpj.length==11">
+                    <md-input-container layout-xs="row" flex-xs flex-sm class="md-block"  layout-xs="column" layout-sm="column">
+                        <label class>{{'label-cpf-cnpj-responsavel-destinatario' | translate}}:</label>
+                        <input ng-model="responsavel.cpfCnpj" ui-br-cpfcnpj-mask ng-change="buscarDadosPessoaFisicaEJuridica()"
+                               name="{{'label-cpf-cnpj-responsavel-destinatario' | translate}}" ng-disabled="destinacao.editar || destinacao.detalhar" required />
+                        <a href="" ng-show="responsavel.cpfCnpj" ng-click="detalharPessoa(responsavel)">{{'label-ver-dados-pessoa-fisica' | translate}}</a>
+                    </md-input-container>
+                </div>
+
+                <div flex="50" layout="column" ng-if="responsavel.cpfCnpj && responsavel.cpfCnpj.length==14">
+                    <md-input-container layout-xs="row" flex-xs flex-sm class="md-block"  layout-xs="column" layout-sm="column">
+                        <label class>{{'label-cpf-cnpj-responsavel-destinatario' | translate}}:</label>
+                        <input ng-model="responsavel.cpfCnpj" ui-br-cpfcnpj-mask ng-change="buscarDadosPessoaFisicaEJuridica()"
+                               name="{{'label-cpf-cnpj-responsavel-destinatario' | translate}}" ng-disabled="destinacao.editar || destinacao.detalhar" required />
+                        <a href="" ng-click="detalharPessoa(responsavel)">{{'label-ver-dados-pessoa-juridica' | translate}}</a>
+                    </md-input-container>
+                </div>
+
+                <md-input flex="30" layout="column" flex-offset="5" ng-if="responsavel.cpfCnpj || responsavel.cpfCnpj.length==11">
+                    <label>{{'label-nome'| translate}}</label>
+                    <label>{{responsavel.nome}}</label>
+                </md-input>
+
+                <md-input-container class="md-block" flex="30" ng-if="responsavel.cpfCnpj && responsavel.cpfCnpj.length==11">
+                    <label>{{'label-estado-civil' | translate}}:</label>
+                    <md-select ng-model="responsavel.estadoCivil" ng-disabled="destinacao.editar || destinacao.detalhar"
+                               name="{{'label-estado-civil' | translate}}" required>
+                        <md-option ng-repeat="item in listaEstadosCivil | orderBy: 'codigo'" ng-value="item.nome">
+                            {{item.descricao}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container flex="50" layout-xs="row" flex-xs flex-sm class="md-block"  layout-xs="column" layout-sm="column"
+                                    ng-if="responsavel.cpfCnpj && responsavel.cpfCnpj.length==14">
+                    <label class>{{'label-codigo-ug' | translate}}:</label>
+                    <input ng-model="responsavel.codigoUg" ng-disabled="destinacao.editar || destinacao.detalhar"
+                           name="{{'label-codigo-ug' | translate}}" required />
+                </md-input-container>
+            </div>
+
+            <div ng-if="responsavel.cpfCnpj">
+
+                <div layout="row" flex ng-if="!responsavel.cpfCnpj || responsavel.cpfCnpj.length==11">
+                    <h3>{{'label-obito' | translate}}</h3>
+                </div>
+
+                <div layout="row" layout-xs="column" layout-sm="column" flex="100" ng-if="!responsavel.cpfCnpj || responsavel.cpfCnpj.length==11">
+                    <md-checkbox class="md-primary" style="margin-left: 1%" ng-model="responsavel.isObito" name="{{'label-responsavel-e-falecido' | translate}}"
+                                 flex="25" ng-disabled="destinacao.editar || destinacao.detalhar">
+                        <label>{{'label-responsavel-e-falecido' | translate}}</label>
+                    </md-checkbox>
+
+                    <md-input flex="25" layout="column" layout-xs="column" layout-sm="column" ng-if="responsavel.isObito">
+                        <label>{{'label-data-obito' | translate}}</label>
+                        <div layout="row" layout-xs="column">
+                            <md-datepicker flex-xs="100" flex-sm flex-md ng-model="responsavel.dataObito" ng-disabled="destinacao.editar || destinacao.detalhar">
+                            </md-datepicker>
+                        </div>
+                    </md-input>
+
+                    <md-input flex="25" layout="column">
+                        <label>{{'label-falecido-sisobi'| translate}}</label>
+                        <label>{{'Testador'}}</label>
+                    </md-input>
+
+                    <md-input flex="25" layout="column">
+                        <label>{{'label-falecido-receita'| translate}}</label>
+                        <label>{{'Testador'}}</label>
+                    </md-input>
+                </div>
+
+                <div layout="row" layout-xs="column" layout-sm="column">
+                    <md-input-container layout-xs="row" flex="50" flex-xs flex-sm class="md-block" layout-xs="column" layout-sm="column">
+                        <label class>{{'label-email' | translate}}:</label>
+                        <input ng-model="responsavel.email" ng-disabled="destinacao.editar || destinacao.detalhar"
+                               name="{{'label-email' | translate}}" required />
+                    </md-input-container>
+
+                    <md-input-container layout-xs="row" flex="50" flex-xs flex-sm class="md-block" layout-xs="column" ng-show="responsavel.email" ng-if="destinacao.editar != true && destinacao.detalhar != true" layout-sm="column">
+                        <label class>{{'label-confirmacao-email' | translate}}:</label>
+                        <input ng-model="responsavel.emailConfirmacao" ng-blur="verificarEmail()"
+                               name="{{'label-confirmacao-email' | translate}}" required />
+                    </md-input-container>
+                </div>
+
+                <fieldset>
+                    <dados-telefone lista-telefone="responsavel.telefones" contador-telefone="contTelefone" editar="destinacao.editar" detalhar="destinacao.detalhar"></dados-telefone>
+                </fieldset>
+
+                <br/>
+
+                <div layout="row" layout-xs="column" layout-sm="column" ng-if="fundamentoLegal.isIncluirAreaFracaoResponsavel">
+                    <md-input-container layout-xs="row" flex="100" flex-xs flex-sm class="md-block"  layout-xs="column" layout-sm="column">
+                        <label>{{'label-area-fracao-utilizacao' | translate}}:</label>
+                        <input ng-model="responsavel.areaFracao" ui-number-mask="2" ng-disabled="destinacao.editar || destinacao.detalhar"
+                               name="{{'label-area-fracao-utilizacao' | translate}}" required />
+                    </md-input-container>
+                </div>
+
+                <div layout="row" layout-xs="column" layout-sm="column">
+                    <md-input-container layout-xs="row" flex="100" flex-xs flex-sm class="md-block">
+                        <label>{{'label-observacoes' | translate}}:</label>
+                        <textarea ng-model="responsavel.observacoes" ui-mask-placeholder-char="space"
+                                  name="{{'label-observacoes' | translate}}" ng-disabled="destinacao.editar || destinacao.detalhar"></textarea>
+                    </md-input-container>
+                </div>
+
+                <div layout="row" flex>
+                    <h3>{{'label-informacoes-socioeconimicas' | translate}}</h3>
+                </div>
+
+                <div layout="row" layout-xs="column" layout-sm="column">
+                    <md-input-container layout-xs="row" flex="30" flex-xs flex-sm class="md-block"  layout-xs="column" layout-sm="column">
+                        <label>{{'label-rensa-rs' | translate}}:</label>
+                        <input ng-model="responsavel.renda" ui-money-mask="2" ng-disabled="destinacao.editar || destinacao.detalhar"
+                               name="{{'label-rensa-rs' | translate}}" />
+                    </md-input-container>
+
+                    <md-input-container layout-xs="row" flex="30" flex-xs flex-sm class="md-block"  layout-xs="column" layout-sm="column">
+                        <label>{{'label-rensa-familiar-rs' | translate}}:</label>
+                        <input ng-model="responsavel.rendaFamiliar" ui-money-mask="2" ng-disabled="destinacao.editar || destinacao.detalhar"
+                               name="{{'label-rensa-familiar-rs' | translate}}" />
+                    </md-input-container>
+
+                    <md-input flex="30" layout="column">
+                        <label>{{'label-renda-familiar-cadunico'| translate}}</label>
+                        <label>{{'Teste'}}</label>
+                    </md-input>
+                </div>
+
+                <md-input class="md-block" flex="50" flex-xs flex-sm layout="column">
+                    <label style="margin-bottom: 2%">{{'label-responsavel-possui-imovel-particular' | translate}}</label>
+                    <md-radio-group flex class="md-block" required ng-model="responsavel.possuiImovelParticular" ng-disabled="destinacao.editar || destinacao.detalhar"
+                                    name="{{'label-responsavel-possui-imovel-particular' | translate}}" layout="row">
+                            <md-radio-button ng-repeat="item in listaOpcoesPadrao | orderBy: 'codigo'" flex="30" class="md-primary"
+                                             ng-value="item.nome"><label>{{item.descricao}}</label></md-radio-button>
+                    </md-radio-group>
+                </md-input>
+
+                <br/>
+
+                <fieldset>
+                    <demais-residentes-responsavel lista-residentes="responsavel.residentes" tipo-destinacao="destinacao.tipoDestinacaoEnum"
+                    editar="destinacao.editar" detalhar="destinacao.detalhar"></demais-residentes-responsavel>
+                </fieldset>
+
+                <br/>
+
+                <fieldset>
+                    <div layout="row" flex>
+                        <h3>{{'label-endereco-correspondencia' | translate}}</h3>
+                    </div>
+                    <div class="button-botton" layout="row">
+                        <md-input flex="70" layout="row" ng-show="responsavel.enderecoCorrespondencia">
+                            <label ng-show="responsavel.enderecoCorrespondencia.endereco.pais.toUpperCase() == BRASIL"
+                                ng-bind="responsavel.enderecoCorrespondencia.endereco.logradouro
+                                + ', ' + ('label-numero' | translate) + ' ' + responsavel.enderecoCorrespondencia.endereco.numero
+                                + ', ' + responsavel.enderecoCorrespondencia.endereco.bairro
+                                + ', ' + responsavel.enderecoCorrespondencia.endereco.municipio + '/' + responsavel.enderecoCorrespondencia.endereco.uf
+                                + ' - ' + responsavel.enderecoCorrespondencia.endereco.pais
+                                + '. ' + ('label-cep' | translate) + ': ' + (responsavel.enderecoCorrespondencia.endereco.cep | cep)"></label>
+                            <label ng-show="responsavel.enderecoCorrespondencia.endereco.pais && responsavel.enderecoCorrespondencia.endereco.pais.toUpperCase() != BRASIL"
+                                   ng-bind="responsavel.enderecoCorrespondencia.endereco.enderecoExterior
+                                + ', ' + responsavel.enderecoCorrespondencia.endereco.nomeCidadeExterior
+                                + ' - ' + responsavel.enderecoCorrespondencia.endereco.pais
+                                + '. ' + ('label-codigo-postal' | translate) + ': ' + responsavel.enderecoCorrespondencia.endereco.codigoPostal"></label>
+                        </md-input>
+                        <md-button class="md-raised" flex="30" ng-click="incluirEnderecoCorrespondencia()" layout-align="end center">
+                            <label ng-if="!responsavel.enderecoCorrespondencia">{{'label-adicionar-endereco'| translate | uppercase}}</label>
+                            <label ng-if="responsavel.enderecoCorrespondencia">{{'label-editar-endereco'| translate | uppercase}}</label>
+                        </md-button>
+                    </div>
+                </fieldset>
+
+                <br/>
+
+                <fieldset>
+                    <documentos-responsavel-destinatario></documentos-responsavel-destinatario>
+                </fieldset>
+            </div>
+        </div>
+
+        <br/>
+
+        <div class="button-botton" layout="row" layout-align="end center">
+            <md-button class="md-raised margin-botao-footer" ng-click="fecharResponsavel()">{{'btn-fechar' | translate | uppercase}}</md-button>
+            <md-button class="md-raised" ng-show="!destinacao.detalhar" ng-click="salvarResponsavel()">{{'btn-incluir'| translate | uppercase}}</md-button>
+        </div>
+    </md-content>
+</form>

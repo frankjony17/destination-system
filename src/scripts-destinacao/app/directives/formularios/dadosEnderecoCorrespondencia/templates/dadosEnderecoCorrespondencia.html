@@ -1,0 +1,121 @@
+<div class="margin-lateral-label margem-esquerda">
+    <div class="margin-header-conteudo">
+        <span class="titulo-verde-header">{{'label-inserir-dados-endereco-correspondencia' | translate | uppercase}}</span>
+        <div class="base-vermelho"></div>
+        <hr class="linha-divisoria">
+    </div>
+
+    <div layout="row" layout-xs="column" >
+        <md-input-container flex="100" flex-xs="100" ng-if="isPaisBrasil()">
+            <label>{{'label-adotar-endereco' | translate}}:</label>
+            <md-select ng-model="enderecoCorrespondencia.adotarEnderecoEnum" ng-disabled="detalhar" name="{{'label-adotar-endereco' | translate}}" required>
+                <md-option ng-repeat=" (k,v) in listAdotarEndereco" ng-value="k">
+                    {{v}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+
+    <div layout="row" layout-xs="column">
+        <md-input-container flex="45" flex-xs="100" >
+            <label>{{'label-pais'| translate}}</label>
+            <md-select ng-model="enderecoCorrespondencia.endereco.pais" ng-disabled="detalhar" name="{{'label-pais'| translate}}" required>
+                <md-option ng-repeat="pais in paises" ng-value="pais.descricao" required="true">
+                    {{pais.descricao}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container ng-if="isPaisBrasil()" flex="45" flex-xs="100">
+            <label>{{'label-cep' | translate}}:</label>
+            <input ui-br-cep-mask ng-disabled="detalhar"
+                   ng-model="enderecoCorrespondencia.endereco.cep"
+                   ng-change="buscarEnderecoByCep()"
+                   name="Cep" required >
+        </md-input-container>
+
+        <div ng-if="isPaisBrasil() && !detalhar" layout="row" style="font-size: smaller;" layout-margin>
+            <a href="http://www.buscacep.correios.com.br/sistemas/buscacep/" target="_blank">{{'label-nao-sabe-seu-cep' | translate}}</a>
+        </div>
+    </div>
+
+    <div class="column" ng-if="isPaisBrasil()">
+        <div layout="row" layout-xs="column">
+            <md-input-container flex="30" flex-xs="100" flex-offset-xs="0">
+                <label>{{'label-uf' | translate}}:</label>
+                <input  ng-model="enderecoCorrespondencia.endereco.uf" ng-disabled="isCepNormalCorespondencia || detalhar" required/>
+            </md-input-container>
+
+            <md-input-container flex="30" flex-xs="100" flex-offset-xs="0">
+                <label>{{'label-municipio' | translate}}</label>
+                <input ng-disabled="isCepNormalCorespondencia || detalhar"
+                       name="municipio"
+                       ng-model="enderecoCorrespondencia.endereco.municipio" required/>
+            </md-input-container>
+
+            <md-input-container flex="40" flex-xs="100" flex-offset-xs="0">
+                <label>{{'label-tipo-logradouro' | translate}}:</label>
+                <input ng-disabled="detalhar" ng-model="enderecoCorrespondencia.endereco.tipoLogradouro" required/>
+            </md-input-container>
+        </div>
+
+        <div  layout="row" layout-xs="column">
+            <md-input-container flex="50" flex-xs="100">
+                <label>{{'label-logradouro' | translate}}:</label>
+                <input ng-disabled="detalhar"
+                       ng-model="enderecoCorrespondencia.endereco.logradouro"
+                       name="logradouro">
+            </md-input-container>
+
+            <md-input-container flex="50" flex-xs="100" flex-offset-xs="0">
+                <label>{{'label-numero' | translate}}:</label>
+                <input  required ng-disabled="detalhar"
+                        name="Número do Endereço" ng-model="enderecoCorrespondencia.endereco.numero">
+            </md-input-container>
+        </div>
+
+        <div layout="row" layout-xs="column">
+            <md-input-container flex="50"  flex-xs="100" flex-offset-xs="0">
+                <label>{{'label-bairro-distrito' | translate}}:</label>
+                <input required
+                       ng-model="enderecoCorrespondencia.endereco.bairro"
+                       name="bairro"
+                       ng-disabled="detalhar">
+            </md-input-container>
+
+            <md-input-container flex="50">
+                <label>{{'label-complemento' | translate}}:</label>
+                <input ng-model="enderecoCorrespondencia.endereco.complemento" ng-disabled="detalhar">
+            </md-input-container>
+        </div>
+    </div>
+
+    <div class="column" ng-if="isNotPaisBrasil()">
+        <div layout="row" layout-xs="column">
+            <md-input-container flex="100" flex-xs="100">
+                <label>{{'label-cidade-exterior' | translate}}:</label>
+                <md-select ng-model="enderecoCorrespondencia.endereco.cidadeExterior" ng-disabled="detalhar">
+                    <md-option ng-value ="">
+                </md-select>
+            </md-input-container>
+
+            <md-input-container flex="50"  flex-xs="100" flex-offset-xs="0">
+                <label>{{'label-nome-cidade-exterior' | translate}}:</label>
+                <input ng-model="enderecoCorrespondencia.endereco.nomeCidadeExterior" ng-disabled="detalhar">
+            </md-input-container>
+
+            <md-input-container flex="50"  flex-xs="100" flex-offset-xs="0">
+                <label>{{'label-codigo-postal' | translate}}:</label>
+                <input ng-model="enderecoCorrespondencia.endereco.codigoPostal" ng-disabled="detalhar" required>
+            </md-input-container>
+        </div>
+        <div layout="row" layout-xs="column">
+            <md-input-container flex="100"  flex-xs="100" flex-offset-xs="0">
+                <label>{{'label-endereco' | translate}}:</label>
+                <input ng-model="enderecoCorrespondencia.endereco.enderecoExterior" ng-disabled="detalhar" required>
+            </md-input-container>
+        </div>
+    </div>
+
+
+</div>

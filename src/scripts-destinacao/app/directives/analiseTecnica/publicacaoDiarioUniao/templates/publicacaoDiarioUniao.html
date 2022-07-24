@@ -1,0 +1,51 @@
+<form name="publicacaoDiario" ng-init="init();">
+    <h2 class="titulo-verde negrito">{{'label-dados-publicacao' | translate | uppercase}}</h2>
+
+    <div layout="row" layout-xs="column" class="margin-bottom">
+        <div layout="row" layout-align="center center" flex="30" flex-xs="100">
+            <md-input-container class="md-block" flex="100">
+            <label>{{'label-pagina' | translate}}*:</label>
+            <input required 
+                   name="{{'label-pagina' | translate}}"
+                   ng-model="analiseTecnica.publicacao.numeroPagina"/>
+            </md-input-container>
+        </div>
+
+        <div layout="row" layout-align="center center" flex="30" flex-offset="5" flex-xs="100">
+            <md-input-container class="md-block" flex="100">
+            <label>{{"label-secao" | translate}}*:</label>
+            <input ng-model="analiseTecnica.publicacao.numeroSecao"
+                   required 
+                   name="{{'label-secao' | translate}}"/>
+            </md-input-container>
+        </div>
+        <div layout="row"  flex="15" flex-offset="5" flex-xs="100">            
+            <md-datepicker ng-model="analiseTecnica.publicacao.dataPublicacao"
+                           md-placeholder="dd/mm/aaaa"
+                           name="{{'label-data-publicacao' | translate}}"
+                           required>
+            </md-datepicker> 
+            
+            <!--md-datepicker-custom ng-model="analiseTecnica.publicacao.dataPublicacao"
+                              md-placeholder="dd/mm/aaaa"
+                              name="{{'label-data-publicacao' | translate}}"
+                              md-custom-mask="39/19/9999"
+                              md-custom-clean-mask="false"
+                              required>
+            </md-datepicker-custom -->           
+        
+        </div>
+    </div>
+
+    <div layout="row" layout-xs="column">
+    <md-content ng-show="verificarPodeExibirLink();">
+        <a style="text-decoration: none;" ng-href="{{montarLinkAto()}}" target="_blank">{{'label-ver-publicacao' | translate}}</a>
+    </md-content>
+    </div>
+
+    <div layout="row" layout-align="end center">
+        <md-button class="md-raised" ng-click="fechar();">{{'btn-fechar' | translate | uppercase}}</md-button>
+        <md-button class="md-raised"
+                ng-click="registrarPublicacaoDiarioUniao();">{{'btn-confirmar' | translate | uppercase}}</md-button>
+    </div>
+</form>

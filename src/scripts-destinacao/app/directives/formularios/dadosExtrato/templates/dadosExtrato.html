@@ -1,0 +1,36 @@
+<div>
+    <fieldset style="margin-top: 15px; border-radius: 5px;">
+    <legend>
+        {{'label-dados-extrato' | translate}}
+    </legend>
+        <div layout="row" layout-xs="column">
+
+            <md-input-container class="md-block margin-lateral-label margin-top-alinhar-data"
+                                flex="20">
+                <label>{{"label-pagina" | translate}}:</label>
+                <input ng-model="extrato.pagina" ng-required="extrato.publicado">
+            </md-input-container>
+
+            <md-input-container class="md-block margin-lateral-label margin-top-alinhar-data"
+                                flex="20">
+                <label>{{"label-secao" | translate }}:</label>
+                <input ng-model="extrato.secao" ng-required="extrato.publicado"/>
+            </md-input-container>
+
+            <div layout="column">
+              <label class="label-date-picker">{{"label-data-publicacao" | translate}}:</label>
+              <md-datepicker ng-model="extrato.dataPublicacao"
+                                    md-placeholder="dd/mm/aaaa"
+                                    name="{{'label-data-publicacao' | translate}}"
+                                    md-custom-mask="39/19/9999"
+                                    md-custom-clean-mask="false"
+                                    ng-required="extrato.publicado">
+              </md-datepicker>
+            </div>
+
+            <md-content ng-show="verificarPodeExibirLink();">
+                <a style="text-decoration: none;" ng-href="{{montarLinkAto()}}" target="_blank">{{'label-ver-publicacao' | translate}}</a>
+            </md-content>
+        </div>
+    </fieldset>
+</div>

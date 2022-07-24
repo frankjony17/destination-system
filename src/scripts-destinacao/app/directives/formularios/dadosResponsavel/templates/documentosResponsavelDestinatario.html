@@ -1,0 +1,68 @@
+<div>
+
+    <div layout="row" flex>
+        <h3>{{'label-documentos' | translate}}</h3>
+    </div>
+
+    <md-table-container flex="100" ng-show="listaDocumentos.length > 0">
+        <table md-table>
+            <thead md-head>
+            <tr md-row>
+                <th md-column>{{'label-documento' | translate}}</th>
+                <th md-column>{{'label-data-emissao' | translate}}</th>
+                <th md-column>{{'label-data-validade' | translate}}</th>
+                <th md-column>{{'label-origem' | translate}}</th>
+                <th md-column>{{'label-autenticado' | translate}}</th>
+                <th md-column>{{'label-acoes' | translate}}</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row>
+                <td md-cell>
+
+                </td>
+                <td md-cell>
+
+                </td>
+                <td md-cell>
+
+                </td>
+                <td md-cell>
+
+                </td>
+                <td md-cell>
+
+                </td>
+                <td md-cell>
+                    <md-fab-speed-dial md-direction="left" class="hand md-scale" class="alinhar-md-fab-speed-dial">
+
+                        <md-fab-trigger>
+                            <ng-md-icon class="icon-acao" icon="more_vert">
+                            </ng-md-icon>
+                        </md-fab-trigger>
+
+                        <md-fab-actions>
+
+                                <ng-md-icon class="icon-subacao" icon="attach_file"
+                                            ng-click="">
+                                    <md-tooltip>{{"label-anexar-documento" | translate}}</md-tooltip>
+                                </ng-md-icon>
+
+                                <ng-md-icon class="icon-subacao" icon="search"
+                                            ng-click="">
+                                    <md-tooltip>{{"label-download-documento" | translate}}</md-tooltip>
+                                </ng-md-icon>
+
+                        </md-fab-actions>
+                    </md-fab-speed-dial>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <md-table-pagination md-limit="tamanhoLimite" md-limit-options="[5, 10, 15]"
+                             md-page="registroInicial" md-total="{{totalItems}}"
+                             md-on-paginate="" md-page-select>
+        </md-table-pagination>
+    </md-table-container>
+
+</div>

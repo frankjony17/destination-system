@@ -1,0 +1,72 @@
+<div ng-if="destinacaoTransito.tipoDestinacaoEnum !== 'PERMISSAO_USO_IMOVEL_FUNCIONAL'">
+    <div layout="row" layout-xs="column" ng-show="!bloquear" >
+        <div layout="row">
+            <md-button id="btn-abrir-Incluir-Encargos"  class="md-primary md-raised" ng-click="abrirModalIncluirEncargo($event);">
+                {{'btn-incluir-encargo' | translate | uppercase}}
+            </md-button>
+        </div>
+    </div>
+
+    <div ng-show="listaEncargos.length > 0" style="margin-top: 2%">
+        <md-table-container>
+            <table md-table style="border: 1px solid #cccccc;">
+
+                <thead md-head>
+                    <tr md-row class="upload-head">
+                        <th md-column>{{"label-encargo" | translate}}</th>
+                        <th md-column>{{"label-situacao" | translate}}</th>
+                        <th md-column>{{"label-prazo-cumprimento" | translate}}</th>
+                        <th md-column ng-show="!bloquear">{{"label-acao" | translate}}</th>
+                    </tr>
+                </thead>
+
+                <tbody md-body>
+
+                    <tr md-row ng-repeat="encargo in listaEncargos | limitTo: tabelaEncargos.limit: (tabelaEncargos.page - 1) * tabelaEncargos.limit">
+                        <td md-cell>
+                            <span ng-bind="encargo.nome"></span>
+                        </td>
+                        <td md-cell>
+                            <span>{{encargo.cumprimentoEncargo ? 'Atendido' : 'Pendente'}}</span>
+                        </td>
+                        <td md-cell>
+                            <span ng-bind="dadosContrato.dataFinal && encargo.utilizarData ? dadosContrato.dataFinal : encargo.dataCumprimento | date : 'dd/MM/yyyy'"></span>
+                        </td>
+                        <td md-cell ng-show="!bloquear" style="position: relative">
+
+                          <md-fab-speed-dial md-direction="left" class="hand md-scale">
+
+                            <md-fab-trigger>
+                              <ng-md-icon class="icon-acao" icon="more_vert">
+                              </ng-md-icon>
+                            </md-fab-trigger>
+
+                            <md-fab-actions>
+                              <ng-md-icon class="icon-subacao" icon="edit"
+                                           ng-click="editar(encargo,$event);">
+                                <md-tooltip>{{"btn-editar" | translate}}</md-tooltip>
+                              </ng-md-icon>
+
+                              <ng-md-icon class="icon-subacao" icon="delete"
+                                           ng-click="remover(encargo);">
+                                <md-tooltip>{{"btn-excluir" | translate}}</md-tooltip>
+                              </ng-md-icon>
+                             </md-fab-actions>
+                          </md-fab-speed-dial>
+
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </md-table-container>
+
+        <md-table-pagination md-limit="tabelaEncargos.limit"
+                             md-limit-options="tabelaEncargos.limitsPage"
+                             md-page="tabelaEncargos.page"
+                             md-total="{{listaEncargos.length}}"
+                             md-on-paginate="true"
+                             style="border: 1px solid #cccccc; margin:0 5px 0 5px;">
+        </md-table-pagination>
+    </div>
+</div>

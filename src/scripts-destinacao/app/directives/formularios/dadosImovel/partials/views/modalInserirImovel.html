@@ -1,0 +1,114 @@
+<div style="margin: 1%;">
+
+    <div class="margin-header-conteudo">
+        <span class="titulo-verde-header">{{'label-incluir-imovel' | translate | uppercase}}</span>
+        <div class="base-vermelho"></div>
+        <hr class="linha-divisoria">
+    </div>
+
+     <form name="incluirImovelCtlr.incluirImovel">
+        <div>
+            <div layout="row" layout-xs="column" layout-margin="15" style="margin-top: 30px;">
+                <md-input-container class="margin-top margin-lateral-label" flex="40" flex-xs="100">
+                    <label>{{'label-RIP' | translate}}</label>
+                    <input ng-model="incluirImovelCtrl.imovel.rip" mask="99999999">
+                </md-input-container>
+
+                <div layout-xs="column" layout-align-xs="end end">
+                    <md-button class="md-raised margin-lateral-label" ng-click="incluirImovelCtrl.buscar()">
+                        {{'btn-consultar' | translate | uppercase}}
+                    </md-button>
+                </div>
+
+                <div>
+                    <p> {{'label-nao-sabe-rip'|translate}}
+                        <span class="hand link"
+                              ng-click="incluirImovelCtrl.consultarRip();">{{'label-consulte-aqui'|translate}}</span>
+                    </p>
+                </div>
+            </div>
+
+            <div layout-margin="15">
+                <p class="margin-bottom-label">
+                    {{'label-area-terreno'|translate}}: {{incluirImovelCtrl.imovel.areaTerreno != undefined ? incluirImovelCtrl.imovel.areaTerreno : 0| number}}
+                </p>
+
+                <p class="margin-bottom-label">
+                    {{'label-area-construida'|translate}}: {{ incluirImovelCtrl.imovel.areaConstruida != undefined ? incluirImovelCtrl.imovel.areaConstruida : 0 | number}}
+                </p>
+
+                <p class="margin-bottom-label">
+                    {{'label-memorial-descritivo'|translate}}: {{incluirImovelCtrl.imovel.memorialDescritivo != undefined ? incluirImovelCtrl.imovel.memorialDescritivo : '-'}}
+                </p>
+            </div>
+
+
+            <div layout="row" layout-align="end center" class="margem-botoes">
+                <md-button class="md-raised" ng-click="incluirImovelCtrl.fechar();">
+                    {{'btn-fechar' | translate | uppercase}}
+                </md-button>
+                <md-button class="md-raised" ng-click="incluirImovelCtrl.incluir()">
+                    {{'btn-incluir'| translate | uppercase}}
+                </md-button>
+            </div>
+
+            <div layout-margin="15" ng-show="incluirImovelCtrl.destinacao.destinacaoImoveis.length > 0">
+                <form name="form">
+                    <md-table-container>
+                        <table md-table style="border: 1px solid #cccccc;">
+
+                            <thead md-head>
+                            <tr md-row class="upload-head">
+                                <th md-column>{{'label-RIP' | translate}}</th>
+                                <th md-column ng-show="destinacaoImovel.imovel.codigoUtilizacao">{{'label-codigo-utilizacao' | translate}}</th>
+                                <th md-column>{{'label-area-terreno' | translate }}</th>
+                                <th md-column>{{'label-area-construida' | translate}}</th>
+                                <th md-column>{{'label-acao'| translate}}</th>
+                            </tr>
+                            </thead>
+
+                            <tbody md-body>
+                            <tr md-row ng-repeat="destinacaoImovel in incluirImovelCtrl.destinacao.destinacaoImoveis | limitTo: 3">
+                                <td md-cell>
+                                    <span class="hand link" ng-bind="destinacaoImovel.imovel.rip"></span>
+                                </td>
+                                <td md-cell ng-show="destinacaoImovel.imovel.codigoUtilizacao">
+                                    <span ng-bind="destinacaoImovel.imovel.codigoUtilizacao"></span>
+                                </td>
+                                <td md-cell>
+                                    <span ng-bind="destinacaoImovel.imovel.areaTerreno | number"></span>
+                                </td>
+                                <td md-cell>
+                                    <span ng-bind="destinacaoImovel.imovel.areaConstruida | number"></span>
+                                </td>
+                                <td md-cell>
+                                    <ng-md-icon icon="close" style="" alt="Limpar"
+                                                ng-click="incluirImovelCtrl.remover(destinacaoImovel);">
+                                        <md-tooltip>{{'btn-excluir'|translate}}</md-tooltip>
+                                    </ng-md-icon>
+                                </td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+                    </md-table-container>
+
+                    <md-table-pagination md-limit="incluirImovelCtrl.tabelaImovel.limit"
+                               md-limit-options="incluirImovelCtrl.tabelaImovel.limitsPage"
+                               md-page="incluirImovelCtrl.tabelaImovel.page"
+                               md-total="{{incluirImovelCtrl.destinacaoImoveis.length}}"
+                               md-on-paginate="true"
+                               style="border: 1px solid #cccccc;">
+                    </md-table-pagination>
+                </form>
+            </div>
+
+            <div layout="row" layout-align="end center" class="margem-botoes" ng-show="incluirImovelCtrl.destinacao.destinacaoImoveis.length > 0">
+                <md-button class="md-raised" ng-click="incluirImovelCtrl.confirmar();">
+                    {{'btn-confirmar' | translate | uppercase}}
+                </md-button>
+            </div>
+
+        </div>
+     </form>
+</div>

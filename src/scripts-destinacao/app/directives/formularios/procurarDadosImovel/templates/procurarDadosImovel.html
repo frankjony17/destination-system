@@ -1,0 +1,77 @@
+<div>
+  <div layout="row" layout-xs="column" ng-show="!bloquear">
+    <div style="margin-top: 30px;" flex="40" flex-xs="100">
+      <md-input-container class="md-block margin-lateral-label" >
+        <label>{{'label-codigo-utilizacao-area-disponivel' | translate}}:</label>
+        <input mask="99999999/9999P9999" ng-model="codigoUtilizacao" ng-required="botaoImovelObrigatorio()">
+      </md-input-container>
+    </div>
+    <div lauyout="row" layout-align="center center">
+      <md-button ng-show="tipoDestinacao == 'CUEM'"
+                 class="md-raised margin-lateral-label margem-botoes-modal"
+                 ng-click="selecionarImovel()">
+        {{'btn-selecionar' | translate | uppercase}}
+      </md-button>
+      <md-button ng-show="tipoDestinacao == 'POSSE_INFORMAL'"
+                 class="md-raised margin-lateral-label margem-botoes-modal"
+                 ng-click="selecionarImovelPosseInformal()">
+        {{'btn-selecionar' | translate | uppercase}}
+      </md-button>
+      <md-button ng-show="tipoDestinacao == 'PERMISSAO_USO_IMOVEL_FUNCIONAL'"
+                 class="md-raised margin-lateral-label margem-botoes-modal"
+                 ng-click="selecionarImovelFuncional()">
+        {{'btn-selecionar' | translate | uppercase}}
+      </md-button>
+      <span > {{'label-nao-sabe-rip' | translate}}, <a ng-href="www.google.com">{{'label-consulte-aqui' | translate}}</a></span>
+    </div>
+  </div>
+
+
+  <div ng-show="tipoDestinacao == 'POSSE_INFORMAL' && destinacao.destinacaoImoveis[0].imovel">
+    <div>
+      <div class="margin-top">
+        <label class="margin-right">{{'label-endereco' | translate}}:</label>
+        <span>{{destinacao.destinacaoImoveis[0].imovel.enderecoCorreto| translate}}</span>
+      </div>
+      <div class="margin-top">
+        <label class="margin-right">{{'label-proprietario' | translate}}:</label>
+        <span>{{destinacao.destinacaoImoveis[0].imovel.proprietario | translate}}</span>
+      </div>
+      <div class="margin-top">
+        <label class="margin-right">{{'label-processo-imovel' | translate}}:</label>
+        <span>{{destinacao.destinacaoImoveis[0].imovel.numeroProcesso | translate}}</span>
+      </div>
+      <div class="margin-top">
+        <label class="margin-right">{{'label-instrumento-destinacao' | translate}}:</label>
+        <span>{{destinacao.destinacaoImoveis[0].imovel.tipoDestinacao.descricao | translate}}</span>
+      </div>
+      <div class="margin-top">
+        <label class="margin-right">{{'label-destinatario' | translate}}:</label>
+        <span>{{destinacao.destinacaoImoveis[0].imovel.responsavelCorreto | translate}}</span>
+      </div>
+      <div class="margin-top">
+        <label class="margin-right">{{'label-uso-oficial' | translate}}:</label>
+        <span>{{destinacao.destinacaoImoveis[0].imovel.usoOficial | translate}}</span>
+      </div>
+      <div class="margin-top" style="margin-bottom: 10px;">
+        <span class="hand link" ng-click="abrirDetalharParcela()">{{'label-ver-dado-imovel' | translate}}</span>
+      </div>
+    </div>
+  </div>
+
+
+  <div ng-show="destinacao.mostrarDadosImovel && (tipoDestinacao == 'CUEM' || tipoDestinacao == 'PERMISSAO_USO_IMOVEL_FUNCIONAL')">
+    <p>{{'label-area-terreno' | translate}} : <label ng-bind="destinacao.imovel.areaTerreno
+    ? destinacao.imovel.areaTerreno : 'label-area-terreno' | translate"></label>
+    </p>
+
+    <p>{{'label-area-construida-total' | translate}} : <label ng-bind="destinacao.imovel.totalAreaConstruida
+    ? destinacao.imovel.totalAreaConstruida : 'label-nao-informado' | translate"></label>
+    </p>
+
+    <p>{{'label-memorial-descritivo' | translate}}:<read-more limit="1500" class="scroll" texto=" destinacao.imovel.memorialDescritivo
+    ? destinacao.imovel.memorialDescritivo :'label-nao-informado' | translate"></read-more>
+    </p>
+  </div>
+
+</div>

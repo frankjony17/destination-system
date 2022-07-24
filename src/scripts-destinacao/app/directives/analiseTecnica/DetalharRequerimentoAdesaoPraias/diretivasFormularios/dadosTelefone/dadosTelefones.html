@@ -1,0 +1,29 @@
+<div layout="row" layout-xs="column">
+  <md-input-container flex="33" flex-xs="100">
+    <label>{{'label-telefone-fixo' | translate}}</label>
+    <input ui-br-phone-number
+           ng-model="entidade.telefoneFixo"
+           ng-disabled="bloquearCampos"
+           name="telefoneFixoPrefeitoMunicipal">
+  </md-input-container>
+
+  <md-input-container flex="33" flex-offset="5" flex-xs="100"
+                      flex-offset-xs="0" ng-if="entidade.telefoneCelular">
+    <label>{{'label-telefone-celular' | translate}}</label>
+    <input ui-br-phone-number
+           ng-model="entidade.telefoneCelular"
+           ng-disabled="bloquearCampos"
+           name="telefoneCelular">
+  </md-input-container>
+
+
+  <md-input-container flex="33" flex-offset="5" flex-xs="100"
+                      flex-offset-xs="0"
+                      ng-if="tipoRequerimento!=REQUERIMENTO_ADESAO_GESTAO_PRAIA">
+    <label>{{'telefone-celular' | translate}}</label>
+    <input ui-br-phone-number
+           ng-model="entidade.telefoneComercial"
+           ng-disabled="bloquearCampos"
+           name="telefoneComercial">
+  </md-input-container>
+</div>

@@ -1,0 +1,38 @@
+<md-content style="background-color:#ffb2b2; padding: 1%" flex xmlns="http://www.w3.org/1999/html">
+    <div id="formData" layout="column">
+        <toaster-container></toaster-container>
+
+        <div layout="row" layout-xs="column" layout-sm="column" flex="100">
+            <label>{{'label-responsavel-tecnico'| translate}}: </label>
+            <label style="font-weight: normal">{{encerramentoDestinacao.cpfResponsavelTecnico}} - {{encerramentoDestinacao.nomeResponsavelTecnico}}</label>
+        </div>
+
+        <br/>
+
+        <div layout="row" layout-xs="column" layout-sm="column">
+            <label >{{'label-data-cancelamento-encerramento' | translate}}:</label>
+            <label style="font-weight: normal">{{encerramentoDestinacao.dataEncerramentoDestinacao | dataformatada}}</label>
+        </div>
+
+        <br/>
+
+        <div layout="row" layout-xs="column" layout-sm="column">
+            <label>{{'label-motivo' | translate}}:</label>
+            <label style="font-weight: normal"> {{encerramentoDestinacao.motivo}}</label>
+        </div>
+
+        <br/>
+
+        <div layout="column"  >
+            <label>{{'label-observacao' | translate}}:</label>
+            <md-input-container class="cancelamento-observação" flex="100">
+                {{encerramentoDestinacao.observacaoMotivo}}
+            </md-input-container>
+        </div>
+
+        </br>
+        <div ng-if="encerramentoDestinacao.arquivos.length > 0" >
+                <dados-documentos  detalhar="true" encerramento="true" lista-documentos="encerramentoDestinacao.arquivos"></dados-documentos>
+        </div>
+    </div>
+</md-content>

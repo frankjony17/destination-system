@@ -1,0 +1,124 @@
+<form name="consultarUtilizacaoCtrl.form">
+
+    <div flex style="margin: 2%">
+        <div class="texto-verde-header">
+            <span class="titulo-verde-header">{{'label-consultar-utilizacao' | translate}}</span>
+            <div class="base-vermelho"></div>
+            <hr class="linha-divisoria">
+        </div>
+
+        <div layout="row" layout-xs="column" layout-margin="15" style="margin-top: 40px">
+
+            <md-input-container class="margin-top" flex="50" flex-xs="100">
+                <label>{{'label-codigo-utilizacao' | translate}}</label>
+                <input ng-model="consultarUtilizacaoCtrl.utilizacaoFiltro.dadosUtilizacao">
+                <span style="font-size: 8pt;">{{'label-exemplo-formato' | translate}}</span>
+            </md-input-container>
+            <md-input-container class="margin-top" flex="50" flex-xs="100">
+                <label>{{'label-pais' | translate}}</label>
+                <md-select ng-model="consultarUtilizacaoCtrl.utilizacaoFiltro.pais" ng-change="consultarDestinacaoCtrl.verificaPaisSelecionado()">
+                    <md-option ng-repeat ="pais in consultarUtilizacaoCtrl.paises" ng-value="pais.descricao">
+                        {{pais.descricao}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container class="margin-top" ng-if="consultarUtilizacaoCtrl.utilizacaoFiltro.pais !== 'Brasil'" flex="33" flex-xs="100">
+                <label>{{'label-cidade' | translate}}</label>
+                <md-select ng-model="consultarDestinacaoCtrl.utilizacaoFiltro.cidade" ng-change="consultarDestinacaoCtrl.teste()">
+                    <md-option ng-repeat ="cidade in consultarUtilizacaoCtrl.cidades" ng-value="cidade">
+                        {{cidade}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+
+        <div layout="row" layout-xs="column" layout-margin="15" ng-if="consultarUtilizacaoCtrl.utilizacaoFiltro.pais == 'Brasil'" >
+            <md-input-container class="margin-top" flex="33" flex-xs="100">
+                <label>{{'label-cep' | translate}}</label>
+                <input ng-change="consultarUtilizacaoCtrl.buscarPeloCep()" ng-model="consultarUtilizacaoCtrl.utilizacaoFiltro.cep" ui-br-cep-mask>
+            </md-input-container>
+
+            <md-input-container class="margin-top" flex="33" flex-xs="100">
+                <label>{{'label-uf' | translate}}</label>
+                <md-select ng-model="consultarUtilizacaoCtrl.utilizacaoFiltro.uf"
+                           name="{{'label-uf' | translate}}"
+                           ng-change="consultarUtilizacaoCtrl.buscarMunicipios();"
+                           ng-required="consultarUtilizacaoCtrl.utilizacaoFiltro.pais == 'Brasil'"
+                            ng-disabled="consultarUtilizacaoCtrl.bloquearCep">
+                    <md-option ng-repeat="uf in consultarUtilizacaoCtrl.ufs"  ng-value="uf">
+                        {{uf}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container class="margin-top" flex="33"
+                                flex-xs="100">
+                <label>{{'label-municipio' | translate}}</label>
+                <md-select ng-model="consultarUtilizacaoCtrl.utilizacaoFiltro.municipio"
+                           ng-disabled="consultarUtilizacaoCtrl.municipios.length === 0 || consultarUtilizacaoCtrl.bloquearCep">
+                    <md-option ng-repeat="municipio in consultarUtilizacaoCtrl.municipios"  ng-value="municipio.nome">
+                        {{municipio.nome}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+
+
+        <div class="button-botton" style="margin-top: 5%" layout="row" layout-align="end center">
+            <md-button class="md-raised" ng-click="consultarUtilizacaoCtrl.fechar()">
+                {{'btn-fechar' | translate | uppercase}}
+            </md-button>
+            <md-button class="md-raised" ng-click="consultarUtilizacaoCtrl.limparPesquisa()">
+                {{'btn-limpar' | translate | uppercase}}
+            </md-button>
+            <md-button class="md-raised" ng-click="consultarUtilizacaoCtrl.buscar()">
+                {{'btn-consultar' | translate | uppercase}}
+            </md-button>
+        </div>
+    </div>
+
+    <div style="margin: 0 2% 0 2%"  ng-show="consultarUtilizacaoCtrl.utilizacoes.length > 0">
+        <md-table-container>
+            <table md-table style="border: 1px solid #cccccc;">
+
+                <thead md-head class="upload-head">
+                    <tr md-row>
+                        <th md-column flex="25">{{"label-acoes" | translate}}</th>
+                        <th md-column flex="70" >{{"label-detalhes-utilizacoes" | translate}}</th>
+                    </tr>
+                </thead>
+
+                <tbody md-body>
+
+                    <tr md-row ng-repeat="utilizacao in consultarUtilizacaoCtrl.utilizacoes">
+                        <td md-cell flex="25" style="width: 10%">
+                            <div class="button-botton">
+                                <md-button class="md-raised" ng-click="consultarUtilizacaoCtrl.selecionarEstaUtilizacao(utilizacao)">
+                                    {{'btn-selecionar-esta-utilizacao' | translate | uppercase}}
+                                </md-button>
+                            </div>
+                        </td>
+                        <td md-cell flex="70" style="overflow-wrap: break-word">
+                            <p><b>Código da Utilização: </b>{{utilizacao.imovel.rip}}/{{utilizacao.codigoUtilizacao}}{{consultarUtilizacaoCtrl.destinacaoServiceUtil.lpad(utilizacao.sequencialParcela)}}</p>
+                            <p><b>Utilizacao: </b>{{utilizacao.tipoUtilizacao.descricao}} {{utilizacao.subTipoUtilizacao.descricao ? '/ ' + utilizacao.subTipoUtilizacao.descricao : ''}}</p>
+                            <p><b>Endedreço: </b>{{utilizacao.endereco.logradouro}}, Numero {{utilizacao.endereco.numero}}, {{utilizacao.endereco.bairro}}, {{utilizacao.endereco.municipio}}/{{utilizacao.endereco.uf}} - {{utilizacao.endereco.pais}}.
+                                CEP: {{utilizacao.endereco.cep}}</p>
+                            <span style="margin: 13px 0px; width: 50%"><b>Área do Terreno: </b>{{utilizacao.areaTerreno}}</span> <span style="margin: 13px 0px; text-align: right"><b>Área Construída: </b> {{utilizacao.areaConstruida ? utilizacao.areaConstruida : 0}}</span>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </md-table-container>
+
+        <md-table-pagination style="margin: 0 0.4%; background-color: #D8F8E1; border: 1px solid #cccccc;"
+                             md-limit="consultarUtilizacaoCtrl.tabelaUtilizacoes.limit"
+                             md-limit-options="consultarUtilizacaoCtrl.tabelaUtilizacoes.limitsPage"
+                             md-page="consultarUtilizacaoCtrl.tabelaUtilizacoes.page"
+                             md-total="{{consultarUtilizacaoCtrl.utilizacoes.length}}"
+                             md-on-paginate="consultarUtilizacaoCtrl.atualizarTabela"
+                             md-page-select>
+        </md-table-pagination>
+    </div>
+</form>

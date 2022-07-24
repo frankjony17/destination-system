@@ -1,0 +1,126 @@
+<div layout="row" layout-xs="column">
+  <md-input-container class="margin-top" flex='{{tamanhoFlex}}' flex-xs="100">
+    <label>{{'label-tipo-proprietario' | translate}}</label>
+    <md-select ng-model="usoProprio.responsavel.tipoProprietarioReal"
+               name="{{'label-tipo-proprietario' | translate}}" disabled>
+      <md-option ng-value="usoProprio.responsavel.tipoProprietarioReal">
+        {{usoProprio.responsavel.tipoProprietarioReal.descricao}}
+      </md-option>
+    </md-select>
+  </md-input-container>
+
+  <div ng-if="usoProprio.responsavel" layout="row" flex="66" flex-xs="100">
+    <md-input-container class="margin-top" flex="50" flex-xs="100">
+      <label>{{'label-orgao-entidade' | translate}}</label>
+      <md-select id="input-orgao-entidade" ng-model="usoProprio.responsavel.orgaoEntidade"
+                 name="{{'label-orgao-entidade' | translate}}" disabled>
+        <md-option ng-value="usoProprio.responsavel.orgaoEntidade">
+          {{usoProprio.responsavel.orgaoEntidade}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+    <md-input-container class="margin-top" flex="50" flex-xs="100">
+      <label>{{'label-ug-especifica' | translate}}</label>
+      <md-select id="input-unidade-usuario" ng-model="usoProprio.responsavel.unidadeUsuario"
+                 name="{{'label-ug-especifica' | translate}}" disabled>
+        <md-option ng-value="usoProprio.responsavel.unidadeUsuario">
+          {{usoProprio.responsavel.unidadeUsuario}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+
+</div>
+
+
+<div layout="row" layout-xs="column" ng-show="usoProprio.responsavel">
+  <div flex="50">
+    <md-input-container class="md-block margin-top-alinhar-data">
+      <md-radio-group ng-model="usoProprio.responsavel.uniaoParcialmente" layout="row">
+        <md-radio-button class="margin-esquerda" ng-value="false" disabled>
+          {{'label-integralmente' | translate}}
+        </md-radio-button>
+        <md-radio-button style="margin-left:10%;" ng-value="true" disabled>
+          {{'label-parcialmente' | translate}}
+        </md-radio-button>
+      </md-radio-group>
+    </md-input-container>
+  </div>
+
+  <md-input-container class="margin-top" flex="50" flex-xs="100"
+                      ng-show="usoProprio.responsavel.uniaoParcialmente != false">
+    <label>{{'label-proprietario-parcial' | translate}}</label>
+    <md-select ng-model="usoProprio.responsavel.tipoProprietarioParcial"
+               name="{{'label-proprietario-parcial' | translate}}" disabled>
+      <md-option ng-value="usoProprio.responsavel.tipoProprietarioParcial">
+        {{usoProprio.responsavel.uniaoParcialmente.descricao}}
+      </md-option>
+    </md-select>
+  </md-input-container>
+
+</div>
+
+<div layout="row" layout-xs="column"
+     ng-show="usoProprio.responsavel.uniaoParcialmente != false && usoProprio.responsavel">
+
+  <md-input-container class="margin-top" flex="50" flex-xs="100">
+    <label>{{'label-orgao-entidade' | translate}}</label>
+    <md-select ng-model="usoProprio.responsavel.orgaoEntidade"
+               name="{{'label-orgao-entidade' | translate}}" disabled>
+      <md-option ng-value="usoProprio.responsavel.orgaoEntidade">
+        {{usoProprio.responsavel.orgaoEntidade}}
+      </md-option>
+    </md-select>
+  </md-input-container>
+
+  <md-input-container class="margin-top" flex="50" flex-xs="100">
+    <label>{{'label-ug-especifica' | translate}}</label>
+    <md-select ng-model="usoProprio.responsavel.unidadeUsuario"
+               name="{{'label-ug-especifica' | translate}}" disabled>
+      <md-option ng-value="usoProprio.responsavel.unidadeUsuario">
+        {{usoProprio.responsaveil.unidadeUsuario}}
+      </md-option>
+    </md-select>
+  </md-input-container>
+
+</div>
+
+<fieldset class="margem-elementos-pagina margin-top"
+          style="border-radius: 5px;" ng-show="usoProprio.responsaveis.length != 0 && usoProprio.responsavel.pessoas.length != 0">
+  <span class="titulo-verde negrito">{{'label-terceiros' | translate}}</span>
+  <hr class="linha-divisoria">
+
+  <div  class="margin-top">
+    <md-table-container>
+      <table md-table>
+        <thead md-head>
+        <tr md-row>
+          <th md-column>{{'label-cpf-cnpj' | translate}}</th>
+          <th md-column>{{'label-nome-razao' | translate}}</th>
+        </tr>
+        </thead>
+        <tbody md-body >
+        <tr md-row ng-repeat="pessoa in usoProprio.responsavel.pessoas
+                        | limitTo: tabela.limit:
+                        (tabela.page - 1) * tabela.limit">
+          <td md-cell>
+            <span>{{pessoa.numeroDocumento}}</span>
+          </td>
+          <td md-cell>
+            <span>{{pessoa.nome}}</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </md-table-container>
+    <md-table-pagination md-limit="tabela.limit"
+                         md-limit-options="tabela.limitsPage"
+                         md-page="tabela.page"
+                         md-total="{{usoProprio.responsavel.pessoas.length}}"
+                         md-on-paginate="true"
+                         md-page-select>
+    </md-table-pagination>
+  </div>
+
+</fieldset>

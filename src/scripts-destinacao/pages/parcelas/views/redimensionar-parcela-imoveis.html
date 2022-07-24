@@ -1,0 +1,118 @@
+<form name="redimensionarParcelaCtrl.redimensionarParcela">
+    <div class="margin-header-conteudo">
+        <span class="titulo-verde-header">{{'label-redimensionar-parcela' | translate}}</span>
+    </div>
+
+    <div layout="row" layout-xs="column" class="margin-mapa">
+        <md-input-container class="margin-top md-block margin-lateral-label" flex="20" flex-xs="100">
+            <label> {{'label-rip' | translate}}:<b>&nbsp; {{redimensionarParcelaCtrl.rip}}</b></label>
+        </md-input-container>
+    </div>
+
+    <br />
+    <div layout="row" layout-xs="column" class="margin-mapa">
+        <md-input-container class="margin-top md-block margin-lateral-label" flex="50" flex-xs="100">
+            <label> {{'label-area-terreno-mts' | translate}}:<b>&nbsp; {{redimensionarParcelaCtrl.areaTerreno}}</b>
+                <span ng-if="redimensionarParcelaCtrl.possuiPendencia && redimensionarParcelaCtrl.areaTerreno != redimensionarParcelaCtrl.areaTerrenoAntigo"
+                      style="color: red">(valor antigo: {{redimensionarParcelaCtrl.areaTerrenoAntigo}})</span></label>
+
+
+        </md-input-container>
+    </div>
+
+    <br />
+    <div layout="row" layout-xs="column" class="margin-mapa">
+        <md-input-container class="margin-top md-block margin-lateral-label" flex="50" flex-xs="100">
+            <label> {{'label-area-construida-mts'| translate}}:<b>&nbsp; {{redimensionarParcelaCtrl.areaConstruida}}</b>
+                <span ng-if="redimensionarParcelaCtrl.possuiPendencia && redimensionarParcelaCtrl.areaConstruida != redimensionarParcelaCtrl.areaConstruidaAntigo"
+                style="color: red">(valor antigo: {{redimensionarParcelaCtrl.areaConstruidaAntigo}})</span></label>
+
+
+        </md-input-container>
+    </div>
+
+    <br />
+    <br />
+    <br />
+
+    <div layout="row" layout-xs="column">
+        <div layout="column" flex="100">
+            <md-content flex="100">
+                <md-table-container>
+                    <table md-table>
+
+                        <thead md-head>
+                        <tr md-row>
+                            <th md-column>{{"label-parecela" | translate}}</th>
+                            <th md-column>{{"label-utilizacao" | translate}}</th>
+                            <th md-column>{{"label-area-construida" | translate}}</th>
+                            <th md-column>{{"label-area-parcela-mts" | translate}}</th>
+                        </tr>
+                        </thead>
+
+                        <tbody md-body>
+
+                        <tr md-row ng-repeat="parcela in redimensionarParcelaCtrl.parcelas |
+                      limitTo: redimensionarParcelaCtrl.parcelas.limit:
+                      (redimensionarParcelaCtrl.parcelas.page - 1) * redimensionarParcelaCtrl.parcelas.limit">
+                            <td md-cell>
+                                {{parcela.descParcela}} &nbsp;&nbsp;<ng-md-icon ng-if="parcela.parcelacomPendenciaDestinacao"  class="icon-warning"  icon="warning"/>
+                            </td>
+                            <td md-cell>
+                                {{parcela.utilizacao}}
+                            </td>
+
+                            <td md-cell>
+                                <div ng-repeat="benfeitoria in parcela.listaBenfeitorias">
+                                    <label>
+                                        <input type="checkbox" id ="checkBenfeitoria+parcela.id+benfeitoria.codigo" ng-disabled="!redimensionarParcelaCtrl.possuiPendencia && redimensionarParcelaCtrl.existeUtilizacao(parcela)" ng-checked="redimensionarParcelaCtrl.checkBenfeitoria(benfeitoria, parcela)" ng-click="redimensionarParcelaCtrl.tratarBenfeitoria($event, parcela, benfeitoria)" name="{{parcela.id}}-{{benfeitoria.codigo}}">{{benfeitoria.codigo}} - [{{benfeitoria.nome}}] -  {{benfeitoria.areaConstruida | number: 2}}m²&#013;
+                                    </label>
+                                </div>
+                                <br />
+                            </td>
+
+                            <td md-cell>
+                                <input type="text" ng-model="parcela.areaTerreno" ng-change="redimensionarParcelaCtrl.changeParcelas(parcela)"/>
+                            </td>
+
+                        </tr>
+                        <tr md-row >
+                            <td md-cell >
+
+                            </td>
+                            <td md-cell>
+
+                            </td>
+                            <td md-cell align="right">
+                                <label >Total: </label>
+
+                            </td>
+                            <td md-cell >
+                                <label id="setarCor"  class="glyphicon glyphicon-exclamation-sign">{{redimensionarParcelaCtrl.calculoAreaContruida}}&nbsp;&nbsp;<ng-md-icon
+                                    ng-change="verificarValorSomaTerrano()" ng-model="redimensionarParcelaCtrl.iconeAreaParcela" ng-if="redimensionarParcelaCtrl.iconeAreaParcela" class="icon-info"  icon="info"/></label>
+
+                                </ng-md-icon>
+                            </td>
+
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </md-table-container>
+            </md-content>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="button-botton" layout="row" layout-align="end center">
+        <md-button class="md-raised"
+                   id="btn-limpar-parcela"
+                   ng-click="redimensionarParcelaCtrl.cancelar()">{{'btn-cancelar' | translate | uppercase}}</md-button>
+        <md-button class="md-raised"
+                   id="btn-salvar-parcela"
+                   ng-click="redimensionarParcelaCtrl.salvarListaParcelas()">{{'btn-salvar' | translate | uppercase}}</md-button>
+    </div>
+
+
+</form>

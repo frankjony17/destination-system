@@ -1,0 +1,11 @@
+<md-toast md-theme="error-toast">
+    <div class="toast-padding" layout="column" ng-show="isArray">
+      <h3 flex ng-show="titulo">{{titulo}}</h3>
+
+      <div flex ng-repeat="msg in msgs">
+        <span flex>{{msg}}</span>
+      </div>
+    </div>
+
+    <span flex ng-show="!isArray">{{msgs}}</br></span>
+</md-toast>

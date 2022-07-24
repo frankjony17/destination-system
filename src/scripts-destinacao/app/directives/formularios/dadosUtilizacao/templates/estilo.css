@@ -1,0 +1,18 @@
+.alerta {
+    border-radius: 3px;
+    color: #a28a2c ;
+    background-color: rgba(218, 191, 0, 0.2);
+    padding: 10px;
+}
+
+.alerta-negrito {
+    font-weight: bold;
+}
+
+.margem-esquerda {
+    margin-left: 1%;
+}
+
+.my-icon svg {
+   fill: #a28a2c;
+}

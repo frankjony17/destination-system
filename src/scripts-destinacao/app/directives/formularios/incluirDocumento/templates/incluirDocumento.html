@@ -1,0 +1,66 @@
+<div ng-if="!bloquear" layout="row" layout-xs="column">
+  <div layout="row">
+    <md-button class="md-primary md-raised" ng-click="abrirIncluirDocumento($event);">
+      {{'btn-incluir-documento' | translate | uppercase}}
+    </md-button>
+  </div>
+</div>
+
+  <!--Tabela com os documentos-->
+  <div ng-show="destinacao.documentos.length > 0" >
+    <md-table-container>
+      <table md-table>
+        <thead md-head>
+        <tr md-row>
+          <th md-column>{{"label-tipo" | translate}}</th>
+          <th md-column>{{"label-documento" | translate}}</th>
+          <th md-column>{{"label-acao" | translate}}</th>
+        </tr>
+        </thead>
+
+        <tbody md-body>
+
+        <tr md-row ng-repeat="documento in destinacao.documentos | limitTo: tabelaDocumentos.limit: (tabelaDocumentos.page - 1) * tabelaDocumentos.limit">
+          <td md-cell>
+            <span ng-show="documento.tipoDocumento.id >= 3 ">{{documento.tipoDocumento.descricao }}</span>
+            <span ng-show="documento.tipoDocumento.id < 3 ">{{documento.tipoDocumento.descricao }} > {{documento.subTipoDocumento.descricao}}</span>
+          </td>
+          <td md-cell>
+            <a class="hand link" ng-show="documento.publicacao === true || documento.dataPublicacao" style="text-decoration: none;" href="{{montarLink(documento)}}" target="_blank"> {{'label-ver-publicacao' | translate}} </a>
+            <a class="hand link" ng-show="documento.publicacao === false || !documento.dataPublicacao"> {{documento.arquivo.nomeReal}} </a>
+          </td>
+          <td md-cell style="position: relative">
+            <md-fab-speed-dial md-direction="left" class="hand md-scale" ng-class="{'alinhar-detalhar-md-fab-speed-dial': bloquear != false}">
+              <md-fab-trigger>
+                <ng-md-icon class="icon-acao" icon="more_vert">
+                </ng-md-icon>
+              </md-fab-trigger>
+
+              <md-fab-actions>
+                <ng-md-icon class="icon-subacao" icon="edit" ng-click="editar(documento,$event);">
+                  <md-tooltip>{{"btn-editar" | translate}}</md-tooltip>
+                </ng-md-icon>
+
+                <ng-md-icon ng-if="!bloquear" class="icon-subacao" icon="delete" ng-click="remover(documento);">
+                  <md-tooltip>{{"btn-excluir" | translate}}</md-tooltip>
+                </ng-md-icon>
+              </md-fab-actions>
+            </md-fab-speed-dial>
+          </td>
+        </tr>
+        </tbody>
+
+      </table>
+
+    </md-table-container>
+    <md-table-pagination md-limit="tabelaDocumentos.limit"
+                         md-limit-options="tabelaDocumentos.limitsPage"
+                         md-page="tabelaDocumentos.page"
+                         md-total="{{destinacao.documentos.length}}"
+                         md-on-paginate="true"
+                         style="border: 1px solid #cccccc; margin:0 5px 0 5px;">
+    </md-table-pagination>
+  </div>
+
+
+

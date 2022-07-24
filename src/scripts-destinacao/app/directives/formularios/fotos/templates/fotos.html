@@ -1,0 +1,92 @@
+  <div id="incluirFotos" ng-show="bloquear !== true" layout="row" layout-xs="column" class="flex-container">
+
+      <md-input-container class="margin-top flex-item" flex="33" flex-xs="100">
+        <label>{{'label-descricao' | translate}}</label>
+        <input md-maxlength="200" maxlength="200" ng-model="arquivo.descricao" name="{{'label-descricao' | translate}}">
+      </md-input-container>
+
+      <div layout="column" flex="33" class="md-block flex-item">
+        <label class="label-data-picker">{{"label-data" | translate}}:</label>
+        <md-datepicker ng-model="arquivo.data"
+                       md-placeholder="dd/mm/aaaa"
+                       class="special aumenta-data"
+                       name="{{'label-data' | translate}}">
+        </md-datepicker>
+      </div>
+
+      <div class="button-botton flex-item" layout="row" layout-align="end center" flex="33">
+        <md-button style="width: 100%"  class="md-raised btn-margin-bottom" ngf-select="addArquivo($files)"
+                   ngf-multiple="false">
+                   {{'btn-selecionar-foto' | translate | uppercase}}
+        </md-button>
+      </div>
+
+
+  </div>
+
+
+      <div ng-show="bloquear !== true" layout="column" class="margin-left espacamento-arquivos-adicionados">
+        <md-container>
+          <label ng-show="arquivo.foto">{{arquivo.foto.name}}</label>
+        </md-container>
+      </div>
+
+
+        <div ng-show="bloquear !== true" class="button-botton" layout="row" layout-align="end center">
+          <md-button class="md-raised btn-margin-bottom" ng-click="incluirArquivo()">
+            {{'btn-adicionar' | translate | uppercase}}
+          </md-button>
+        </div>
+
+
+  <div class="margin-top" ng-show="destinacao.fotos.length > 0">
+
+      <table id="tabelaFotos" md-table class="upload-table">
+
+        <thead md-head>
+          <tr md-row  class="upload-head">
+            <th md-column>{{'label-descricao' | translate}}</th>
+            <th md-column>{{'label-data' | translate}}</th>
+            <th md-column>{{'label-documento' | translate}}</th>
+            <th md-column ng-show="bloquear !== true"> </th>
+          </tr>
+        </thead>
+
+        <tbody md-body>
+        <tr md-row ng-repeat="foto in destinacao.fotos
+                            | limitTo: tabela.limit:
+                            (tabela.page - 1) * tabela.limit">
+
+          <td md-cell flex="25">
+           <span>{{foto.arquivo.descricao}}</span>
+          </td>
+
+          <td md-cell flex="25">
+              <span>{{foto.arquivo.data | date:'dd/MM/yyyy'}}</span>
+          </td>
+
+            <td md-cell flex="25">
+                    <a ng-href="{{baixarArquivo(foto.arquivo.documento)}}" target="_blank">
+                        <label class="hand link">{{foto.arquivo.documento.nomeReal}}</label>
+                    </a>
+            </td>
+
+          <td md-cell flex="25" ng-show="bloquear !== true">
+            <ng-md-icon icon="delete" class="hand"
+                        ng-click="removerArquivo(foto)">
+              <md-tooltip>{{'btn-excluir' | translate}}</md-tooltip>
+            </ng-md-icon>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <md-table-pagination class="upload" style="margin: auto; background-color: #D8F8E1;"
+                           md-limit="tabela.limit"
+                           md-limit-options="tabela.limitsPage"
+                           md-page="tabela.page"
+                           md-total="{{destinacao.fotos.length}}"
+                           md-on-paginate="true"
+                           md-page-select>
+      </md-table-pagination>
+  </div>
+

@@ -1,0 +1,154 @@
+<div ng-if="!doacaoCtrl.permissaoConcedida">
+    <acesso-negado></acesso-negado>
+</div>
+
+<exibir-elemento-por-permissao-destinacao permissoes="doacaoCtrl.PERMISSOES"
+                               permissao-concedida="doacaoCtrl.permissaoConcedida"
+                               detalhar="doacaoCtrl.doacao.detalhar">
+    <div class="margin-header-conteudo">
+        <titulo-servico class="titulo-verde titulo-verde-header"></titulo-servico>
+        <div class="base-vermelho"></div>
+        <hr class="linha-divisoria">
+    </div>
+
+    <div layout="row" layout-xs="column" class="margin-mapa" ng-if="doacaoCtrl.carregarDadosUtilizacao == true">
+      <div layout="column" flex="35" flex-xs="100">
+        <informacoes-imovel bloquear="doacaoCtrl.doacao.detalhar" destinacao-imoveis="doacaoCtrl.doacao.destinacaoImoveis"></informacoes-imovel>
+      </div>
+      <md-content class="md-padding" flex="65" flex-xs="100">
+        <md-tabs md-dynamic-height md-no-ink md-selected="indiceTabs">
+          <md-tab id="tabUtilizacao" ng-disabled="doacaoCtrl.bloqueiaDadosUtilizacao">
+            <md-tab-label>{{'label-dados-utilizacao' | translate | uppercase}}</md-tab-label>
+            <md-tab-body>
+              <form name="doacaoCtrl.formUtilizacao">
+                <div layout="column" flex="100" flex-xs="100" layout-xs="column" class="margin-conteudo">
+                    <div ng-cloak flex="100" flex-xs="100" offset="5">
+                        <v-accordion ng-if="doacaoCtrl.doacao.statusDestinacao.id === 2" id="accordion" multiple class="vAccordion--default cancelamento">
+                            <v-pane>
+                                <v-pane-header id="id_acordion_cancelamento">{{'label-dados-cancelamento-destinacao' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                    <apresentar-dados-cancelamento cancelamento-destinacao="doacaoCtrl.doacao">
+
+                                    </apresentar-dados-cancelamento>
+                                </v-pane-content>
+                            </v-pane>
+                        </v-accordion>
+
+                        <v-accordion  ng-if="doacaoCtrl.doacao.statusDestinacao.id === 5" id="accordion" multiple class="vAccordion--default cancelamento">
+                            <v-pane>
+                                <v-pane-header id="id_acordion_encerramento">{{'label-dados-encerramento-destinacao' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                    <apresentar-dados-encerramento encerramento="doacaoCtrl.doacao">
+
+                                    </apresentar-dados-encerramento>
+                                </v-pane-content>
+                            </v-pane>
+                        </v-accordion>
+                      <dados-atendimento bloquear="doacaoCtrl.doacao.detalhar"
+                                         atendimento="doacaoCtrl.atendimento"
+                                         tipo-destinacao="doacaoCtrl.doacao.tipoDestinacaoEnum"
+                                         destinacao-transito="doacaoCtrl.doacao"
+                                         editar="doacaoCtrl.doacao.editar"></dados-atendimento>
+                      <div class="margin-top">
+                        <v-accordion multiple class="vAccordion--default" ng-show="doacaoCtrl.doacao.codFundamentoLegal">
+                            <v-pane>
+                                <v-pane-header id="accordion-dados-imovel-doacao" class="titulo-verde negrito">{{'label-dados-imovel-parcela' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                  <inserir-dados-parcela-imovel-page
+                                      bloquear="doacaoCtrl.doacao.detalhar"
+                                      destinacao="doacaoCtrl.doacao"
+                                      edicao="doacaoCtrl.doacao.editar"
+                                      rota-destinacao="'destinacao.doacao'">
+                                  </inserir-dados-parcela-imovel-page>
+                                </v-pane-content>
+                            </v-pane>
+                            <v-pane>
+                                <v-pane-header id="accordion-dados-responsavel-doacao" class="titulo-verde negrito">{{'label-dados-responsavel-destinatario' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                  <dados-responsavel-destinatario
+                                    dados-responsavel="doacaoCtrl.doacao.dadosResponsavel"
+                                    atendimento="doacaoCtrl.atendimento"
+                                    tipo-destinacao="doacaoCtrl.doacao.tipoDestinacaoEnum"
+                                    destinacoes-imoveis="doacaoCtrl.doacao.destinacaoImoveis"
+                                    tipo-modalidade="doacaoCtrl.atendimento.tipoModalidade"
+                                    modo-editar="doacaoCtrl.doacao.editar"
+                                    bloquear="doacaoCtrl.doacao.detalhar"
+                                    destinacao="doacaoCtrl.doacao"
+                                    nome-state="doacaoCtrl.nomeState"
+                                    fundamento="doacaoCtrl.doacao.codFundamentoLegal">
+                                  </dados-responsavel-destinatario>
+                                </v-pane-content>
+                            </v-pane>
+                            <v-pane>
+                                <v-pane-header id="accordion-dados-utilizacao-doacao" class="titulo-verde negrito">{{'label-dados-uso' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                    <dados-utilizacao bloquear="doacaoCtrl.doacao.detalhar"
+                                                      editar="doacaoCtrl.doacao.editar"
+                                                      utilizacao="doacaoCtrl.doacao.utilizacao"
+                                                      atendimento="doacaoCtrl.atendimento"
+                                                      imoveis="doacaoCtrl.doacao.destinacaoImoveis"
+                                                      tipo-destinacao="doacaoCtrl.doacao.tipoDestinacaoEnum"
+                                                      responsaveis="doacaoCtrl.doacao.responsaveis"></dados-utilizacao>
+                                </v-pane-content>
+                            </v-pane>
+                            <v-pane>
+                                <v-pane-header id="accordion-dados-instrumento-doacao" class="titulo-verde negrito">{{'label-dados-instrumento-ato' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                  <instrumento-ato destinacao-transito="doacaoCtrl.doacao"
+                                                   bloquear="doacaoCtrl.doacao.detalhar"
+                                                   rota-destinacao="'destinacao.doacao'"></instrumento-ato>
+                                </v-pane-content>
+                            </v-pane>
+                        </v-accordion>
+                      </div>
+                    </div>
+                </div>
+              </form>
+              <div class="minuta margem-elementos-pagina" ng-if="doacaoCtrl.exibirMinuta">
+                <b>{{'label-minuta' | translate}}</b>
+                <p style="margin-left: 2%;">Gerada em: {{doacaoCtrl.dataMinuta}}</p>
+                <p style="margin-left: 2%;">Responsavel: {{doacaoCtrl.responsavelMinuta}}</p>
+                <p>Arquivo: <label class="hand link">[nome do arquivo].pdf</label></p>
+              </div>
+            </md-tab-body>
+          </md-tab>
+          <md-tab id="tabContrato" ng-disabled="!doacaoCtrl.bloqueiaDadosUtilizacao">
+            <md-tab-label>{{'label-dados-contrato-termo' | translate | uppercase}}</md-tab-label>
+            <md-tab-body>
+              <form name="doacaoCtrl.formContrato">
+                <div class="margin-top">
+                  <contrato dados-contrato="doacaoCtrl.doacao.contrato"
+                            tipo-destinacao="doacaoCtrl.doacao.tipoDestinacaoEnum"
+                            status-destinacao="doacaoCtrl.doacao.statusDestinacao"
+                            bloquear="doacaoCtrl.doacao.detalhar"></contrato>
+                </div>
+                <div class="margin-conteudo">
+                  <v-accordion id="accordion" multiple class="vAccordion--default">
+                    <v-pane>
+                      <v-pane-header id="accordion-documentos-doacao" class="titulo-verde negrito">{{'label-documentos' | translate | uppercase}}</v-pane-header>
+                      <v-pane-content>
+                        <incluir-documento bloquear="doacaoCtrl.doacao.detalhar"
+                                           destinacao="doacaoCtrl.doacao"
+                                           rota-retorno="'destinacao.doacao'"></incluir-documento>
+                      </v-pane-content>
+                    </v-pane>
+                  </v-accordion>
+                </div>
+              </form>
+            </md-tab-body>
+          </md-tab>
+        </md-tabs>
+      </md-content>
+    </div>
+    <botoes-rodape bloquear="doacaoCtrl.doacao.detalhar"
+                   salvar-rascunho="doacaoCtrl.salvarRascunho()"
+                   gravar="doacaoCtrl.gravar()"
+                   avancar="doacaoCtrl.avancar()"
+                   fechar="doacaoCtrl.fechar()"
+                   voltar="doacaoCtrl.voltar()"
+                   botao-editar="doacaoCtrl.botaoEditar()"
+                   gerar-minuta="doacaoCtrl.bloqueiaDadosUtilizacao"
+                   cancelar="doacaoCtrl.cancaler()"
+                   cancelamento-encerramento="doacaoCtrl.doacao.cancelamentoEncerramento">
+    </botoes-rodape>
+</exibir-elemento-por-permissao-destinacao>

@@ -1,0 +1,149 @@
+<div ng-if="!vendaCtrl.permissaoConcedida">
+    <acesso-negado></acesso-negado>
+</div>
+
+<exibir-elemento-por-permissao-destinacao permissoes="vendaCtrl.PERMISSOES"
+                               permissao-concedida="vendaCtrl.permissaoConcedida"
+                               detalhar="vendaCtrl.venda.detalhar">
+    <div class="margin-header-conteudo">
+        <titulo-servico class="titulo-verde titulo-verde-header"></titulo-servico>
+        <div class="base-vermelho"></div>
+        <hr class="linha-divisoria">
+    </div>
+
+    <div layout="row" layout-xs="column" class="margin-mapa">
+      <div layout="column" flex="35" flex-xs="100">
+        <informacoes-imovel destinacao-imoveis="vendaCtrl.venda.destinacaoImoveis"></informacoes-imovel>
+      </div>
+      <md-content class="md-padding" flex="65" flex-xs="100">
+        <md-tabs md-dynamic-height md-no-ink md-selected="indiceTabs">
+          <md-tab id="tabUtilizacao" ng-disabled="vendaCtrl.bloqueiaDadosUtilizacao">
+            <md-tab-label>{{'label-dados-utilizacao' | translate | uppercase}}</md-tab-label>
+            <md-tab-body>
+              <form name="vendaCtrl.formUtilizacao">
+                <div layout="column" flex="100" flex-xs="100" layout-xs="column" class="margin-conteudo">
+                    <div ng-cloak flex="100" flex-xs="100" offset="5">
+                        <v-accordion  ng-if="vendaCtrl.venda.statusDestinacao.id === 2" id="accordion" multiple class="vAccordion--default cancelamento">
+                            <v-pane>
+                                <v-pane-header id="id_acordion_cancelamento">{{'label-dados-cancelamento-destinacao' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                    <apresentar-dados-cancelamento cancelamento-destinacao="vendaCtrl.venda">
+
+                                    </apresentar-dados-cancelamento>
+                                </v-pane-content>
+                            </v-pane>
+                        </v-accordion>
+
+                        <v-accordion  ng-if="vendaCtrl.venda.statusDestinacao.id === 5" id="accordion" multiple class="vAccordion--default cancelamento">
+                            <v-pane>
+                                <v-pane-header id="id_acordion_encerramento">{{'label-dados-encerramento-destinacao' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                    <apresentar-dados-encerramento encerramento="vendaCtrl.venda">
+
+                                    </apresentar-dados-encerramento>
+                                </v-pane-content>
+                            </v-pane>
+                        </v-accordion>
+
+                      <dados-atendimento atendimento="vendaCtrl.venda.atendimento" destinacao-transito="vendaCtrl.venda"
+                                         editar="vendaCtrl.venda.editar"></dados-atendimento>
+                      <div class="margin-top">
+                        <v-accordion multiple class="vAccordion--default" ng-show="vendaCtrl.venda.codFundamentoLegal">
+                            <v-pane id="accordion-dados-imovel">
+                                <v-pane-header class="titulo-verde negrito">{{'label-dados-imovel-parcela' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                  <inserir-dados-parcela-imovel-page
+                                    bloquear="vendaCtrl.venda.detalhar"
+                                    destinacao="vendaCtrl.venda"
+                                    edicao="vendaCtrl.venda.editar"
+                                    rota-destinacao="'destinacao.venda'">
+                                  </inserir-dados-parcela-imovel-page>
+                                </v-pane-content>
+                            </v-pane>
+                            <v-pane>
+                                <v-pane-header class="titulo-verde negrito">{{'label-dados-responsavel-destinatario' | translate | uppercase}}</v-pane-header>
+                                <v-pane-content>
+                                  <dados-responsavel-destinatario
+                                    dados-responsavel="vendaCtrl.venda.dadosResponsavel"
+                                    atendimento="vendaCtrl.atendimento"
+                                    tipo-destinacao="vendaCtrl.venda.tipoDestinacaoEnum"
+                                    destinacoes-imoveis="vendaCtrl.venda.destinacaoImoveis"
+                                    tipo-modalidade="vendaCtrl.atendimento.tipoModalidade"
+                                    modo-editar="vendaCtrl.venda.editar"
+                                    bloquear="vendaCtrl.venda.detalhar"
+                                    destinacao="vendaCtrl.venda"
+                                    nome-state="vendaCtrl.nomeState"
+                                    fundamento="vendaCtrl.venda.codFundamentoLegal">
+                                  </dados-responsavel-destinatario>
+                                </v-pane-content>
+                            </v-pane>
+                            <v-pane>
+                              <v-pane-header id="accordion-financeiro-venda" class="titulo-verde negrito">{{'label-dados-financeiro' | translate | uppercase}}</v-pane-header>
+                              <v-pane-content>
+                                <dados-financeiros-venda financeiro="vendaCtrl.venda.financeiro"
+                                                   destinacao-imoveis="vendaCtrl.venda.destinacaoImoveis"
+                                                   licitacao="vendaCtrl.venda.licitacao"
+                                                   laudo-avaliacao="vendaCtrl.venda.laudoAvaliacao"></dados-financeiros-venda>
+
+                              </v-pane-content>
+                            </v-pane>
+                          <v-pane>
+                            <v-pane-header class="titulo-verde negrito">{{'label-dados-instrumento-ato' | translate | uppercase}}</v-pane-header>
+                            <v-pane-content>
+
+                              <instrumento-ato ng-if="vendaCtrl.venda" destinacao-transito="vendaCtrl.venda" rota-destinacao="'destinacao.venda'">
+                              </instrumento-ato>
+
+                              <div class="titulo-verde negrito margin-top ">{{'label-licitacao-venda' | translate | uppercase}}</div>
+                                    <dados-licitacao-venda licitacao-venda="vendaCtrl.venda.licitacao"
+                                                           atendimento="vendaCtrl.venda.atendimento">
+                                    </dados-licitacao-venda>
+                              </v-pane>
+                            </v-pane-content>
+                        </v-accordion>
+                      </div>
+                    </div>
+                </div>
+              </form>
+              <div class="minuta margem-elementos-pagina" ng-if="vendaCtrl.exibirMinuta">
+                <b>{{'label-minuta' | translate}}</b>
+                <p>Gerada em: dd/mm/aaaa</p>
+                <p>Responsavel: [CPF] - [Nome]</p>
+                <p>Arquivo: <label class="hand link">[nome do arquivo].pdf</label></p>
+              </div>
+            </md-tab-body>
+          </md-tab>
+          <md-tab id="tabContrato" ng-disabled="!vendaCtrl.bloqueiaDadosUtilizacao">
+            <md-tab-label>{{'label-dados-contrato-termo' | translate | uppercase}}</md-tab-label>
+            <md-tab-body>
+              <form name="vendaCtrl.formContrato">
+                <div class="margin-top">
+                  <contrato dados-contrato="vendaCtrl.venda.contrato" tipo-destinacao="vendaCtrl.venda.tipoDestinacaoEnum"
+                            status-destinacao="vendaCtrl.venda.statusDestinacao"></contrato>
+                </div>
+                <div class="margin-conteudo">
+                  <v-accordion id="accordion" multiple class="vAccordion--default">
+                    <v-pane>
+                      <v-pane-header class="titulo-verde negrito">{{'label-documentos' | translate | uppercase}}</v-pane-header>
+                      <v-pane-content>
+                        <incluir-documento destinacao="vendaCtrl.venda" rota-retorno="'destinacao.venda'" >
+
+                        </incluir-documento>
+                      </v-pane-content>
+                    </v-pane>
+                  </v-accordion>
+                </div>
+              </form>
+            </md-tab-body>
+          </md-tab>
+      </md-content>
+    </div>
+    <botoes-rodape gravar="vendaCtrl.gravar()"
+                   avancar="vendaCtrl.avancar()"
+                   salvar-rascunho="vendaCtrl.salvarRascunho()"
+                   fechar="vendaCtrl.fechar()"
+                   voltar="vendaCtrl.voltar()"
+                   cancelar="vendaCtrl.cancelar()"
+                   gerar-minuta="vendaCtrl.bloqueiaDadosUtilizacao"
+                   cancelamento-encerramento="vendaCtrl.venda.cancelamentoEncerramento"></botoes-rodape>
+</exibir-elemento-por-permissao-destinacao>

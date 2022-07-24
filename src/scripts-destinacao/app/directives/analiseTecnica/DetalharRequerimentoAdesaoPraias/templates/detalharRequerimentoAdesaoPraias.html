@@ -1,0 +1,78 @@
+<div class="conteudo simbolo-lateral">
+<!--  <div ng-bind="requerimento.servico.titulo" class="titulo-requerimento"
+       layout="column" layout-align="center center"></div>-->
+  <div>
+    <div flex>
+      <v-accordion id="accordion" class="vAccordion--default" flex="100">
+        <v-pane expanded="abas.municipioRequerente" id="dados-municipio" >
+          <v-pane-header class="titulo-verde negrito">
+            {{'label-dados-municipio' | translate | uppercase}}
+          </v-pane-header>
+          <v-pane-content>
+            <dados-municipio requerimento="requerimento"
+                             bloquear-campos="isDetalhar"></dados-municipio>
+          </v-pane-content>
+        </v-pane>
+      </v-accordion>
+
+      <v-accordion id="accordion" class="vAccordion--default" flex="100">
+        <v-pane expanded="abas.prefeitoMunicipal" id="dados-prefeito">
+          <v-pane-header class="titulo-verde negrito">
+            {{'label-dados-prefeito-municipal' | translate | uppercase}}
+          </v-pane-header>
+          <v-pane-content>
+            <dados-prefeito-municipal requerimento="requerimento"
+                                      bloquear-campos="isDetalhar"
+            ></dados-prefeito-municipal>
+          </v-pane-content>
+        </v-pane>
+      </v-accordion>
+
+      <v-accordion id="accordion" class="vAccordion--default" flex="100">
+        <v-pane expanded="abas.requerente" id="dados-gestor">
+          <v-pane-header class="titulo-verde negrito">
+            {{'label-dados-gestor-municipal' | translate | uppercase}}
+            <md-tooltip md-direction="bottom">
+              {{'hint-dados-gestor-municipal' | translate}}
+            </md-tooltip>
+          </v-pane-header>
+          <v-pane-content>
+            <dados-gestor-municipal requerimento="requerimento"
+                                    bloquear-campos="isDetalhar">
+              </dados-gestor-municipal>
+          </v-pane-content>
+        </v-pane>
+      </v-accordion>
+
+      <v-accordion id="accordion" class="vAccordion--default" flex=100 ng-if="idServico">
+        <v-pane  expanded="abas.documentos" id="dado-documentos">
+          <v-pane-header class="titulo-verde negrito">
+            {{'label-dados-documentos' | translate | uppercase}}
+          </v-pane-header>
+          <v-pane-content>
+            <div layout="row">
+<!--              <documento-requerimento flex="100"
+                                      id-servico="idServico"
+                                      documento="documento"
+                                      bloquear-campos="isDetalhar"
+                                      requerimento="requerimento"
+                                      nao-remover-antigos="true">
+              </documento-requerimento>-->
+            </div>
+          </v-pane-content>
+        </v-pane>
+      </v-accordion>
+    </div>
+
+    <md-input-container style="width: 98%; margin-bottom: 8px !important;">
+      <label>{{'label-anotacao' | translate}}</label>
+      <textarea ng-model="requerimento.anotacoes"
+                md-maxlength="800"
+                maxlength="800"
+                md-select-on-focus flex
+                disabled></textarea>
+    </md-input-container>
+
+  </div>
+</div>
+

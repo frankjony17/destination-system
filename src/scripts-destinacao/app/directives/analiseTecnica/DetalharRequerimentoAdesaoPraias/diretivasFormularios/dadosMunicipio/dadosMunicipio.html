@@ -1,0 +1,52 @@
+<div layout="column" layout-margin="5">
+    <div layout="row" layout-xs="column">
+        <!-- campo renderizado quando não ha o captcha inical -->
+
+        <md-input-container flex="25" flex-xs="100">
+            <label>{{'label-cpfj-municipio' | translate}}*</label>
+            <input ng-model="requerimento.municipioRequerente.cnpj"
+                   ui-br-cnpj-mask
+                   name="{{nomeCampo}} - CNPJ"
+                   ng-disabled="bloquearCampos">
+        </md-input-container>
+
+        <md-input-container flex="75" flex-xs="100"
+                            ng-if="requerimento.municipioRequerente && requerimento.municipioRequerente.endereco.municipio">
+            <label>{{'label-nome-municipio' | translate}}*</label>
+            <input name="{{nomeCampo}} - Nome"
+                   ng-model="requerimento.municipioRequerente.endereco.municipio"
+                   ng-disabled="true">
+        </md-input-container>
+    </div>
+
+    <h3>{{'label-endereco-sede-municipal' | translate}}</h3>
+    <dados-endereco-requerimento endereco="requerimento.municipioRequerente.endereco"
+                    bloquear-campos="bloquearCampos"
+                    nome-campo="nomeCampo">
+    </dados-endereco-requerimento>
+
+    <div layout="row" layout-xs="column">
+        <md-input-container flex="50" flex-xs="100" >
+            <label>{{'label-email' | translate}}</label>
+            <input type="email"
+                ng-model="requerimento.municipioRequerente.email"
+                maxlength="100"
+                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+                name="{{campo}} - E-mail"
+                ng-disabled="true">
+        </md-input-container>
+    </div>
+
+    <dados-telefones entidade="requerimento.municipioRequerente"
+                     tipo-requerimento="'ADESAO_GESTAO_PRAIAS'"
+                     bloquear-campos="bloquearCampos">
+    </dados-telefones>
+
+    <div layout="row" layout-xs="column">
+        <md-input-container flex="100" flex-xs="100" flex-offset-xs="0">
+            <label>{{'pagina' | translate}}</label>
+            <input ng-disabled="bloquearCampos"
+                   ng-model="requerimento.municipioRequerente.paginaWeb"/>
+        </md-input-container>
+    </div>
+</div>

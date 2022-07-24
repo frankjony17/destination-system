@@ -1,0 +1,51 @@
+
+<div layout="row" layout-xs="column" flex="100" 
+     layout-align="start center"
+     ng-show="!bloquearCampos"
+     style="margin-bottom: 5%; margin-bottom: 25px; margin-top: 10px;">
+
+      <md-button flex="17" flex-xs=100 class="md-primary" 
+                 ng-click="abrirModalIncluirGestor($event);">
+               {{'incluir-gestores' | translate | uppercase}}
+      </md-button>
+</div>
+
+<div>
+   <div ng-if="requerimento.gestores.length > 0">
+       <md-container class="gestorMunicipal table-responsive-vertical">
+           <md-table-container>
+               <table md-table>
+                   <thead md-head>
+                   <tr md-row>
+                       <th md-column class="texto-centro">{{'label-titular' | translate }}</th>
+                       <th md-column class="texto-centro">{{'label-nome' | translate }}</th>
+                       <th md-column class="texto-centro">{{'label-cargo' | translate }}</th>
+                       <th md-column class="texto-centro" >{{'label-acao' | translate }}</th>
+                   </tr>
+                   </thead>
+                   <tbody md-body>
+                      <tr md-row ng-repeat="gestor in requerimento.gestores">
+
+                           <td md-cell class="texto-centro" >
+                              <input type="radio" name="radio-primary"
+                                    ng-model="gestor.titular"
+                                    ng-value="true"
+                                    ng-disabled="bloquearCampos"
+                                    ng-click="selecionarGestor(gestor)"/>
+                           </td>
+                           <td md-cell class="texto-centro">{{gestor.nome}}</td>
+                           <td md-cell class="texto-centro">{{gestor.cargo}}</td>
+                           <td md-cell class="texto-centro">                               
+                                 <span ng-if="bloquearCampos">
+                                    <ng-md-icon icon="search" class="hand" style="fill:#788489" size="18"
+                                            alt="{{'label-editar' | translate}}"
+                                            ng-click="abrirModalDadosGestorMunicipal($event, gestor)"></ng-md-icon>
+                                </span>
+                           </td>
+                       </tr>
+                   </tbody>
+               </table>
+           </md-table-container>
+       </md-container>
+   </div>
+</div>

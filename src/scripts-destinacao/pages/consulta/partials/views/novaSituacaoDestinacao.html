@@ -1,0 +1,36 @@
+<md-dialog flex="70">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{'label-cadastrar-nova-situacao-destinacao' | translate}}</h2>
+            <span flex></span>
+            <ng-md-icon icon="close" class="hand cor-botao-remover-modal" ng-click="incluirNovaSituacaoDestinacaoCtrl.fechar()"></ng-md-icon>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content class="remover-scrool-horizontal ">
+      <form name="incluirNovaSituacaoDestinacaoCtrl.form">
+        <div layout="row" layout-margin="5">
+            <md-input-container class="margin-top" flex="100" flex-xs="100">
+                <label>{{'label-situacao-instrumento-destinacao' | translate}}</label>
+                <md-select ng-model="incluirNovaSituacaoDestinacaoCtrl.tipoDestinacao" required name="{{'label-situacao-instrumento-destinacao' | translate}}">
+                    <md-option ng-repeat ="tipo in incluirNovaSituacaoDestinacaoCtrl.tipoDestinacoes" 
+                               ng-value="tipo.codigo">
+                        {{tipo.descricao}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+        </div>
+
+        <div class="button-botton" layout="row" layout-margin="5" layout-align="end center">
+            <md-button class="md-raised" ng-click="incluirNovaSituacaoDestinacaoCtrl.fechar()">
+                {{'btn-fechar' | translate | uppercase}}
+            </md-button>
+            <md-button class="md-raised" ng-click="incluirNovaSituacaoDestinacaoCtrl.confirmar()">
+                {{'btn-confirmar' | translate | uppercase}}
+            </md-button>
+        </div>
+
+      </form>
+    </md-dialog-content>
+</md-dialog>

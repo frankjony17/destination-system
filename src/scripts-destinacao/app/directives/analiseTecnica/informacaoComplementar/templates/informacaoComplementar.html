@@ -1,0 +1,32 @@
+<div style="margin-left: 1%; margin-right: 1%;">
+  <div layout="row" layout-xs="column" flex="100">
+    <md-input-container class="md-block" flex="100">
+      <label>{{'label-informacoes-complementares' | translate}}:</label>
+      <textarea ng-model="informacaoComplementar" ng-disabled="bloquearFormulario" md-maxlength="3000"></textarea>
+    </md-input-container>
+  </div>
+
+  <div layout="row" layout-xs="column">
+    <div layout="column" layout-align="center center">
+      <label>{{'label-documentos-complementares' | translate}}:</label>
+    </div>
+    <div layout="column" ng-show="!bloquearFormulario">
+      <md-button class="md-primary md-raised"
+                 ngf-select
+                 ngf-change="addDocumento($files)"
+                 ngf-multiple="true">{{"btn-escolher-arquivo" | translate}}
+      </md-button>
+    </div>
+  </div>
+
+  <div layout="column" layout-xs="column">
+    <div class="documento-triagem-destinacao" ng-repeat="doc in documentos">
+      <div layout="row" layout-column="center center">
+        <label class="hand link">{{doc.arquivo.name || doc.arquivo.nome}}</label>
+        <ng-md-icon icon="close" class="hand cor-remover"
+                    ng-show="!bloquearFormulario"
+                    size="18" ng-click="remover($index)"></ng-md-icon>
+      </div>
+    </div>
+  </div>
+</div>

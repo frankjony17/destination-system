@@ -1,0 +1,65 @@
+      <form name="incluirEncargoPageCtrl.formEncargo">
+        <div layout-margin="10" class="margem-interna-modal">
+          <div class="ng-scope">
+            <span class="titulo-verde-header ng-binding">Encargos</span>
+            <div class="base-vermelho"></div>
+            <hr class="linha-divisoria">
+          </div>
+
+          <div layout="row">
+            <md-input-container class="md-block margin-top" flex="100">
+              <label>{{'label-encargo'|translate}}</label>
+              <textarea name="{{'label-encargo'|translate}}"
+                        ng-model="incluirEncargoPageCtrl.encargo.nome"
+                        md-maxlength="1000" maxlength="1000"
+                        class="descricaoFinalidade"></textarea>
+            </md-input-container>
+          </div>
+
+          <div layout="row" layout-xs="column" style="margin-left: 10px;">
+            <div flex="35">
+              <div layout="column">
+                <label class="label-date-picker">{{"label-prazo-cumprimento" | translate}}</label>
+                <md-datepicker id="dataEncargo" ng-model="incluirEncargoPageCtrl.encargo.dataCumprimento"
+                               md-placeholder="dd/mm/aaaa"
+                               md-custom-mask="39/19/9999"
+                               md-custom-clean-mask="false"
+                               name="{{'label-prazo-cumprimento' | translate}}"
+                               ng-disabled="incluirEncargoPageCtrl.encargo.utilizarData"
+                               class="dataEncargo md-datepicker-input-container"
+                               ng-required="!incluirEncargoPageCtrl.encargo.utilizarData">
+                </md-datepicker>
+              </div>
+            </div>
+            <div flex="35" style="margin: 9px 0 0 5%">
+              <md-checkbox class="md-primary margin-top-alinhar-data" ng-model="incluirEncargoPageCtrl.encargo.utilizarData"
+                           ng-change="incluirEncargoPageCtrl.limparPrazoCumprimento();"
+                           aria-label="Finished?">
+                {{'label-utilizar-data-de-encerramento-do-contrato' | translate}}
+              </md-checkbox>
+            </div>
+            <div flex="30">
+              <div layout="row" style="margin-bottom:10px ">
+                <label>{{'label-cumprimento-do-encargo' | translate}}*</label>
+              </div>
+              <div layout="row">
+                <md-radio-group layout="row" ng-model="incluirEncargoPageCtrl.encargo.cumprimentoEncargo" required>
+                  <md-radio-button  ng-value="false" >{{'label-pendente' | translate}}</md-radio-button>
+                  <md-radio-button ng-value="true">{{'label-atendido' | translate}}</md-radio-button>
+                </md-radio-group>
+              </div>
+            </div>
+          </div>
+
+          <div layout="row" layout-align="end center" style="margin-top: 23%">
+              <md-button id="btn-voltar-modal-encargo" class="md-primary md-raised margin-botao-footer" ng-click="incluirEncargoPageCtrl.fechar()">
+                {{'btn-voltar' | translate | uppercase}}
+              </md-button>
+
+              <md-button id="btn-incluir-modal-encargo" class="md-primary md-raised" ng-click="incluirEncargoPageCtrl.incluir(encargo)">
+                  {{incluirEncargoPageCtrl.modoEdicao ? 'btn-salvar-edicao' : 'btn-incluir' | translate | uppercase}}
+              </md-button>
+          </div>
+
+        </div>
+      </form>

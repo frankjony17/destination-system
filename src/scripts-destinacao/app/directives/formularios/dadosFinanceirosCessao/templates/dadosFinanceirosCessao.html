@@ -1,0 +1,119 @@
+<div >
+
+  <div layout="row" layout-xs="column" style="margin-top: 1em">
+
+    <md-input-container class="md-block" flex="50" flex-xs="100">
+      <label>{{'label-valor-contrato' | translate}}:</label>
+      <input ng-model="financeiro.valor"
+             ui-number-mask
+             required
+             ng-disabled="bloquear"
+             name="{{'label-valor-contrato' | translate}}">
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="50" flex-xs="100" ng-if="!verificaFormaPagamentoAvista()">
+      <label>{{'label-periodicidade' | translate}}:</label>
+      <md-select ng-model="financeiro.tipoPeriocidade"
+                 ng-model-options="{trackBy: '$value.id'}"
+                 name="{{'label-periodicidade' | translate}}"
+                 required
+                 ng-disabled="bloquear">
+        <md-option ng-repeat="item in tipoPeriocidade"
+                   ng-value="item"
+                   ng-selected="item.id === financeiro.tipoPeriocidade.id">
+          {{item.descricao}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+
+    <div layout="row" layout-xs="column" style="margin-top: 1em">
+        <md-input-container class="md-block" flex="100" flex-xs="100" >
+          <label>{{'label-indice-reajuste-anual' | translate}}:</label>
+          <md-select ng-model="financeiro.tipoIndiceReajusteAnual"
+                     ng-model-options="{trackBy: '$value.id'}"
+                     name="{{'label-indice-reajuste-anual' | translate}}"
+                     required
+                     ng-disabled="bloquear">
+            <md-option ng-repeat="item in tipoReajusteAnual"
+                       ng-value="item"
+                       ng-selected="item.id === financeiro.tipoIndiceReajusteAnual.id">
+              {{item.descricao}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+    </div>
+
+  <div layout="row" layout-xs="column" style="margin-top: 2em">
+
+    <md-input-container class="md-block" flex="33" flex-xs="100">
+      <label>{{'label-prazo-carencia-meses' | translate}}:</label>
+      <input ng-model="financeiro.carenciaMeses"
+             ui-mask="99"
+             ng-disabled="bloquear">
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="33" flex-xs="100">
+      <label>{{'label-mes-ano-reajuste-contratual' | translate}}:</label>
+      <input ng-model="financeiro.mesAnoReajuste"
+             ui-mask="99/9999"
+             required
+             ng-disabled="bloquear">
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="33" flex-xs="100" >
+      <label>{{'label-dia-vencimento-debito-mensal' | translate}}:</label>
+      <input ng-model="financeiro.diaVencimento"
+             ui-mask="99"
+             ng-disabled="bloquear">
+    </md-input-container>
+
+    </div>
+
+  <div layout="row" layout-xs="column" style="margin-top: 1em">
+    <md-input-container class="md-block" flex="33" flex-xs="100">
+      <label>{{'label-juros-mensal' | translate}}:</label>
+      <md-select ng-model="financeiro.tipoJurosMensal"
+                 ng-model-options="{trackBy: '$value.id'}"
+                 name="{{'label-juros-mensal' | translate}}"
+                 ng-disabled="bloquear">
+        <md-option ng-repeat="item in tipoJuro"
+                   ng-value="item"
+                   ng-selected="item.id === financeiro.tipoJurosMensal.id">
+          {{item.descricao}}
+        </md-option>
+      </md-select>
+
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="33" flex-xs="100" ng-if="verificaJurosMensal()" >
+      <label>{{'label-juros-mensal' | translate}}(%):</label>
+      <input ng-model="financeiro.jurosMensal"
+             ui-number-mask
+             required
+             name="{{'label-juros-mensal' | translate}}(%)"
+             ng-disabled="bloquear">
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="33" flex-xs="100" ng-if="!verificaJurosMensal()">
+      <label>{{'label-indice-juros-mensal' | translate}}:</label>
+      <md-select ng-model="financeiro.tipoIndiceJurosMensal"
+                 ng-model-options="{trackBy: '$value.id'}"
+                 ng-disabled="bloquear"
+                 name="{{'label-indice-juros-mensal' | translate}}">
+        <md-option ng-repeat="item in tipoReajusteAnual"
+                   ng-value="item"
+                   ng-selected="item.id === financeiro.tipoIndiceJurosMensal.id">
+          {{item.descricao}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="33" flex-xs="100">
+      <label>{{'label-multa-inadimplencia' | translate}}:</label>
+      <input ng-model="financeiro.multaInadimplacia"
+             ng-disabled="bloquear"
+             ui-number-mask>
+    </md-input-container>
+  </div>
+</div>

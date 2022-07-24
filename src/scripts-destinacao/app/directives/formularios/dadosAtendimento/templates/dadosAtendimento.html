@@ -1,0 +1,138 @@
+<div>
+  <div layout="row " class ="margin-top">
+      <md-input-container ng-show="tipoUsoProprio()==false && tipoTransferencia() == false" class="md-block margin-lateral-label" flex="50" flex-xs="100">
+          <label>{{'label-numero-atendimento' | translate}}:</label>
+          <input ng-disabled="bloquear" ng-model="atendimento.numeroAtendimento" ng-blur="buscarNumeroAtendimento()">
+      </md-input-container>
+      <md-input-container class="md-block" flex="100" flex-xs="100">
+          <label>{{'label-numero-processo' | translate}}:</label>
+          <input ng-disabled="bloquear || (tipoTransferencia() == true && editar)" ng-model="atendimento.numeroProcedimento" ng-blur="buscarNumeroProcesso()">
+      </md-input-container>
+  </div>
+
+
+    <div ng-show="tipoUsoProprio()==false">
+            <fundamento-legal bloquear="bloquear"
+                              fundamento="destinacaoTransito.codFundamentoLegal"
+                              tipo-destinacao="destinacaoTransito.tipoDestinacaoEnum"
+                              editar="editar"
+                              destinacao="destinacaoTransito">
+            </fundamento-legal>
+    </div>
+
+  <div style="margin-bottom: 2%" ng-if="atendimento.nomeRequerimento != undefined">
+      <a ng-href="{{atendimento.urlArquivo}}" target="_blank">{{atendimento.nomeRequerimento}}</a>
+  </div>
+
+  <div layout-gt-sm="row" class="margin-top" ng-show="tipoDoacao() && destinacaoTransito.codFundamentoLegal">
+
+    <md-input-container class="md-block margin-top" flex="50" style="margin-right: 3%; max-width: 49%">
+      <label>{{'label-tipo-instrumento' | translate}}:</label>
+      <md-select ng-change="atualizaAtendimentoEscopoCompartilhado()"
+                 ng-required="tipoDoacao();"
+                 ng-model="atendimento.tipoInstrumento"
+                 ng-model-options="{trackBy: '$value.id'}"
+                 ng-disabled="bloquear"
+                 name="{{'label-tipo-instrumento' | translate}}">
+        <md-option ng-value="tipoInstrumento"
+                   ng-repeat="tipoInstrumento in tiposInstrumento">
+          {{tipoInstrumento.descricao}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="50" ng-show="verificaTipoModalidade()">
+          <label>{{'label-tipo-doacao' | translate}}:</label>
+          <md-select ng-change="atualizaAtendimentoEscopoCompartilhado()"
+                     ng-required="verificaTipoModalidade();"
+                     ng-model="atendimento.tipoDoacao"
+                     ng-model-options="{trackBy: '$value.id'}"
+                     name="Tipo Doação"
+                         ng-disabled="bloquear">
+              <md-option ng-value="tipoDoacao"
+                         ng-repeat="tipoDoacao in tiposDoacoes">
+                  {{tipoDoacao.descricao}}
+              </md-option>
+          </md-select>
+      </md-input-container>
+
+  </div>
+
+  <div class="margin-top" layout-gt-sm="row" ng-show="tipoCuem() && destinacaoTransito.codFundamentoLegal">
+    <md-input-container class="md-block" flex="50" flex-xs="100">
+      <label>{{'label-tipo-modalidade' | translate}}:</label>
+      <md-select ng-change="atualizaAtendimentoEscopoCompartilhado()"
+                 ng-required="tipoCuem();"
+                 ng-model="atendimento.tipoModalidade"
+                 ng-model-options="{trackBy: '$value.id'}"
+                 name="{{'label-tipo-modalidade' | translate}}"
+                 ng-disabled="bloquear">
+        <md-option ng-repeat="tipoModalidade in tiposModalidades"
+                   ng-value="tipoModalidade"
+                   ng-selected="tipoModalidade.id === atendimento.tipoModalidade.id">
+          {{tipoModalidade.descricao}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+
+  <div class="margin-top" layout-gt-sm="row" ng-show="tipoCDRU() && destinacaoTransito.codFundamentoLegal">
+    <md-input-container class="md-block" flex="50" flex-xs="100" style="margin-right: 3%; max-width: 49%">
+      <label>{{'label-tipo-concessao' | translate}}:</label>
+      <md-select ng-change="atualizaAtendimentoEscopoCompartilhado();limparFinanceiro()"
+                 ng-required="tipoCDRU();"
+                 ng-model="atendimento.tipoConcessao"
+                 ng-model-options="{trackBy: '$value.id'}"
+                 name="{{'label-tipo-concessao' | translate}}"
+                 ng-disabled="bloquear">
+        <md-option ng-repeat="tipoConcessao in tiposConcessoes"
+                   ng-value="tipoConcessao"
+                   ng-selected="tipoConcessao.id === atendimento.tipoConcessao.id">
+          --{{tipoConcessao.descricao}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+
+    <div layout-gt-sm="row" ng-if="tipoCessaoOnerosa() && destinacaoTransito.codFundamentoLegal;" class="margin-top">
+        <md-input-container class="md-block" flex="50" flex-xs="100" style="margin-right: 3%; max-width: 49%">
+            <label>{{'label-tipo-cessao' | translate}}:</label>
+            <md-select ng-model="atendimento.tipoCessao" ng-change="atualizaAtendimentoEscopoCompartilhado();limparEnvolvePagamento();"
+                       name="{{'label-tipo-cessao' | translate}}"
+                       ng-disabled="bloquear"
+                        required>
+                <md-option value="Onerosa">
+                    {{'label-onerosa' | translate}}
+                </md-option>
+                <md-option value="Em Condições Especiais">
+                    {{'label-condicao-especial' | translate}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container ng-if="atendimento.tipoCessao === 'Em Condições Especiais'" flex="50">
+            <label style="position: relative">{{'label-envolve-pagamento' | translate}}</label>
+            <md-radio-group required ng-disabled="bloquear" ng-model="atendimento.envolvePagamento">
+                <md-radio-button style=" margin-left:4%; display: inline" ng-value="true">{{'btn-sim' | translate}}</md-radio-button>
+                <md-radio-button style="margin-left:2%; display: inline" ng-value="false">{{'btn-nao' | translate}}</md-radio-button>
+
+            </md-radio-group>
+        </md-input-container>
+    </div>
+
+    <div layout-gt-sm="row"  class="margin-top" ng-if="bloquear">
+        <md-input-container class="md-block" flex="50" flex-xs="100" style="margin-right: 3%; max-width: 49%">
+            <label>{{'label-historico' | translate}}:</label>
+            <md-select ng-change="selecionarHisoricoDestinacao(historicoDestinacao)"
+                       ng-model="historicoDestinacao"
+                       ng-model-options="{trackBy: '$value.versaoDestinacao'}"
+                       name="{{'label-historico' | translate}}">
+                <md-option ng-repeat="historico in historicosDestinacao"
+                           ng-value="historico"
+                           ng-selected="historico.versaoDestinacao === historicoDestinacao.versaoDestinacao">
+                           {{historico.descricao}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+
+</div>

@@ -1,0 +1,61 @@
+<div layout="column">
+  <div layout="row" layout-xs="column">
+    <md-input-container flex="15" flex-xs="100">
+      <label>{{'label-cep' | translate}}:</label>
+      <input ui-br-cep-mask
+             ng-model="endereco.cep"
+             required
+             ng-change="buscarEnderecoByCep()"
+             name="Cep">
+    </md-input-container>
+
+    <div layout="row" style="font-size: smaller;" layout-margin>
+      <a href="http://www.buscacep.correios.com.br/sistemas/buscacep/" target="_blank">{{'label-nao-sabe-seu-cep' | translate}}</a>
+    </div>
+
+    <md-input-container class="margin-lateral-label" flex="10" flex-xs="100" flex-offset-xs="0">
+      <label>{{'label-uf' | translate}}:</label>
+      <input ng-model="endereco.uf" disabled/>
+    </md-input-container>
+
+    <md-input-container class="margin-lateral-label" flex="25" flex-xs="100" flex-offset-xs="0">
+      <label>{{'label-municipio' | translate}}</label>
+      <input disabled
+             name="municipio"
+             ng-model="endereco.municipio">
+    </md-input-container>
+
+    <md-input-container flex="25" flex-xs="100" flex-offset-xs="0">
+      <label>{{'label-tipo-logradouro' | translate}}:</label>
+      <input ng-model="endereco.tipoLogradouro" ng-disabled="isCepNormal"/>
+    </md-input-container>
+  </div>
+
+  <div layout="row" layout-xs="column">
+    <md-input-container class="margin-lateral-label" flex="70" flex-xs="100">
+      <label>{{'label-logradouro' | translate}}:</label>
+      <input ng-disabled="isCepNormal"
+             ng-model="endereco.logradouro"
+             name="logradouro">
+    </md-input-container>
+
+    <md-input-container class="margin-lateral-label" flex="25" flex-xs="100" flex-offset-xs="0">
+      <label>{{'label-numero' | translate}}:</label>
+      <input  required
+              name="Número do Endereço" ng-model="endereco.numero">
+    </md-input-container>
+
+    <md-input-container flex="70"  flex-xs="100" flex-offset-xs="0">
+      <label>{{'label-bairro' | translate}}:</label>
+      <input ng-disabled="isCepNormal"
+             ng-model="endereco.bairro"
+             name="bairro">
+    </md-input-container>
+  </div>
+  <div layout="row" layout-xs="column">
+    <md-input-container flex="100">
+      <label>{{'label-complemento' | translate}}:</label>
+      <input ng-model="endereco.complemento">
+    </md-input-container>
+  </div>
+</div>

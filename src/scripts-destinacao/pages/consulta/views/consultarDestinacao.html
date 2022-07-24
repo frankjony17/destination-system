@@ -1,0 +1,395 @@
+<form name="consultarDestinacaoCtrl.form">
+
+  <div flex class="principal">
+
+    <div class="texto-verde-header">
+      <span class="titulo-verde-header">{{'label-titulo-pagina' | translate}}</span>
+      <div class="base-vermelho"></div>
+      <hr class="linha-divisoria">
+    </div>
+
+    <div layout="row" layout-xs="column" layout-margin="15" style="margin-top: 40px">
+
+      <md-input-container class="margin-top" flex="50" flex-xs="100">
+        <label>{{'label-rip-codigo-utilizacao' | translate}}</label>
+        <input ng-model="consultarDestinacaoCtrl.destinacaoFiltro.dadosUtilizacao">
+        <span style="font-size: 8pt;">{{'label-exemplo-formato' | translate}}</span>
+      </md-input-container>
+
+
+      <md-input-container class="md-block" flex="50" flex-xs="100">
+        <label>{{'label-tipo-utilizacao'|translate}}</label>
+        <md-select ng-model="consultarDestinacaoCtrl.destinacaoFiltro.tipoUtilizacao"
+                   ng-change="consultarDestinacaoCtrl.filtrarListaSubTipo(consultarDestinacaoCtrl.destinacaoFiltro.tipoUtilizacao.id)"
+                   md-on-close="consultarDestinacaoCtrl.limparFiltroTipoUtilizacao()">
+          <md-select-header>
+            <input ng-model="consultarDestinacaoCtrl.filtroTipoUtilizacao"
+                   type="search"
+                   placeholder="{{'label-buscar-tipo' | translate}}"
+                   style="width: calc(100% - 6px); height: 25px;">
+          </md-select-header>
+          <md-option ng-value="tipoUtilizacao"
+                     ng-selected="consultarDestinacaoCtrl.todosTiposUtilizacao.length === 1"
+                     ng-repeat="tipoUtilizacao in consultarDestinacaoCtrl.todosTiposUtilizacao
+                     | filter: {'descricao' : consultarDestinacaoCtrl.filtroTipoUtilizacao}"
+                     style="background-color: white !important">
+            {{tipoUtilizacao.descricao}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+
+      <md-input-container flex="33" class="md-block"
+                          flex-xs="100"
+                          ng-show="consultarDestinacaoCtrl.destinacaoFiltro.tipoUtilizacao
+                          && consultarDestinacaoCtrl.listaFiltradaSubTipoUtilizacao.length > 0">
+        <md-select ng-model="consultarDestinacaoCtrl.destinacaoFiltro.subTipoUtilizacao"
+                   md-on-close="consultarDestinacaoCtrl.limparFiltroSubTipoUtilizacao()">
+          <md-select-header>
+            <input ng-model="consultarDestinacaoCtrl.filtroSubTipoUtilizacao"
+                   type="search"
+                   placeholder="{{'label-buscar-subtipo' | translate}}" style="width: calc(100% - 6px); height: 25px;"/>
+          </md-select-header>
+          <md-option ng-value="subTipoUtilizacao"
+                     ng-repeat="subTipoUtilizacao in consultarDestinacaoCtrl.listaFiltradaSubTipoUtilizacao
+                     | filter: {'descricao': consultarDestinacaoCtrl.filtroSubTipoUtilizacao}"
+                     style="background-color: white !important">
+            {{subTipoUtilizacao.descricao}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+    </div>
+
+    <div layout="row" layout-xs="column" layout-margin="15">
+
+      <md-input-container class="margin-top" flex="50" flex-xs="100">
+        <label>{{'label-instrumento-destinacao' | translate}}</label>
+        <md-select ng-model="consultarDestinacaoCtrl.destinacaoFiltro.tiposDestinacao"
+                   multiple>
+          <md-option ng-repeat="tipo in consultarDestinacaoCtrl.tiposDestinacao"
+                     ng-value="tipo">
+            {{tipo.descricao}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <md-input-container class="margin-top" flex="50" flex-xs="100">
+        <label>{{'label-pais' | translate}}</label>
+        <md-select ng-model="consultarDestinacaoCtrl.destinacaoFiltro.pais" ng-change="consultarDestinacaoCtrl.verificaPaisSelecionado()">
+          <md-option ng-repeat ="pais in consultarDestinacaoCtrl.paises" ng-value="pais.descricao">
+            {{pais.descricao}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+
+      <md-input-container class="margin-top" flex="33" flex-xs="100"
+                          ng-show="consultarDestinacaoCtrl.destinacaoFiltro.pais != 'Brasil'
+                          && consultarDestinacaoCtrl.destinacaoFiltro.pais != undefined">
+        <label>{{'label-cidade-exterior' | translate}}</label>
+        <md-select ng-model="consultarDestinacaoCtrl.destinacaoFiltro.cidadeExterior" ng-change="consultarDestinacaoCtrl.teste()">
+          <md-option ng-repeat ="cidade in consultarDestinacaoCtrl.cidadesExterior" ng-value="cidade">
+            {{cidade}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+    </div>
+
+    <div layout="row" layout-xs="column" layout-margin="15" ng-show="consultarDestinacaoCtrl.destinacaoFiltro.pais == 'Brasil'">
+
+      <md-input-container class="margin-top" flex="33" flex-xs="100">
+        <label>{{'label-cep' | translate}}</label>
+        <input ng-model="consultarDestinacaoCtrl.destinacaoFiltro.cep" ui-br-cep-mask>
+      </md-input-container>
+
+      <md-input-container class="margin-top" flex="33" flex-xs="100">
+        <label>{{'label-uf' | translate}}</label>
+        <md-select ng-model="consultarDestinacaoCtrl.destinacaoFiltro.uf"
+                   name="{{'label-uf' | translate}}"
+                   ng-change="consultarDestinacaoCtrl.buscarMunicipios();"
+                   ng-required="consultarDestinacaoCtrl.destinacaoFiltro.pais == 'Brasil'">
+          <md-option ng-repeat="uf in consultarDestinacaoCtrl.ufs"  ng-value="uf">
+            {{uf}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <md-input-container class="margin-top" flex="33"
+                          flex-xs="100">
+        <label>{{'label-municipio' | translate}}</label>
+        <md-select ng-model="consultarDestinacaoCtrl.destinacaoFiltro.municipio"
+                   ng-disabled="consultarDestinacaoCtrl.municipios.length === 0">
+          <md-option ng-repeat="municipio in consultarDestinacaoCtrl.municipios"  ng-value="municipio.nome">
+            {{municipio.nome}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+
+    <div layout="row" layout-xs="column" layout-margin="15">
+
+      <md-input-container class="margin-top" flex="50" flex-xs="100">
+        <label>{{'label-nome-responsavel' | translate}}</label>
+        <input ng-model="consultarDestinacaoCtrl.destinacaoFiltro.nomeResponsavel">
+      </md-input-container>
+
+      <md-input-container class="margin-top" flex="50" flex-xs="100">
+        <label>{{'label-cpf-cnpj-responsavel' | translate}}</label>
+        <input ng-model="consultarDestinacaoCtrl.destinacaoFiltro.cpfCnpjResponsavel" ui-br-cpfcnpj-mask>
+      </md-input-container>
+
+    </div>
+
+
+    <div layout="row" layout-xs="column" layout-margin="15">
+
+      <md-input-container class="margin-top" flex="50" flex-xs="100">
+          <label>{{'label-codigo-contrato' | translate}}</label>
+          <input ng-model="consultarDestinacaoCtrl.destinacaoFiltro.codigoContrato">
+      </md-input-container>
+
+      <md-input-container class="margin-top" flex="50" flex-xs="100">
+        <label>{{'label-classificacao' | translate}}</label>
+        <md-select ng-model="consultarDestinacaoCtrl.destinacaoFiltro.classificacao" >
+          <md-option ng-value="1">Uso Especial</md-option>
+          <md-option ng-value="2">Dominal</md-option>
+          <md-option ng-value="3">Uso Comum do Povo</md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+
+    <div layout="row" layout-xs="column" layout-margin="15">
+
+      <div layout-xs="column" class="centraliza-texto-antes-input-de">
+        <md-container>
+          <label class="tamanho-font">{{'label-de' | translate }}</label>
+        </md-container>
+      </div>
+
+      <md-input-container class="margin-top" flex="50" flex-xs="100">
+        <label class="tamanho-font">{{'label-area-fracao-terreno' | translate}}</label>
+        <input ng-model="consultarDestinacaoCtrl.destinacaoFiltro.fracaoIdealInicial" ui-number-mask>
+      </md-input-container>
+
+      <div layout-xs="column" class="margin-esquerda centraliza-texto-antes-input">
+        <md-container>
+          <label class="tamanho-font">{{'label-a' | translate }}</label>
+        </md-container>
+      </div>
+
+      <md-input-container class="margin-top" flex="50" flex-xs="100">
+        <input ng-model="consultarDestinacaoCtrl.destinacaoFiltro.fracaoIdealFinal" ui-number-mask>
+      </md-input-container>
+
+      <div layout-xs="column" class="centraliza-texto-antes-input-de">
+        <md-container>
+          <label class="tamanho-font">{{'label-de' | translate }}</label>
+        </md-container>
+      </div>
+
+      <md-input-container class="margin-top" flex="50" flex-xs="100">
+        <label>{{'label-area-construida' | translate}}</label>
+        <input ng-model="consultarDestinacaoCtrl.destinacaoFiltro.areaConstruidaInicial" ui-number-mask>
+      </md-input-container>
+
+      <div layout-xs="column" class="margin-esquerda centraliza-texto-antes-input">
+        <md-container>
+          <label class="tamanho-font">{{'label-a' | translate }}</label>
+        </md-container>
+      </div>
+
+      <md-input-container class="margin-top" flex="50" flex-xs="100">
+        <input ng-model="consultarDestinacaoCtrl.destinacaoFiltro.areaConstruidaFinal" ui-number-mask>
+      </md-input-container>
+    </div>
+
+
+    <div layout="row" class="margin-top" layout-xs="column" layout-margin="15" >
+        <div class="md-block" flex flex-xs="100" style="padding-left: 0px !important;">
+            <md-radio-group ng-model="consultarDestinacaoCtrl.visualizarTabela" layout="row" ng-change="consultarDestinacaoCtrl.limparlistaDestinacoes()">
+                <label>{{'label-modo-exibicao' | translate}}</label>
+                <md-radio-button class="margin-esquerda" ng-value="true">{{"rb-tabela" | translate}}</md-radio-button>
+                <md-radio-button ng-value="false">{{"rb-mapa" | translate}}</md-radio-button>
+            </md-radio-group>
+        </div>
+    </div>
+
+    <!-- Inicio dos botões -->
+    <hr class="linha-divisoria-footer">
+    <div class="button-botton" layout="row" layout-align="end center">
+        <md-button class="md-raised" ng-click="consultarDestinacaoCtrl.limparPesquisa()">
+          {{'btn-limpar' | translate | uppercase}}
+        </md-button>
+        <md-button class="md-raised" ng-click="consultarDestinacaoCtrl.buscar()">
+          {{'btn-pesquisar' | translate | uppercase}}
+        </md-button>
+    </div>
+
+    <!--INICIO TABELA -->
+    <div class="margin-top" ng-if="consultarDestinacaoCtrl.destinacoes.length > 0
+                                    && consultarDestinacaoCtrl.visualizarTabela === true">
+        <md-table-container>
+            <table md-table style="border: 1px solid #cccccc;">
+
+                <thead md-head >
+                    <tr md-row class="upload-head">
+                        <th md-column flex="10" >{{"label-rip" | translate}}</th>
+                        <th md-column flex="10">{{"label-utilizacao" | translate}}</th>
+                        <th md-column flex="10">{{"label-endereco" | translate}}</th>
+                        <th md-column flex="10">{{"label-area" | translate}}</th>
+                        <th md-column flex="10">{{"label-instrumento-destinacao-tb" | translate}}</th>
+                        <th md-column flex="10">{{"label-uso" | translate}}</th>
+                        <th md-column flex="10">{{"label-vigencia" | translate}}</th>
+                        <th md-column flex="10">{{"label-responsavel" | translate}}</th>
+                        <th md-column flex="10">{{"label-acoes" | translate}}</th>
+                    </tr>
+                </thead>
+
+                <tbody md-body class="celulaConsulta">
+
+                    <tr md-row ng-repeat="destinacao in consultarDestinacaoCtrl.destinacoes">
+                        <td md-cell flex="10">
+                            {{destinacao.rip}}
+                        </td>
+                        <td md-cell flex="10">
+                            {{destinacao.codigoUtilizacao}}{{consultarDestinacaoCtrl.lpad(destinacao.sequencialParcela)}}
+                        </td>
+                        <td md-cell flex="10" >
+                              <span ng-show="destinacao.endereco.cidadeExterior == undefined || destinacao.endereco.cidadeExterior == null">
+                                  {{destinacao.endereco.tipoLogradouro}} {{destinacao.endereco.logradouro}}
+                                  {{destinacao.endereco.numero}}, {{destinacao.endereco.bairro}}-
+                                  {{destinacao.endereco.municipio}}/{{destinacao.endereco.uf}}
+                                  {{destinacao.endereco.cep}}
+                              </span>
+                          <span ng-show="destinacao.endereco.cidadeExterior != undefined && destinacao.endereco.cidadeExterior != null">
+                                  {{destinacao.endereco.cidadeExterior}} {{destinacao.endereco.pais}}
+                              </span>
+                        </td>
+                        <td md-cell flex="10">
+                              <p ng-show="(destinacao.fracaoIdeal != null && destinacao.fracaoIdeal != undefined) ||
+                              (destinacao.areaTerreno != null && destinacao.areaTerreno != undefined)" style="margin-bottom: 0px">
+                                  {{'label-terreno-fracao-ideal' | translate}}: {{destinacao.fracaoIdeal != undefined ? destinacao.fracaoIdeal : destinacao.areaTerreno | number}} (m²)
+                              </p>
+
+                              <p ng-show="destinacao.areaConstruida != null && destinacao.areaConstruida != undefined" style="margin-top: 0px">
+                                  {{'label-area-terreno-construida' | translate}}: {{destinacao.areaConstruida | number}} (m²)
+                              </p>
+                        </td>
+
+                        <td md-cell flex="10">
+                            <span>{{destinacao.tipoDestinacao.descricao}}</span>
+                            <span class="texto-vemelho" ng-show="destinacao.tipoDestinacao.id === 13
+                            && destinacao.statusDestinacao.id === 3">({{destinacao.statusDestinacao.descricao}})</span>
+                        </td>
+                        <td md-cell flex="10">
+                            {{consultarDestinacaoCtrl.formatarUso(destinacao.tipoUtilizacao, destinacao.subTipoUtilizacao)}}
+                        </td>
+
+                        <td md-cell flex="10">
+                            <span ng-show="destinacao.dataFimContrato != null && destinacao.dataFimContrato != undefined">
+                                {{destinacao.dataFimContrato}}
+                            </span>
+                            <span ng-show="destinacao.dataFimContrato == null && destinacao.dataFimContrato == undefined">
+                                -
+                            </span>
+                        </td>
+                        <td md-cell flex="10">
+                            <span ng-show="destinacao.nomeResponsavel != null && destinacao.nomeResponsavel != undefined">
+                                {{destinacao.nomeResponsavel}} - {{destinacao.cpfCnpj}}
+                            </span>
+                            <span ng-show="destinacao.nomeResponsavel == null && destinacao.nomeResponsavel == undefined">
+                                -
+                            </span>
+                        </td>
+
+                        <td md-cell flex="10">
+
+                          <md-fab-speed-dial md-direction="left" class="hand md-scale" ng-class="{ 'alinhar-md-fab-speed-dial': (destinacao.tipoDestinacao.id !== 12 && destinacao.tipoDestinacao.id !== 13)
+                                                                                                  && (destinacao.statusDestinacao.id !== 2 && destinacao.statusDestinacao.id !== 5) ,
+                                                                                                  'alinhar-uso-proprio-md-fab-speed-dial': destinacao.tipoDestinacao.id === 13}">
+
+                            <md-fab-trigger>
+                              <ng-md-icon class="icon-acao" icon="more_vert">
+                              </ng-md-icon>
+                            </md-fab-trigger>
+
+                            <md-fab-actions>
+
+                                <exibir-elemento-por-permissao-destinacao permissoes="consultarDestinacaoCtrl.todasPermissoesCadastrarEditar"
+                                                               permissao-concedida="true">
+                                    <ng-md-icon class="icon-subacao" icon="add"
+                                                  ng-if="destinacao.tipoDestinacao.id === 12"
+                                                  ng-click="consultarDestinacaoCtrl.abrirModalNovaSituacaoDestinacao(destinacao, $event);">
+                                        <md-tooltip>{{"tootip-nova-destinacao" | translate}}</md-tooltip>
+                                    </ng-md-icon>
+                                </exibir-elemento-por-permissao-destinacao>
+
+                                <exibir-elemento-por-permissao-destinacao permissoes="consultarDestinacaoCtrl.permissaoConsultar + destinacao.tipoDestinacaoPermissao"
+                                                               permissao-concedida="true">
+                                  <ng-md-icon class="icon-subacao" icon="search"
+                                              ng-if="destinacao.tipoDestinacao.id !== 12"
+                                              ng-click="consultarDestinacaoCtrl.detalhar(destinacao);">
+                                    <md-tooltip>{{"tootip-detalhar-destinacao" | translate}}</md-tooltip>
+                                  </ng-md-icon>
+                                </exibir-elemento-por-permissao-destinacao>
+
+                                <ng-md-icon class="icon-subacao" icon="cancel"
+                                            ng-if="(destinacao.tipoDestinacao.id !== 12) && ((destinacao.statusDestinacao.id === 1 || destinacao.statusDestinacao.id === 4) && destinacao.tipoDestinacao.id !== 13)"
+                                            ng-click="consultarDestinacaoCtrl.cancelar(destinacao);">
+                                    <md-tooltip>{{"tootip-cancelar-destinacao" | translate}}</md-tooltip>
+                                </ng-md-icon>
+
+                                <ng-md-icon class="icon-subacao" icon="location_on" ng-click="consultarDestinacaoCtrl.mostrarNoMapa(destinacao);">
+                                    <md-tooltip>{{"tooltip-visualizar-imovel" | translate}}</md-tooltip>
+                                </ng-md-icon>
+
+                                <exibir-elemento-por-permissao-destinacao permissoes="consultarDestinacaoCtrl.permissaoCadastrarEditar + destinacao.tipoDestinacaoPermissao"
+                                                               permissao-concedida="true">
+                                  <ng-md-icon class="icon-subacao" icon="edit"
+                                               ng-if="(destinacao.tipoDestinacao.id !== 12) && consultarDestinacaoCtrl.isNotUsoProprioHomologadoRecusado(destinacao)
+                                               && (destinacao.statusDestinacao.id !== 2 && destinacao.statusDestinacao.id !== 5)"
+                                              ng-click="consultarDestinacaoCtrl.editar(destinacao);">
+                                    <md-tooltip>{{"tootip-editar-destinacao" | translate}}</md-tooltip>
+                                  </ng-md-icon>
+                                </exibir-elemento-por-permissao-destinacao>
+
+                                <ng-md-icon class="icon-subacao" icon="block"
+                                            ng-if="(destinacao.tipoDestinacao.id !== 12) && ((destinacao.statusDestinacao.id === 1 || destinacao.statusDestinacao.id === 4) && destinacao.tipoDestinacao.id !== 13)"
+                                            ng-click="consultarDestinacaoCtrl.encerrar(destinacao);">
+                                    <md-tooltip>{{"tooltip-encerrar-destinacao" | translate}}</md-tooltip>
+                                </ng-md-icon>
+
+                              <ng-md-icon class="icon-subacao" icon="refresh"
+                                          ng-if="destinacao.tipoDestinacao.id == 13 && destinacao.statusDestinacao.id === 3"
+                                          ng-click="consultarDestinacaoCtrl.homologar(destinacao);">
+                                <md-tooltip>{{'tooltip-homologar' | translate}}</md-tooltip>
+                              </ng-md-icon>
+
+                            </md-fab-actions>
+                          </md-fab-speed-dial>
+
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </md-table-container>
+
+        <md-table-pagination style="margin: 0 0.4%; background-color: #D8F8E1; border: 1px solid #cccccc;"
+                            md-limit="consultarDestinacaoCtrl.tabelaDestinacoes.limit"
+                            md-limit-options="consultarDestinacaoCtrl.tabelaDestinacoes.limitsPage"
+                            md-page="consultarDestinacaoCtrl.tabelaDestinacoes.page"
+                            md-total="{{consultarDestinacaoCtrl.tabelaDestinacoes.total}}"
+                            md-on-paginate="consultarDestinacaoCtrl.atualizarTabela"
+                            md-page-select>
+        </md-table-pagination>
+    </div>
+
+  </div>
+</form>
+
+<mapa-destinacao ng-show="consultarDestinacaoCtrl.visualizarTabela === false" imoveis="consultarDestinacaoCtrl.destinacoesMap"
+                 imagens="imagens" class="map-search"
+                 modo-consulta="true"></mapa-destinacao>

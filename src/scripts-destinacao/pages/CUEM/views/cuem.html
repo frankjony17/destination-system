@@ -1,0 +1,142 @@
+<div ng-if="!cuemCtrl.permissaoConcedida">
+    <acesso-negado></acesso-negado>
+</div>
+<exibir-elemento-por-permissao-destinacao permissoes="cuemCtrl.PERMISSOES"
+                               permissao-concedida="cuemCtrl.permissaoConcedida"
+                               detalhar="cuemCtrl.cuem.detalhar">
+    <div class="margin-header-conteudo">
+      <titulo-servico class="titulo-verde-header"></titulo-servico>
+      <div class="base-vermelho"></div>
+      <hr class="linha-divisoria">
+    </div>
+
+    <div layout="row" layout-xs="column" class="margin-mapa" ng-if="cuemCtrl.carregarDadosUtilizacao === true">
+      <div layout="column" flex="35" flex-xs="100">
+        <informacoes-imovel destinacao-imoveis="cuemCtrl.cuem.destinacaoImoveis"></informacoes-imovel>
+      </div>
+      <md-content class="md-padding" flex="65" flex-xs="100">
+        <md-tabs md-dynamic-height md-no-ink md-selected="indiceTabs">
+          <md-tab id="tabUtilizacao" ng-disabled="cuemCtrl.bloqueiaDadosUtilizacao">
+            <md-tab-label>{{'label-dados-utilizacao' | translate | uppercase}}</md-tab-label>
+            <md-tab-body>
+              <form name="cuemCtrl.formUtilizacao">
+                <div layout="column" flex="100" flex-xs="100" layout-xs="column" class="margin-conteudo">
+                  <div ng-cloak flex="100" flex-xs="100" offset="5">
+                      <v-accordion ng-if="cuemCtrl.cuem.statusDestinacao.id === 2"  id="accordion" multiple class="vAccordion--default cancelamento">
+                          <v-pane>
+                              <v-pane-header id="id_acordion_cancelamento">{{'label-dados-cancelamento-destinacao' | translate | uppercase}}</v-pane-header>
+                              <v-pane-content>
+                                  <apresentar-dados-cancelamento cancelamento-destinacao="cuemCtrl.cuem">
+
+                                  </apresentar-dados-cancelamento>
+                              </v-pane-content>
+                          </v-pane>
+                      </v-accordion>
+
+                      <v-accordion  ng-if="cuemCtrl.cuem.statusDestinacao.id === 5" id="accordion" multiple class="vAccordion--default cancelamento">
+                          <v-pane>
+                              <v-pane-header id="id_acordion_encerramento">{{'label-dados-encerramento-destinacao' | translate | uppercase}}</v-pane-header>
+                              <v-pane-content>
+                                  <apresentar-dados-encerramento encerramento="cuemCtrl.cuem">
+
+                                  </apresentar-dados-encerramento>
+                              </v-pane-content>
+                          </v-pane>
+                      </v-accordion>
+                    <dados-atendimento editar="cuemCtrl.cuem.editar" bloquear="cuemCtrl.cuem.detalhar" atendimento="cuemCtrl.atendimento" tipo-destinacao="cuemCtrl.cuem.tipoDestinacaoEnum" destinacao-transito="cuemCtrl.cuem"></dados-atendimento>
+                    <div class="margin-top">
+                      <v-accordion multiple class="vAccordion--default" ng-show="cuemCtrl.cuem.codFundamentoLegal">
+                        <v-pane>
+                          <v-pane-header id="dadosImovel" class="titulo-verde negrito">{{'label-dados-imovel-parcela' | translate | uppercase}}</v-pane-header>
+                          <v-pane-content>
+                            <inserir-dados-parcela-imovel-page edicao="cuemCtrl.cuem.editar" bloquear="cuemCtrl.cuem.detalhar" destinacao="cuemCtrl.cuem"
+                                                               rota-destinacao="'destinacao.cuem'" id-modalidade="cuemCtrl.atendimento.tipoModalidade.id"></inserir-dados-parcela-imovel-page>
+                          </v-pane-content>
+                        </v-pane>
+                        <v-pane>
+                          <v-pane-header id="dadosResponsavel" class="titulo-verde negrito">{{'label-dados-responsavel-destinatario' | translate | uppercase}}</v-pane-header>
+                          <v-pane-content>
+                            <dados-responsavel-destinatario
+                              dados-responsavel="cuemCtrl.cuem.dadosResponsavel"
+                              atendimento="cuemCtrl.atendimento"
+                              tipo-destinacao="cuemCtrl.cuem.tipoDestinacaoEnum"
+                              destinacoes-imoveis="cuemCtrl.cuem.destinacaoImoveis"
+                              tipo-modalidade="cuemCtrl.atendimento.tipoModalidade"
+                              modo-editar="cuemCtrl.cuem.editar"
+                              bloquear="cuemCtrl.cuem.detalhar"
+                              destinacao="cuemCtrl.cuem"
+                              nome-state="cuemCtrl.nomeState"
+                              fundamento="cuemCtrl.cuem.codFundamentoLegal">
+                            </dados-responsavel-destinatario>
+                          </v-pane-content>
+                        </v-pane>
+                          <v-pane>
+                              <v-pane-header id="dadosUtilizacao" class="titulo-verde negrito">{{'label-dados-uso' | translate | uppercase}}</v-pane-header>
+                              <v-pane-content>
+                                  <dados-utilizacao ng-if="cuemCtrl.cuem.tipoDestinacaoEnum"
+                                                    utilizacao="cuemCtrl.cuem.utilizacao"
+                                                    atendimento="cuemCtrl.atendimento"
+                                                    imoveis="cuemCtrl.cuem.destinacaoImoveis"
+                                                    tipo-destinacao="cuemCtrl.cuem.tipoDestinacaoEnum"
+                                                    responsaveis="cuemCtrl.cuem.dadosResponsavel"
+                                                    editar="cuemCtrl.cuem.editar"
+                                                    bloquear="cuemCtrl.cuem.detalhar"></dados-utilizacao>
+                              </v-pane-content>
+                          </v-pane>
+                        <v-pane>
+                          <v-pane-header id="instrumentoAto" class="titulo-verde negrito">{{'label-dados-instrumento-ato' | translate | uppercase}}</v-pane-header>
+                          <v-pane-content>
+
+                            <instrumento-ato editar="cuemCtrl.cuem.editar" bloquear="cuemCtrl.cuem.detalhar" ng-if="cuemCtrl.cuem" destinacao-transito="cuemCtrl.cuem" rota-destinacao="'destinacao.cuem'">
+                            </instrumento-ato>
+
+                          </v-pane-content>
+                        </v-pane>
+                      </v-accordion>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div class="minuta margem-elementos-pagina" ng-if="cuemCtrl.exibirMinuta">
+                <b>{{'label-minuta' | translate}}</b>
+                <p>Gerada em: dd/mm/aaaa</p>
+                <p>Responsavel: [CPF] - [Nome]</p>
+                <p>Arquivo: <label class="hand link">[nome do arquivo].pdf</label></p>
+              </div>
+            </md-tab-body>
+          </md-tab>
+          <md-tab id="tabContrato" ng-disabled="!cuemCtrl.bloqueiaDadosUtilizacao">
+            <md-tab-label>{{'label-dados-contrato-termo' | translate | uppercase}}</md-tab-label>
+            <md-tab-body>
+              <form name="cuemCtrl.formContrato">
+                <div class="margin-top">
+                  <contrato dados-contrato="cuemCtrl.cuem.contrato" tipo-destinacao="cuemCtrl.cuem.tipoDestinacaoEnum"
+                            status-destinacao="cuemCtrl.cuem.statusDestinacao" editar="cuemCtrl.cuem.editar" bloquear="cuemCtrl.cuem.detalhar"></contrato>
+                </div>
+                <div class="margin-conteudo">
+                  <v-accordion id="accordion" multiple class="vAccordion--default">
+                    <v-pane>
+                      <v-pane-header id="incluirDocumento" class="titulo-verde negrito">{{'label-documentos' | translate | uppercase}}</v-pane-header>
+                      <v-pane-content>
+                        <incluir-documento destinacao="cuemCtrl.cuem" rota-retorno="'destinacao.cuem'" editar="cuemCtrl.cuem.editar" bloquear="cuemCtrl.cuem.detalhar"></incluir-documento>
+                      </v-pane-content>
+                    </v-pane>
+                  </v-accordion>
+                </div>
+              </form>
+            </md-tab-body>
+          </md-tab>
+        </md-tabs>
+      </md-content>
+    </div>
+    <botoes-rodape bloquear="cuemCtrl.cuem.detalhar"
+                   salvar-rascunho="cuemCtrl.salvarRascunho()"
+                   gravar="cuemCtrl.gravar()"
+                   avancar="cuemCtrl.avancar()"
+                   fechar="cuemCtrl.fechar()"
+                   voltar="cuemCtrl.voltar()"
+                   cancelar="cuemCtrl.cancelar()"
+                   botao-editar="cuemCtrl.botaoEditar()"
+                   gerar-minuta="cuemCtrl.bloqueiaDadosUtilizacao"
+                   cancelamento-encerramento="cuemCtrl.cuem.cancelamentoEncerramento"></botoes-rodape>
+</exibir-elemento-por-permissao-destinacao>

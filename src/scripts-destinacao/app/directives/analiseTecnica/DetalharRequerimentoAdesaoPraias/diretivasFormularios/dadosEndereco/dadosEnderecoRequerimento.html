@@ -1,0 +1,52 @@
+<div layout="column" layout-margin="5">
+    <div layout="row" layout-xs="column">
+        <md-input-container flex="15" flex-xs="100">
+            <label>{{'label-cep' | translate}}:*</label>
+            <input ng-disabled="utilizarEnderecoRequerente || bloquearCampos" ui-br-cep-mask
+                   ng-model="endereco.cep"
+                   ng-change="buscarEndereco()"
+                   name="{{nomeCampo}} - CEP">
+        </md-input-container>
+
+        <md-input-container flex="10" flex-offset="5" flex-xs="100" flex-offset-xs="0">
+            <label>{{'label-uf' | translate}}:</label>
+            <input ng-model="endereco.uf" disabled/>
+        </md-input-container>
+        <md-input-container flex="25" flex-offset="5" flex-xs="100" flex-offset-xs="0">
+            <label>{{'municipio' | translate}}</label>
+            <input disabled
+                   name="{{nomeCampo}} - Munícipio"
+                   ng-model="endereco.municipio">
+        </md-input-container>
+        <md-input-container flex="25" flex-offset="5" flex-xs="100" flex-offset-xs="0">
+            <label>{{'label-tipo-logradouro' | translate}}:*</label>
+           <input ng-model="endereco.tipoLogradouro" disabled />
+        </md-input-container>
+    </div>
+    <div layout="row" layout-xs="column">
+        <md-input-container flex="70" flex-xs="100">
+            <label>{{'label-logradouro' | translate}}:*</label>
+            <input ng-disabled="(utilizarEnderecoRequerente || isCepNormal || bloquearCampos)"
+                   ng-model="endereco.logradouro"
+                   name="{{nomeCampo}} - Logradouro">
+        </md-input-container>
+        <md-input-container flex="25" flex-offset="5" flex-xs="100" flex-offset-xs="0">
+            <label>{{'label-numero' | translate}}:*</label>
+            <input  ng-disabled="(utilizarEnderecoRequerente || bloquearCampos)"
+                    name="{{nomeCampo}} - Número" ng-model="endereco.numero">
+        </md-input-container>
+        <md-input-container flex="70" flex-offset="5" flex-xs="100" flex-offset-xs="0">
+            <label>{{'label-bairro' | translate}}:*</label>
+            <input ng-disabled="(utilizarEnderecoRequerente || isCepNormal || bloquearCampos)"
+                   ng-model="endereco.bairro"
+                   name="{{nomeCampo}} - Bairro">
+        </md-input-container>
+    </div>
+    <div layout="row" layout-xs="column" ng-show="endereco.complemento">
+        <md-input-container flex="100">
+            <label>{{'label-complemento' | translate}}:</label>
+            <input ng-model="endereco.complemento"
+                   ng-disabled="bloquearCampos">
+        </md-input-container>
+    </div>
+</div>

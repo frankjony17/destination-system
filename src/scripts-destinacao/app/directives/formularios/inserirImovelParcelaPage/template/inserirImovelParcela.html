@@ -1,0 +1,79 @@
+<div>
+  <div layout="row" layout-margin="5" layout-align="left" layout-align-xs="end end" ng-if="edicao !== true" >
+    <md-button id="btn-incluir-imovel-parcela" ng-show="destinacao.detalhar !== true" class="md-raised" ng-click="abrirTelaInserirImovelParcela()">
+      {{'label-incluir-parcela-imovel' | translate | uppercase}}
+    </md-button>
+  </div>
+
+  <div id="tabelaImoveis" ng-show="destinacao.destinacaoImoveis.length > 0">
+      <md-table-container>
+        <table md-table style="border: 1px solid #cccccc;">
+
+          <thead md-head>
+          <tr md-row class="upload-head" flex flex-xs>
+            <th md-column flex="10" style="padding-right: 43px; text-align: center !important;">{{'label-RIP' | translate}}</th>
+            <th md-column flex="10" style="padding-right: 43px">{{'label-codigo-utilizacao' | translate}}</th>
+            <th md-column flex="10" style="padding-right: 43px">{{'label-utilizacao' | translate}}</th>
+            <th md-column flex="10" style="padding-right: 43px">{{'label-terreno-utilizada' | translate }}</th>
+            <th md-column flex="10" style="padding-right: 43px">{{'label-area-construida-utilizar' | translate}} (m²)</th>
+            <th md-column flex="5" style="padding-right: 43px">{{'label-acao'| translate}}</th>
+          </tr>
+          </thead>
+
+          <tbody md-body>
+            <tr md-row ng-repeat="destinacaoImovel in destinacao.destinacaoImoveis | limitTo: tabela.limit: (tabela.page - 1) * tabela.limit">
+              <td md-cell style="padding-right: 43px">
+                <label class="hand link" ng-click="abrirDetalharParcela(destinacaoImovel.imovel, $event)">
+                  {{destinacaoImovel.imovel.rip}}
+                </label>
+              </td>
+              <td md-cell style="padding-right: 43px">
+                <label>{{destinacaoImovel.id ? formatarCodigoUtilizacao(destinacaoImovel) : '-'}}</label>
+              </td>
+              <td md-cell style="padding-right: 43px">
+                <label>{{getTipoUtilizacao(destinacaoImovel)}}</label>
+              </td>
+              <td md-cell style="padding-right: 43px">
+                <label>{{calcularFracaoIdeal(destinacaoImovel) ? calcularFracaoIdeal(destinacaoImovel) : destinacaoImovel.imovel.parcela.areaTerreno | number: 2}}</label>
+              </td>
+              <td md-cell style="padding-right: 43px">
+                <label>{{somarAreaConstruidaUtilizada(destinacaoImovel) | number: 2}}</label>
+              </td>
+              <td md-cell style="padding-right: 43px">
+
+                <md-fab-speed-dial md-direction="left" class="hand md-scale alinhar-fab-dados-imovel">
+
+                  <md-fab-trigger>
+                    <ng-md-icon class="icon-acao" icon="more_vert">
+                    </ng-md-icon>
+                  </md-fab-trigger>
+
+                  <md-fab-actions>
+                    <ng-md-icon ng-if="destinacao.editar !== true && destinacao.detalhar !== true" icon="close" class="icon-subacao" alt="Limpar" ng-click="remover(destinacaoImovel)">
+                      <md-tooltip>{{'btn-excluir' | translate}}</md-tooltip>
+                    </ng-md-icon>
+                    <ng-md-icon icon="edit" class="icon-subacao" alt="Editar" ng-click="editar(destinacaoImovel)">
+                      <md-tooltip>{{'btn-editar' | translate}}</md-tooltip>
+                    </ng-md-icon>
+                  </md-fab-actions>
+                </md-fab-speed-dial>
+
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </md-table-container>
+
+      <md-table-pagination md-limit="tabela.limit"
+                           md-limit-options="tabela.limitsPage"
+                           md-page="tabela.page"
+                           md-total="{{destinacao.destinacaoImoveis.length}}"
+                           md-on-paginate="true"
+                           md-page-select
+                           style="border: 1px solid #cccccc; margin:0 5px 0 5px; ">
+      </md-table-pagination>
+
+  </div>
+</div>
+

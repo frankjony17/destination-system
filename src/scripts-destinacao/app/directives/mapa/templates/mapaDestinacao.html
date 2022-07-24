@@ -1,0 +1,12 @@
+<div class="mapaImovel">
+    <!-- openlayers ol-center="posicao" ol-view="view" ol-markers="posicao.markers" ol-defaults="defaults" width="100%" height="100%">
+        <ol-control name="{{ control.name }}" ng-repeat="control in controls"></ol-control>
+        <ol-marker ng-repeat="marker in markers" lat="marker.lat" lon="marker.lon"></ol-marker>
+    </openlayers -->
+    <div id="map" class="map">
+        <div id="popup">
+            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+            <div id="popup-content"></div>
+        </div>
+    </div>
+</div>

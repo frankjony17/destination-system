@@ -1,0 +1,60 @@
+<div>
+  <div layout="row" layout-margin="5" layout-align="left" layout-align-xs="end end" ng-if="permiteEditar !== true" >
+    <md-button ng-show="!bloquear" id="btn-abrir-incluir-imovel" class="md-raised" ng-click="abrirModalIncluirImovel()">
+      {{'label-incluir-imovel' | translate | uppercase}}
+    </md-button>
+
+  </div>
+
+  <div ng-show="destinacaoImoveis.destinacaoImoveis.length > 0">
+      <md-table-container>
+        <table md-table md-row-select style="border: 1px solid #cccccc;">
+
+          <thead md-head>
+          <tr md-row class="upload-head">
+            <th md-column>{{'label-RIP' | translate}}</th>
+            <th md-column>{{'label-codigo-utilizacao' | translate}}</th>
+            <th md-column>{{'label-area-terreno' | translate }}</th>
+            <th md-column>{{'label-area-construida' | translate}}</th>
+            <th ng-show="!bloquear && !permiteEditar" md-column>{{'label-acao'| translate}}</th>
+          </tr>
+          </thead>
+
+          <tbody md-body>
+          <tr md-row md-auto-select="true" ng-repeat="destinacaoImovel in destinacaoImoveis.destinacaoImoveis | limitTo: 5">
+            <td md-cell>
+              <span ng-bind="destinacaoImovel.imovel.rip"></span>
+            </td>
+            <td md-cell>
+              <span ng-bind="destinacaoImovel.codigoUtilizacao + lpad(destinacaoImovel.parcelas[0].sequencial)"></span>
+            </td>
+            <td md-cell>
+                <span ng-bind="destinacaoImovel.imovel.areaTerreno | number:3"></span>
+            </td>
+            <td md-cell style="text-align: center !important;">
+                <span ng-show="destinacaoImovel.imovel.areaConstruida !== undefined && destinacaoImovel.imovel.areaConstruida !== null"  ng-bind="destinacaoImovel.imovel.areaConstruida | number:2"></span>
+                <span ng-show="destinacaoImovel.imovel.areaConstruida === undefined || destinacaoImovel.imovel.areaConstruida === null">0</span>
+            </td>
+            <td ng-show="!bloquear && !permiteEditar" md-cell>
+              <ng-md-icon icon="close" alt="Limpar"
+                          ng-click="remover(destinacaoImovel.imovel);">
+                <md-tooltip>{{'btn-excluir' | translate}}</md-tooltip>
+              </ng-md-icon>
+            </td>
+          </tr>
+          </tbody>
+
+        </table>
+      </md-table-container>
+
+      <md-table-pagination md-limit="tabelaImovel.limit"
+                           md-limit-options="tabelaImovel.limitsPage"
+                           md-page="tabelaImovel.page"
+                           md-total="{{destinacaoImoveis.destinacaoImoveis.length}}"
+                           md-on-paginate="true"
+                           md-page-select="true"
+                           style="border: 1px solid #cccccc; margin:0 5px 0 5px;">
+      </md-table-pagination>
+
+  </div>
+</div>

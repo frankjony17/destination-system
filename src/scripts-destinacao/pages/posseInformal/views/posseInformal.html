@@ -1,0 +1,126 @@
+<div ng-if="!posseCtrl.permissaoConcedida">
+    <acesso-negado></acesso-negado>
+</div>
+<exibir-elemento-por-permissao-destinacao permissoes="posseCtrl.PERMISSOES"
+                               permissao-concedida="posseCtrl.permissaoConcedida"
+                               detalhar="posseCtrl.posseInformal.detalhar">
+    <form name="posseCtrl.form">
+      <div class="margin-header-conteudo">
+          <titulo-servico class="titulo-verde titulo-verde-header"></titulo-servico>
+          <div class="base-vermelho"></div>
+          <hr class="linha-divisoria">
+      </div>
+
+      <div layout="row" layout-xs="column" class="margin-mapa" ng-if="posseCtrl.carregarDadosUtilizacao === true">
+        <div layout="column" flex="35" flex-xs="100">
+          <informacoes-imovel destinacao-imoveis="posseCtrl.posseInformal.destinacaoImoveis"></informacoes-imovel>
+        </div>
+        <div layout="column" flex="65" flex-xs="100" layout-xs="column" class="margin-conteudo">
+          <div ng-cloak flex="100" flex-xs="100" offset="5">
+              <v-accordion  ng-if="posseCtrl.posseInformal.statusDestinacao.id === 2 " id="accordion" multiple class="vAccordion--default cancelamento">
+                  <v-pane>
+                      <v-pane-header id="id_acordion_cancelamento">{{'label-dados-cancelamento-destinacao' | translate | uppercase}}</v-pane-header>
+                      <v-pane-content>
+                          <apresentar-dados-cancelamento cancelamento-destinacao="posseCtrl.posseInformal">
+
+                          </apresentar-dados-cancelamento>
+                      </v-pane-content>
+                  </v-pane>
+              </v-accordion>
+              <v-accordion  ng-if="posseCtrl.posseInformal.statusDestinacao.id === 5" id="accordion" multiple class="vAccordion--default cancelamento">
+                  <v-pane>
+                      <v-pane-header id="id_acordion_encerramento">{{'label-dados-encerramento-destinacao' | translate | uppercase}}</v-pane-header>
+                      <v-pane-content>
+                          <apresentar-dados-encerramento encerramento="posseCtrl.posseInformal">
+
+                          </apresentar-dados-encerramento>
+                      </v-pane-content>
+                  </v-pane>
+              </v-accordion>
+
+            <div class="margin-top">
+              <v-accordion multiple class="vAccordion--default">
+                <v-pane expanded>
+                  <v-pane-header class="titulo-verde negrito">{{'label-dados-imovel' | translate | uppercase}}</v-pane-header>
+                  <v-pane-content>
+                    <procurar-dados-imovel destinacao="posseCtrl.posseInformal"
+                                           tipo-destinacao="posseCtrl.posseInformal.tipoDestinacaoEnum"
+                                           editar="posseCtrl.posseInformal.editar"
+                                           bloquear="posseCtrl.posseInformal.detalhar"></procurar-dados-imovel>
+                  </v-pane-content>
+                </v-pane>
+
+                <v-pane>
+                  <v-pane-header class="titulo-verde negrito">{{'label-dados-responsavel-destinatario' | translate | uppercase}}</v-pane-header>
+                  <v-pane-content>
+                    <dados-responsavel-destinatario
+                      dados-responsavel="posseCtrl.posseInformal.dadosResponsavel"
+                      atendimento="posseCtrl.atendimento"
+                      tipo-destinacao="posseCtrl.posseInformal.tipoDestinacaoEnum"
+                      destinacoes-imoveis="posseCtrl.posseInformal.destinacaoImoveis"
+                      tipo-modalidade="posseCtrl.atendimento.tipoModalidade"
+                      modo-editar="posseCtrl.posseInformal.editar"
+                      bloquear="posseCtrl.posseInformal.detalhar"
+                      destinacao="posseCtrl.posseInformal"
+                      nome-state="posseCtrl.nomeState"
+                      fundamento="posseCtrl.posseInformal.codFundamentoLegal">
+                    </dados-responsavel-destinatario>
+                  </v-pane-content>
+                </v-pane>
+
+                <v-pane>
+                  <v-pane-header class="titulo-verde negrito">{{'label-dados-utilizacao' | translate | uppercase}}</v-pane-header>
+                  <v-pane-content>
+                    <dados-utilizacao ng-if="posseCtrl.posseInformal.tipoDestinacaoEnum"
+                                      utilizacao="posseCtrl.posseInformal.utilizacao"
+                                      imoveis="posseCtrl.posseInformal.destinacaoImoveis"
+                                      tipo-destinacao="posseCtrl.posseInformal.tipoDestinacaoEnum"
+                                      responsaveis="posseCtrl.posseInformal.responsaveis"
+                                      editar="posseCtrl.posseInformal.editar"
+                                      bloquear="posseCtrl.posseInformal.detalhar"></dados-utilizacao>
+                  </v-pane-content>
+                </v-pane>
+
+                <v-pane>
+                  <v-pane-header class="titulo-verde negrito">{{'label-documentos' | translate | uppercase}}</v-pane-header>
+                  <v-pane-content>
+                    <documentos ng-if="posseCtrl.carregarDadosUtilizacao"
+                                destinacao="posseCtrl.posseInformal"
+                                editar="posseCtrl.posseInformal.editar"
+                                bloquear="posseCtrl.posseInformal.detalhar"></documentos>
+                  </v-pane-content>
+                </v-pane>
+
+                <v-pane>
+                  <v-pane-header class="titulo-verde negrito">{{'label-fotos' | translate | uppercase}}</v-pane-header>
+                  <v-pane-content>
+                    <fotos destinacao="posseCtrl.posseInformal"
+                           editar="posseCtrl.posseInformal.editar"
+                           bloquear="posseCtrl.posseInformal.detalhar"></fotos>
+                  </v-pane-content>
+                </v-pane>
+
+              </v-accordion>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--<hr class="linha-divisoria-footer">
+      <div class="button-botton" layout="row" layout-align="end end">
+        <md-button class="md-raised margin-botao-footer" ng-click="posseCtrl.fechar()">{{'btn-fechar' | translate | uppercase}}</md-button>
+        <md-button class="md-raised" ng-click="posseCtrl.salvar()">{{'btn-confirmar' | translate | uppercase}}
+        </md-button>
+      </div>-->
+
+    </form>
+
+    <botoes-rodape bloquear="posseCtrl.posseInformal.detalhar"
+                   gravar="posseCtrl.salvar()"
+                   cancelar="posseCtrl.cancelar()"
+                   fechar="posseCtrl.fechar()"
+                   botao-editar="posseCtrl.botaoEditar()"
+                   tipo-destinacao-enum="posseCtrl.posseInformal.tipoDestinacaoEnum"
+                   cancelamento-encerramento="posseCtrl.posseInformal.cancelamentoEncerramento">
+    </botoes-rodape>
+</exibir-elemento-por-permissao-destinacao>

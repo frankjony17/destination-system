@@ -1,0 +1,16 @@
+<md-input-container class="md-block margin-top" flex="100">
+  <label>{{'label-tipo-modalidade' | translate}}:</label>
+  <md-select required ng-model="licitacaoVenda.tipoLicitacao" ng-model-options="{trackBy: '$value.id'}"
+             name="{{'label-tipo-modalidade' | translate}}">
+    <md-option ng-repeat="item in tiposLicitacao" ng-value="item">
+      {{item.descricao}}
+    </md-option>
+  </md-select>
+</md-input-container>
+
+<md-input-container class="md-block margin-top" flex="100">
+  <label>{{'label-numero-processo' | translate}}:</label>
+  <input ng-model="licitacaoVenda.numeroProcesso" ng-blur="buscarPorNumeroProcesso()"
+         required name="{{'label-numero-processo' | translate}}">
+</md-input-container>
+<a class="hand link" ng-show="mostrarLinkSei" ng-href="{{montarLinkSei()}}" target="_blank">{{'label-ver-sei' | translate}}</a>

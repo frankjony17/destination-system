@@ -1,0 +1,28 @@
+<md-dialog flex="70">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{'label-visualizar-minuta' | translate | uppercase}}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="modalMinutaCtrl.fechar()">
+                <md-icon md-svg-src="assets/img/icons/ic_close_white_24px.svg" aria-label="Fechar"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <form name="modalMinutaCtrl.formMinuta">
+        <div layout-margin="10">
+
+            <h1>Minuta</h1>          
+
+          
+
+          <div layout="row" layout-align="end center">
+              <md-button class="md-primary md-raised" ng-click="modalMinutaCtrl.fechar();">
+                  {{'btn-fechar' | translate | uppercase}}
+              </md-button>
+          </div>
+        </div>
+      </form>
+    </md-dialog-content>
+</md-dialog>
